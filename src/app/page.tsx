@@ -1,66 +1,30 @@
 import Image from "next/image";
-import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main style={{ padding: 'var(--spacing-96) var(--spacing-24)', maxWidth: 'var(--container-max)', margin: '0 auto' }}>
+      <h1 style={{ fontSize: 'var(--text-display-lg)', color: 'var(--color-coklat-batik)' }}>
+        Jangkep Rasane, Jangkep Critane
+      </h1>
+      <p style={{ fontSize: 'var(--text-body-lg)', color: 'var(--color-coklat-batik)', marginTop: 'var(--spacing-16)' }}>
+        Website eksplorasi kuliner Jawa Tengah yang immersive dan interaktif.
+      </p>
+      
+      <div style={{ marginTop: 'var(--spacing-48)' }}>
+        <button style={{
+          backgroundColor: 'var(--color-kuning-kepodang)',
+          color: 'var(--color-coklat-batik)',
+          fontFamily: 'var(--font-dm-sans)',
+          fontWeight: 700,
+          fontSize: 'var(--text-body-sm)',
+          padding: '14px 28px',
+          border: 'none',
+          borderRadius: 'var(--radius-buttons)',
+          cursor: 'pointer'
+        }}>
+          Mulai Perjalanan
+        </button>
+      </div>
+    </main>
   );
 }

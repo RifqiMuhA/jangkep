@@ -1,49 +1,116 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* === COLORS === */
+  --color-krem-mori: #F2EAD3;
+  --color-coklat-batik: #3B1F0C;
+  --color-kuning-kepodang: #F5C400;
+  --color-emas-keris: #B8860B;
+  --color-hijau-daun: #4A7C3F;
+  --color-krem-tua: #C8B89A;
+  --color-putih-santan: #FAF7F0;
+  --color-hitam-arang: #1A0A02;
+
+  /* Flavor Tag Colors */
+  --color-rasa-pedas: #C0392B;
+  --color-rasa-manis: #F5C400;
+  --color-rasa-gurih: #B8860B;
+  --color-rasa-segar: #4A7C3F;
+  --color-rasa-legit: #6B3A2A;
+
+  /* === TYPOGRAPHY (Fonts are managed via next/font/google in layout.tsx) === */
+  /* Type Scale */
+  --text-display-xl: 96px;
+  --text-display-lg: 80px;
+  --text-display-md: 64px;
+  --text-display-sm: 48px;
+  --text-heading: 32px;
+  --text-subheading: 20px;
+  --text-body-lg: 18px;
+  --text-body: 16px;
+  --text-body-sm: 14px;
+  --text-caption: 12px;
+  --text-label: 12px;
+  --text-javanese: 20px;
+
+  /* Line Heights */
+  --leading-display: 1.15;
+  --leading-heading: 1.3;
+  --leading-body: 1.6;
+  --leading-body-lg: 1.65;
+  --leading-caption: 1.43;
+
+  /* === SPACING === */
+  --spacing-4: 4px;
+  --spacing-8: 8px;
+  --spacing-12: 12px;
+  --spacing-16: 16px;
+  --spacing-24: 24px;
+  --spacing-32: 32px;
+  --spacing-48: 48px;
+  --spacing-64: 64px;
+  --spacing-96: 96px;
+  --spacing-128: 128px;
+  --spacing-160: 160px;
+
+  /* Layout */
+  --section-gap: 96px;
+  --card-padding: 24px;
+  --element-gap: 8px;
+  --container-max: 1280px;
+  --content-max: 800px;
+
+  /* === BORDER RADIUS === */
+  --radius-images: 8px;
+  --radius-images-hero: 0px;
+  --radius-buttons: 24px;
+  --radius-badges: 99px;
+  --radius-cards: 12px;
+  --radius-tooltips: 8px;
+  --radius-bubble: 16px;
+  --radius-ingredient-photo: 9999px;
+
+  /* === SHADOWS === */
+  --shadow-card: rgba(59, 31, 12, 0.08) 0px 4px 24px 0px;
+  --shadow-card-hover: rgba(59, 31, 12, 0.18) 0px 8px 32px 0px;
+  --shadow-tooltip: rgba(59, 31, 12, 0.12) 0px 2px 12px 0px;
+  --shadow-button-accent: rgba(245, 196, 0, 0.25) 0px 4px 16px 0px;
+
+  /* === TEXTURE === */
+  --texture-opacity-parang: 0.10;
+  --texture-opacity-kawung: 0.09;
+  --texture-parang: url('/textures/parang-grain.svg');
+  --texture-kawung: url('/textures/kawung-grain.svg');
+
+  /* === MOTION === */
+  --ease-reveal: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-transition: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-micro: 200ms;
+  --duration-reveal: 500ms;
+  --duration-page: 800ms;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html {
-  height: 100%;
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
+html, body {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-dm-sans), sans-serif;
+  line-height: var(--leading-body);
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-playfair), serif;
+  margin: 0;
+  line-height: var(--leading-heading);
+}
+
+p {
+  margin: 0 0 var(--spacing-16) 0;
 }
 
 a {
   color: inherit;
   text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
 }
