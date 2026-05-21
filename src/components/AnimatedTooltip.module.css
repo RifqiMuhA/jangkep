@@ -1,0 +1,68 @@
+/* AnimatedTooltip.module.css */
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.itemWrapper {
+  position: relative;
+  /* Next element overlaps the previous slightly */
+  margin-left: -16px; 
+  cursor: pointer;
+  z-index: 10;
+}
+
+.itemWrapper:first-child {
+  margin-left: 0;
+}
+
+.itemWrapper:hover {
+  z-index: 50;
+}
+
+.avatar {
+  object-fit: cover;
+  margin: 0;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid white;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background-color: var(--color-krem-mori);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.itemWrapper:hover .avatar {
+  transform: scale(1.15); /* Subtle pop */
+}
+
+/* The tooltip itself is animated via framer-motion, but needs base styles */
+.tooltipContainer {
+  position: absolute;
+  top: -65px; /* Above the avatar */
+  left: 50%; /* Framer-motion will shift this dynamically, but baseline is center */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-hitam-arang);
+  border-radius: var(--radius-md, 8px);
+  padding: 8px 16px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  z-index: 50;
+  white-space: nowrap;
+}
+
+.tooltipName {
+  font-weight: 700;
+  color: var(--color-putih-santan);
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.tooltipDesignation {
+  color: var(--color-emas-keris); /* Use our brand gold instead of gray */
+  font-size: 12px;
+  font-weight: 500;
+}
