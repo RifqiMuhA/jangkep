@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Playfair_Display, DM_Sans, Noto_Sans_Javanese } from "next/font/google";
+import { Playfair_Display, DM_Sans, Noto_Sans_Javanese, Pinyon_Script } from "next/font/google";
 import Navbar from "@/components/Navbar";
+import LenisProvider from "@/components/providers/LenisProvider";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -23,9 +24,25 @@ const notoJavanese = Noto_Sans_Javanese({
   weight: ["400"],
 });
 
+const pinyonScript = Pinyon_Script({
+  variable: "--font-script",
+  subsets: ["latin"],
+  weight: ["400"],
+});
+
 export const metadata: Metadata = {
-  title: "Jangkep - Jangkep Rasane, Jangkep Critane",
-  description: "Website eksplorasi kuliner Jawa Tengah yang immersive dan interaktif.",
+  title: "Jangkep — Jangkep Rasane, Jangkep Critane",
+  description:
+    "Website eksplorasi kuliner Jawa Tengah yang immersive dan interaktif. Jelajahi peta rasa, resep tradisional, dan cerita di balik makanan khas Jawa Tengah.",
+  keywords: [
+    "kuliner Jawa Tengah",
+    "makanan tradisional",
+    "resep Jawa",
+    "Gudeg",
+    "Lumpia Semarang",
+    "Nasi Liwet Solo",
+    "peta kuliner",
+  ],
 };
 
 export default function RootLayout({
@@ -34,10 +51,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className={`${playfair.variable} ${dmSans.variable} ${notoJavanese.variable}`}>
+    <html
+      lang="id"
+      className={`${playfair.variable} ${dmSans.variable} ${notoJavanese.variable} ${pinyonScript.variable}`}
+    >
       <body>
-        <Navbar />
-        {children}
+        <LenisProvider>
+          <Navbar />
+          {children}
+        </LenisProvider>
       </body>
     </html>
   );

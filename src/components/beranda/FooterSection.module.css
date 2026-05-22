@@ -1,0 +1,142 @@
+.footer {
+  background-color: var(--color-coklat-batik);
+  padding: var(--spacing-64) var(--spacing-24) var(--spacing-32);
+  position: relative;
+}
+
+/* Batik border-top strip */
+.borderTop {
+  height: 4px;
+  background-image: url('/batik/batik_parang.webp');
+  background-size: 200px;
+  background-repeat: repeat-x;
+  opacity: 0.3;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+/* Navigation grid */
+.navGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-32);
+  margin-bottom: var(--spacing-64);
+}
+
+.navItem {
+  text-decoration: none;
+  display: block;
+}
+
+.navTitle {
+  font-family: var(--font-playfair), serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-krem-mori);
+  margin-bottom: var(--spacing-4);
+  transition: color var(--duration-micro) var(--ease-transition);
+  line-height: var(--leading-heading);
+}
+
+.navItem:hover .navTitle {
+  color: var(--color-kuning-kepodang);
+}
+
+.navSubtitle {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 13px;
+  color: var(--color-krem-tua);
+  line-height: var(--leading-body);
+  margin: 0;
+}
+
+/* Javanese quote */
+.quoteSection {
+  text-align: center;
+  margin-bottom: var(--spacing-48);
+  padding: 0 var(--spacing-24);
+}
+
+.quote {
+  font-family: var(--font-playfair), serif;
+  font-style: italic;
+  font-size: 24px;
+  color: var(--color-krem-mori);
+  margin-bottom: var(--spacing-8);
+  line-height: var(--leading-heading);
+}
+
+.quoteTranslation {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 13px;
+  color: var(--color-krem-tua);
+  font-style: italic;
+  margin: 0;
+}
+
+/* Aksara Jawa ornament */
+.aksaraOrnament {
+  font-family: var(--font-noto-javanese), serif;
+  font-size: 24px;
+  color: var(--color-emas-keris);
+  opacity: 0.2;
+  text-align: center;
+  margin: var(--spacing-32) 0;
+  letter-spacing: 4px;
+  user-select: none;
+}
+
+/* Credits */
+.credits {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: var(--text-caption);
+  color: var(--color-krem-tua);
+  text-align: center;
+  opacity: 0.7;
+  line-height: var(--leading-body);
+  margin: 0;
+}
+
+/* Si Podo small mascot */
+.sipodoSmall {
+  position: absolute;
+  bottom: 24px;
+  right: 40px;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .navGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-24);
+  }
+
+  .quote {
+    font-size: 18px;
+  }
+
+  .sipodoSmall {
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: var(--spacing-48) var(--spacing-16) var(--spacing-24);
+  }
+
+  .navGrid {
+    gap: var(--spacing-16);
+    margin-bottom: var(--spacing-48);
+  }
+}

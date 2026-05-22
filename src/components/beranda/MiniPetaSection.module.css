@@ -1,0 +1,172 @@
+.section {
+  padding: var(--spacing-96) var(--spacing-24);
+  background-color: var(--color-krem-mori);
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+
+.section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/batik/batik_kawung.webp');
+  background-repeat: repeat;
+  background-size: 300px;
+  opacity: 0.09;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* All children above the texture */
+.section > * {
+  position: relative;
+  z-index: 1;
+}
+
+.title {
+  font-family: var(--font-playfair), serif;
+  font-size: var(--text-display-sm);
+  font-weight: 700;
+  color: var(--color-coklat-batik);
+  margin-bottom: var(--spacing-8);
+  line-height: var(--leading-heading);
+}
+
+.subtitle {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: var(--text-body);
+  color: var(--color-krem-tua);
+  margin-bottom: var(--spacing-48);
+}
+
+.mapContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.mapSvg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.provincePath {
+  fill: none;
+  stroke: var(--color-krem-tua);
+  stroke-width: 1.5;
+  opacity: 0.5;
+}
+
+.cityDot {
+  cursor: pointer;
+  fill: var(--color-kuning-kepodang);
+  stroke: var(--color-coklat-batik);
+  stroke-width: 2;
+  transition: transform var(--duration-micro) var(--ease-transition);
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+.cityDot:hover {
+  transform: scale(1.5);
+}
+
+/* Invisible larger hit area for each dot */
+.cityHitArea {
+  fill: transparent;
+  stroke: none;
+  cursor: pointer;
+}
+
+.tooltip {
+  position: absolute;
+  background-color: var(--color-putih-santan);
+  border: 1px solid var(--color-emas-keris);
+  border-radius: var(--radius-tooltips);
+  padding: var(--spacing-12) var(--spacing-16);
+  box-shadow: var(--shadow-tooltip);
+  z-index: 10;
+  pointer-events: none;
+  transform: translateX(-50%);
+  transition: opacity var(--duration-micro) var(--ease-transition);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-4);
+  min-width: 140px;
+}
+
+.tooltipHidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.tooltipVisible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tooltipImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.tooltipName {
+  font-family: var(--font-playfair), serif;
+  font-size: var(--text-body);
+  font-weight: 700;
+  color: var(--color-coklat-batik);
+  line-height: var(--leading-heading);
+}
+
+.tooltipFood {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 13px;
+  color: var(--color-krem-tua);
+  line-height: var(--leading-caption);
+}
+
+.ctaRow {
+  margin-top: var(--spacing-48);
+}
+
+.ghostButton {
+  display: inline-block;
+  background: transparent;
+  border: 1.5px solid var(--color-emas-keris);
+  color: var(--color-emas-keris);
+  border-radius: var(--radius-buttons);
+  padding: 14px 28px;
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: var(--text-body-sm);
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color var(--duration-micro) var(--ease-transition),
+              color var(--duration-micro) var(--ease-transition);
+}
+
+.ghostButton:hover {
+  background-color: var(--color-emas-keris);
+  color: var(--color-krem-mori);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .title {
+    font-size: var(--text-heading);
+  }
+
+  .subtitle {
+    font-size: var(--text-body-sm);
+    margin-bottom: var(--spacing-32);
+  }
+
+  .section {
+    padding: var(--spacing-64) var(--spacing-16);
+  }
+}
