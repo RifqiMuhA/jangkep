@@ -1,121 +1,222 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
-import Link from 'next/link';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
-import { kotaData, type KotaData } from '@/data/peta';
+import Link from 'next/link';
+import { kotaAktif, type KotaAktif } from '@/data/peta';
 import styles from './MiniPetaSection.module.css';
 
-const PROVINCE_PATH =
-  'M 50,200 C 80,150 120,120 180,100 C 250,80 320,70 400,90 C 460,100 520,120 580,150 C 620,170 650,200 660,240 C 650,290 620,330 570,350 C 520,360 460,350 400,340 C 340,330 280,310 220,290 C 160,270 100,250 70,230 Z';
-
 export default function MiniPetaSection() {
-  const [activeCity, setActiveCity] = useState<KotaData | null>(null);
-  const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const svgRef = useRef<SVGSVGElement>(null);
+  const [selectedCity, setSelectedCity] = useState<KotaAktif | null>(null);
+  const [previewCity, setPreviewCity] = useState<KotaAktif | null>(null);
+  const [isLocked, setIsLocked] = useState(false);
+  const [svgLoaded, setSvgLoaded] = useState(false);
 
-  const handleDotEnter = useCallback(
-    (city: KotaData) => {
-      if (!svgRef.current) return;
+  const mapWrapperRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const animKeyRef = useRef(0);
 
-      const svgRect = svgRef.current.getBoundingClientRect();
-      const viewBoxWidth = 700;
-      const viewBoxHeight = 400;
+  // The city to show in the panel: locked selection takes priority over hover preview
+  const displayCity = isLocked ? selectedCity : previewCity || selectedCity;
 
-      // Convert SVG viewBox coords to pixel coords relative to the container
-      const xPx = (city.cx / viewBoxWidth) * svgRect.width;
-      const yPx = (city.cy / viewBoxHeight) * svgRect.height;
+  // ─── Fetch & inject SVG ───
+  useEffect(() => {
+    const wrapper = mapWrapperRef.current;
+    if (!wrapper) return;
 
-      setTooltipPos({ x: xPx, y: yPx - 12 });
-      setActiveCity(city);
+    fetch('/jateng_output/jateng_kabupaten.svg')
+      .then((res) => res.text())
+      .then((svgText) => {
+        wrapper.innerHTML = svgText;
+        setSvgLoaded(true);
+      })
+      .catch((err) => console.error('Failed to load SVG:', err));
+  }, []);
+
+  // ─── Attach SVG event listeners once loaded ───
+  useEffect(() => {
+    if (!svgLoaded) return;
+    const wrapper = mapWrapperRef.current;
+    if (!wrapper) return;
+
+    const svgEl = wrapper.querySelector('svg');
+    if (!svgEl) return;
+
+    // 1. Mark kabupaten that have data
+    kotaAktif.forEach((kota) => {
+      const path = svgEl.querySelector(`#${kota.id}`);
+      if (path) {
+        path.classList.add('has-data');
+        (path as HTMLElement).dataset.kotaId = kota.id;
+      }
+    });
+
+    // 2. Hover & click on SVG paths
+    const handleMouseEnter = (e: Event) => {
+      const target = e.currentTarget as SVGPathElement;
+      const id = target.dataset.kotaId;
+      if (!id) return;
+      const kota = kotaAktif.find((k) => k.id === id);
+      if (kota) {
+        setPreviewCity(kota);
+      }
+    };
+
+    const handleMouseLeave = () => {
+      setPreviewCity(null);
+    };
+
+    const handleClick = (e: Event) => {
+      const target = e.currentTarget as SVGPathElement;
+      const id = target.dataset.kotaId;
+      if (!id) return;
+      const kota = kotaAktif.find((k) => k.id === id);
+      if (kota) {
+        selectKota(kota);
+      }
+    };
+
+    const paths = svgEl.querySelectorAll('.kab.has-data');
+    paths.forEach((path) => {
+      path.addEventListener('mouseenter', handleMouseEnter);
+      path.addEventListener('mouseleave', handleMouseLeave);
+      path.addEventListener('click', handleClick);
+    });
+
+    return () => {
+      paths.forEach((path) => {
+        path.removeEventListener('mouseenter', handleMouseEnter);
+        path.removeEventListener('mouseleave', handleMouseLeave);
+        path.removeEventListener('click', handleClick);
+      });
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [svgLoaded]);
+
+  // ─── Update SVG selected class when selectedCity changes ───
+  useEffect(() => {
+    if (!svgLoaded) return;
+    const wrapper = mapWrapperRef.current;
+    if (!wrapper) return;
+    const svgEl = wrapper.querySelector('svg');
+    if (!svgEl) return;
+
+    // Clear all selected
+    svgEl.querySelectorAll('.kab').forEach((p) => p.classList.remove('is-selected'));
+
+    // Set selected
+    if (selectedCity) {
+      const path = svgEl.querySelector(`#${selectedCity.id}`);
+      if (path) path.classList.add('is-selected');
+    }
+  }, [selectedCity, svgLoaded]);
+
+  // ─── Select a city (lock selection) ───
+  const selectKota = useCallback((kota: KotaAktif) => {
+    setSelectedCity(kota);
+    setIsLocked(true);
+    animKeyRef.current += 1;
+  }, []);
+
+  // ─── Handle pin click ───
+  const handlePinClick = useCallback(
+    (kota: KotaAktif) => {
+      selectKota(kota);
     },
-    [],
+    [selectKota],
   );
 
-  const handleDotLeave = useCallback(() => {
-    setActiveCity(null);
+  // ─── Handle pin hover ───
+  const handlePinEnter = useCallback((kota: KotaAktif) => {
+    setPreviewCity(kota);
+  }, []);
+
+  const handlePinLeave = useCallback(() => {
+    setPreviewCity(null);
+  }, []);
+
+  // ─── Handle SVG area mouse leave (reset preview only if not locked) ───
+  const handleMapLeave = useCallback(() => {
+    setPreviewCity(null);
   }, []);
 
   return (
-    <section className={styles.section}>
-      <h2 className={styles.title}>Jelajahi Rasa Jawa Tengah</h2>
-      <p className={styles.subtitle}>
-        Hover peta untuk melihat makanan khas setiap kota
-      </p>
+    <section className={styles.petaSection} id="peta-kuliner">
+      <div className={styles.petaInner}>
+        {/* Header */}
+        <div className={styles.petaLabel}>PETA KULINER</div>
+        <h2 className={styles.petaHeadline}>Jawa Tengah di Atas Meja</h2>
+        <p className={styles.petaSubline}>Setiap kota punya cerita rasa</p>
 
-      <div className={styles.mapContainer}>
-        <svg
-          ref={svgRef}
-          className={styles.mapSvg}
-          viewBox="0 0 700 400"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-label="Peta sederhana Jawa Tengah"
-        >
-          {/* Province outline */}
-          <path d={PROVINCE_PATH} className={styles.provincePath} />
+        {/* Grid */}
+        <div className={styles.petaGrid}>
+          {/* ─── Panel Info (Kiri) ─── */}
+          <div ref={panelRef}>
+            {displayCity ? (
+              <div
+                key={animKeyRef.current}
+                className={`${styles.petaPanel} ${styles.petaPanelActive}`}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  className={styles.petaPanelFoto}
+                  src={displayCity.logo}
+                  alt={`Lambang ${displayCity.nama}`}
+                />
+                <div className={styles.petaPanelBody}>
+                  <div className={styles.petaPanelKota}>{displayCity.nama}</div>
+                  <div className={styles.petaPanelMakanan}>{displayCity.makanan}</div>
+                  <div className={styles.petaPanelDesc}>{displayCity.deskripsi}</div>
+                </div>
+              </div>
+            ) : (
+              <div className={`${styles.petaPanel} ${styles.petaPanelEmpty}`}>
+                <div className={styles.petaPanelHintIcon}>🗺️</div>
+                <div className={styles.petaPanelHint}>
+                  Hover atau klik kabupaten untuk melihat kuliner khasnya
+                </div>
+              </div>
+            )}
+          </div>
 
-          {/* City dots */}
-          {kotaData.map((city) => (
-            <g
-              key={city.id}
-              onMouseEnter={() => handleDotEnter(city)}
-              onMouseLeave={handleDotLeave}
-              onFocus={() => handleDotEnter(city)}
-              onBlur={handleDotLeave}
-              tabIndex={0}
-              role="button"
-              aria-label={`${city.nama} — ${city.makananKhas}`}
-            >
-              {/* Invisible larger hit area */}
-              <circle
-                cx={city.cx}
-                cy={city.cy}
-                r={22}
-                className={styles.cityHitArea}
-              />
-              {/* Visible dot */}
-              <circle
-                cx={city.cx}
-                cy={city.cy}
-                r={10}
-                className={styles.cityDot}
-              />
-            </g>
-          ))}
-        </svg>
+          {/* ─── Peta SVG (Kanan) ─── */}
+          <div
+            className={styles.petaMapWrapper}
+            ref={mapWrapperRef}
+            onMouseLeave={handleMapLeave}
+          >
+            {/* SVG gets injected here by useEffect */}
 
-        {/* Tooltip */}
-        <div
-          className={`${styles.tooltip} ${
-            activeCity ? styles.tooltipVisible : styles.tooltipHidden
-          }`}
-          style={{
-            left: tooltipPos.x,
-            top: tooltipPos.y,
-            transform: 'translate(-50%, -100%)',
-          }}
-          aria-hidden={!activeCity}
-        >
-          {activeCity && (
-            <>
-              <Image
-                className={styles.tooltipImage}
-                src={activeCity.image}
-                alt={activeCity.makananKhas}
-                width={40}
-                height={40}
-              />
-              <span className={styles.tooltipName}>{activeCity.nama}</span>
-              <span className={styles.tooltipFood}>{activeCity.makananKhas}</span>
-            </>
-          )}
+            {/* Pin foto makanan — rendered after SVG loads */}
+            {svgLoaded &&
+              kotaAktif.map((kota) => (
+                <button
+                  key={kota.id}
+                  className={styles.petaPin}
+                  style={{ left: `${kota.pin.x}%`, top: `${kota.pin.y}%` }}
+                  onClick={() => handlePinClick(kota)}
+                  onMouseEnter={() => handlePinEnter(kota)}
+                  onMouseLeave={handlePinLeave}
+                  aria-label={`${kota.nama} — ${kota.makanan}`}
+                  type="button"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    className={styles.petaPinImg}
+                    src={kota.foto}
+                    alt={kota.makanan}
+                  />
+                </button>
+              ))}
+          </div>
         </div>
-      </div>
 
-      <div className={styles.ctaRow}>
-        <Link href="/maps" className={styles.ghostButton}>
-          Jelajahi Peta Lengkap
-        </Link>
+        {/* CTA */}
+        <div className={styles.petaCtaWrap}>
+          <Link href="/maps" className={styles.btnSecondaryGold}>
+            Jelajahi Peta Lengkap →
+          </Link>
+        </div>
       </div>
     </section>
   );

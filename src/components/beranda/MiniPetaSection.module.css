@@ -1,12 +1,16 @@
-.section {
-  padding: var(--spacing-96) var(--spacing-24);
-  background-color: var(--color-krem-mori);
+/* ============================
+   PETA KULINER — Light Section
+   ============================ */
+
+.petaSection {
+  background: var(--color-krem-mori); /* #F2EAD3 */
   position: relative;
-  text-align: center;
+  padding: 96px 0;
   overflow: hidden;
 }
 
-.section::before {
+/* Kawung texture */
+.petaSection::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -18,155 +22,274 @@
   z-index: 0;
 }
 
-/* All children above the texture */
-.section > * {
+/* === Inner wrapper === */
+.petaInner {
   position: relative;
   z-index: 1;
-}
-
-.title {
-  font-family: var(--font-playfair), serif;
-  font-size: var(--text-display-sm);
-  font-weight: 700;
-  color: var(--color-coklat-batik);
-  margin-bottom: var(--spacing-8);
-  line-height: var(--leading-heading);
-}
-
-.subtitle {
-  font-family: var(--font-dm-sans), sans-serif;
-  font-size: var(--text-body);
-  color: var(--color-krem-tua);
-  margin-bottom: var(--spacing-48);
-}
-
-.mapContainer {
-  max-width: 800px;
+  max-width: 1280px;
   margin: 0 auto;
-  position: relative;
+  padding: 0 48px;
 }
 
-.mapSvg {
-  width: 100%;
-  height: auto;
-  display: block;
+/* === Header === */
+.petaLabel {
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-emas-keris); /* #B8860B */
+  margin-bottom: 12px;
 }
 
-.provincePath {
-  fill: none;
-  stroke: var(--color-krem-tua);
-  stroke-width: 1.5;
-  opacity: 0.5;
+.petaHeadline {
+  font-family: var(--font-playfair), 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--color-coklat-batik); /* #3B1F0C */
+  line-height: 1.2;
+  margin-bottom: 8px;
 }
 
-.cityDot {
-  cursor: pointer;
-  fill: var(--color-kuning-kepodang);
-  stroke: var(--color-coklat-batik);
-  stroke-width: 2;
-  transition: transform var(--duration-micro) var(--ease-transition);
-  transform-origin: center;
-  transform-box: fill-box;
+.petaSubline {
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 16px;
+  color: #6B3A2A;
+  margin-bottom: 48px;
 }
 
-.cityDot:hover {
-  transform: scale(1.5);
+/* === Grid split 35 / 65 === */
+.petaGrid {
+  display: grid;
+  grid-template-columns: 35fr 65fr;
+  gap: 48px;
+  align-items: start;
+  min-height: 480px;
 }
 
-/* Invisible larger hit area for each dot */
-.cityHitArea {
-  fill: transparent;
-  stroke: none;
-  cursor: pointer;
+/* ─────────────────────────────
+   PANEL INFO (Kiri)
+   ───────────────────────────── */
+.petaPanel {
+  background: var(--color-putih-santan); /* #FAF7F0 */
+  border: 1px solid #C8B89A;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: rgba(59, 31, 12, 0.08) 0px 4px 24px;
+  transition: all 300ms ease;
 }
 
-.tooltip {
-  position: absolute;
-  background-color: var(--color-putih-santan);
-  border: 1px solid var(--color-emas-keris);
-  border-radius: var(--radius-tooltips);
-  padding: var(--spacing-12) var(--spacing-16);
-  box-shadow: var(--shadow-tooltip);
-  z-index: 10;
-  pointer-events: none;
-  transform: translateX(-50%);
-  transition: opacity var(--duration-micro) var(--ease-transition);
+/* State default — belum ada yang dipilih */
+.petaPanelEmpty {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-4);
-  min-width: 140px;
+  justify-content: center;
+  padding: 48px 32px;
+  text-align: center;
+  min-height: 380px;
 }
 
-.tooltipHidden {
-  opacity: 0;
-  visibility: hidden;
+.petaPanelHintIcon {
+  font-size: 48px;
+  opacity: 0.4;
+  margin-bottom: 12px;
 }
 
-.tooltipVisible {
-  opacity: 1;
-  visibility: visible;
+.petaPanelHint {
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: #C8B89A;
 }
 
-.tooltipImage {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
+/* State aktif — kota dipilih */
+.petaPanelActive {
+  animation: panelFadeIn 250ms ease both;
 }
 
-.tooltipName {
-  font-family: var(--font-playfair), serif;
-  font-size: var(--text-body);
+.petaPanelFoto {
+  width: 100%;
+  height: 220px;
+  object-fit: contain;
+  display: block;
+  padding: 24px;
+  background: #f5f0e6;
+}
+
+.petaPanelBody {
+  padding: 24px;
+}
+
+.petaPanelKota {
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 11px;
   font-weight: 700;
-  color: var(--color-coklat-batik);
-  line-height: var(--leading-heading);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-emas-keris); /* #B8860B */
+  margin-bottom: 4px;
 }
 
-.tooltipFood {
-  font-family: var(--font-dm-sans), sans-serif;
-  font-size: 13px;
-  color: var(--color-krem-tua);
-  line-height: var(--leading-caption);
-}
-
-.ctaRow {
-  margin-top: var(--spacing-48);
-}
-
-.ghostButton {
-  display: inline-block;
-  background: transparent;
-  border: 1.5px solid var(--color-emas-keris);
-  color: var(--color-emas-keris);
-  border-radius: var(--radius-buttons);
-  padding: 14px 28px;
-  font-family: var(--font-dm-sans), sans-serif;
-  font-size: var(--text-body-sm);
+.petaPanelMakanan {
+  font-family: var(--font-playfair), 'Playfair Display', serif;
+  font-size: 28px;
   font-weight: 700;
+  color: var(--color-coklat-batik); /* #3B1F0C */
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.petaPanelDesc {
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: #6B3A2A;
+  line-height: 1.65;
+}
+
+@keyframes panelFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─────────────────────────────
+   PETA SVG (Kanan)
+   ───────────────────────────── */
+.petaMapWrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Injected SVG fills the container */
+.petaMapWrapper :global(svg) {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  display: block;
+}
+
+/* Override all kabupaten paths */
+.petaMapWrapper :global(.kab) {
+  fill: #C8B89A;           /* Krem Tua — non-aktif */
+  stroke: #3B1F0C;
+  stroke-width: 0.8;
+  transition: fill 200ms ease;
+  cursor: default;
+}
+
+/* Kabupaten yang punya data (10 kota aktif) */
+.petaMapWrapper :global(.kab.has-data) {
+  fill: var(--color-emas-keris); /* #B8860B */
   cursor: pointer;
+}
+
+/* Hover kota aktif */
+.petaMapWrapper :global(.kab.has-data:hover),
+.petaMapWrapper :global(.kab.is-selected) {
+  fill: var(--color-kuning-kepodang); /* #F5C400 */
+}
+
+/* Hover kota non-aktif — subtle saja */
+.petaMapWrapper :global(.kab:not(.has-data):hover) {
+  fill: #D4C4A8;
+}
+
+/* ─────────────────────────────
+   PIN FOTO MAKANAN
+   ───────────────────────────── */
+.petaPin {
+  /* Reset default browser <button> styling */
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+
+  /* Layout */
+  position: absolute;
+  transform: translate(-50%, -100%);
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 200ms ease;
+}
+
+.petaPin:hover {
+  transform: translate(-50%, -100%) scale(1.15);
+}
+
+.petaPinImg {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2.5px solid var(--color-emas-keris); /* #B8860B */
+  object-fit: cover;
+  box-shadow: rgba(59, 31, 12, 0.25) 0px 4px 12px;
+  display: block;
+}
+
+/* Titik di bawah pin */
+.petaPin::after {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  background: var(--color-emas-keris); /* #B8860B */
+  border-radius: 50%;
+  margin: 2px auto 0;
+}
+
+/* ─────────────────────────────
+   CTA
+   ───────────────────────────── */
+.petaCtaWrap {
+  margin-top: 40px;
+  text-align: left;
+}
+
+.btnSecondaryGold {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1.5px solid var(--color-emas-keris); /* #B8860B */
+  color: var(--color-emas-keris);
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 24px;
+  padding: 14px 28px;
   text-decoration: none;
-  transition: background-color var(--duration-micro) var(--ease-transition),
-              color var(--duration-micro) var(--ease-transition);
+  transition: all 200ms ease;
+  cursor: pointer;
 }
 
-.ghostButton:hover {
-  background-color: var(--color-emas-keris);
-  color: var(--color-krem-mori);
+.btnSecondaryGold:hover {
+  background: var(--color-emas-keris);
+  color: var(--color-krem-mori); /* #F2EAD3 */
 }
 
-/* ─── Responsive ─── */
-@media (max-width: 768px) {
-  .title {
-    font-size: var(--text-heading);
+/* === Responsive === */
+@media (max-width: 900px) {
+  .petaGrid {
+    grid-template-columns: 1fr;
+    gap: 32px;
   }
 
-  .subtitle {
-    font-size: var(--text-body-sm);
-    margin-bottom: var(--spacing-32);
+  .petaHeadline {
+    font-size: 36px;
   }
 
-  .section {
-    padding: var(--spacing-64) var(--spacing-16);
+  .petaInner {
+    padding: 0 24px;
+  }
+
+  .petaSection {
+    padding: 64px 0;
+  }
+
+  .petaPanelEmpty {
+    min-height: 200px;
+    padding: 32px 24px;
   }
 }
