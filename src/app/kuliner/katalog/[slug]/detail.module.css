@@ -1,0 +1,806 @@
+.container {
+  background-color: var(--color-krem-mori, #F2EAD3);
+  min-height: 100vh;
+  color: var(--color-coklat-batik, #3B1F0C);
+  overflow: hidden;
+  position: relative;
+}
+
+/* === THE GRAND HERO - EDITORIAL SPLIT === */
+.heroSection {
+  min-height: 90vh;
+  width: 100vw;
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 60px 5% 40px 5%;
+  background: var(--color-krem-mori, #F2EAD3);
+}
+
+.heroOrnament {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(circle at 80% 20%, rgba(232, 93, 4, 0.03) 0%, transparent 40%),
+    radial-gradient(circle at 20% 80%, rgba(59, 31, 12, 0.03) 0%, transparent 40%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.heroLeft {
+  width: 50%;
+  position: relative;
+  z-index: 10;
+}
+
+.heroRight {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  position: absolute;
+  top: 100px;
+  left: 5%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(59, 31, 12, 0.6);
+  z-index: 20;
+}
+
+.breadcrumbLink {
+  color: rgba(59, 31, 12, 0.8);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease;
+}
+
+.breadcrumbLink:hover {
+  color: var(--color-coklat-batik, #3B1F0C);
+}
+
+.breadcrumbSeparator {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.breadcrumbCurrent {
+  color: var(--color-coklat-batik, #3B1F0C);
+  font-weight: 600;
+}
+
+.subtitleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-coklat-batik, #3B1F0C);
+  margin-bottom: 15px;
+}
+
+.subtitleOrnament {
+  display: flex;
+  align-items: center;
+}
+
+.ornamentImg {
+  object-fit: contain;
+  opacity: 0.8;
+}
+
+.subtitleSeparator {
+  width: 200px;
+  height: 2px;
+  background: linear-gradient(to right, #E85D04, rgba(232, 93, 4, 0));
+  margin-bottom: 30px;
+  position: relative;
+  margin-left: 12px;
+}
+
+.mobileOnly {
+  display: none;
+}
+
+.subtitleSeparator::before {
+  content: '';
+  position: absolute;
+  left: -12px;
+  top: -2.5px;
+  width: 7px;
+  height: 7px;
+  background-color: var(--color-coklat-batik, #3B1F0C);
+  transform: rotate(45deg);
+}
+
+.subtitleSeparator::after {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: -0.5px;
+  width: 3px;
+  height: 3px;
+  background-color: #FDFBF6;
+  /* Creating a tiny inner hole effect */
+  transform: rotate(45deg);
+}
+
+.title {
+  font-family: var(--font-playfair), serif;
+  font-size: 5rem;
+  font-weight: 800;
+  color: var(--color-coklat-batik, #3B1F0C);
+  margin: 0 0 15px 0;
+  line-height: 1.1;
+}
+
+.titleHighlight {
+  color: #E85D04;
+}
+
+.shortDesc {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 1.2rem;
+  color: rgba(59, 31, 12, 0.8);
+  line-height: 1.7;
+  margin-bottom: 50px;
+  max-width: 80%;
+}
+
+/* Action Cards (Badges) */
+.actionCards {
+  display: flex;
+  gap: 30px;
+  margin-top: 50px;
+  flex-wrap: wrap;
+}
+
+.actionCard {
+  position: relative;
+  border-radius: 25px; /* Pill shape */
+  padding: 0 25px 0 65px; /* Left padding ensures text doesn't overlap image */
+  display: flex;
+  align-items: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  height: 50px;
+  min-width: 140px;
+  background-image: linear-gradient(rgba(253, 251, 246, 0.85), rgba(253, 251, 246, 0.85)), url('/batik/batik_kawung.webp');
+  background-size: 150px auto; /* Fixed size so the pattern scale is identical on all cards */
+  background-repeat: repeat;
+  background-position: center;
+  color: var(--color-coklat-batik, #3B1F0C);
+}
+
+.actionCardImgPopup {
+  position: absolute;
+  left: -25px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 90px;
+  height: 90px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.popupImg {
+  object-fit: contain;
+  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
+}
+
+.actionCardText {
+  display: flex;
+  align-items: center;
+}
+
+.actionCardText strong {
+  font-family: var(--font-playfair), serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+/* Hero Right Image & Effects */
+.heroImageFadeMask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%);
+  mask-image: linear-gradient(to right, transparent 0%, black 30%);
+}
+
+.heroImage {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/* Steam Animation */
+.steamWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.steam1,
+.steam2,
+.steam3 {
+  position: absolute;
+  bottom: 10%;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(20px);
+  opacity: 0;
+}
+
+.steam1 {
+  left: 20%;
+  animation: steamRise 6s infinite ease-out;
+}
+
+.steam2 {
+  left: 50%;
+  animation: steamRise 8s infinite ease-out 2s;
+}
+
+.steam3 {
+  left: 70%;
+  animation: steamRise 7s infinite ease-out 4s;
+}
+
+@keyframes steamRise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: translateY(-300px) scale(2.5);
+    opacity: 0;
+  }
+}
+
+/* Location Card Stepped */
+.locationContainer {
+  position: absolute;
+  bottom: 40px;
+  right: 50px;
+  display: flex;
+  align-items: flex-end;
+  /* Align to bottom */
+  filter: drop-shadow(0 15px 30px rgba(59, 31, 12, 0.2));
+  z-index: 10;
+}
+
+.locationTextPart {
+  background: #FDFBF6;
+  padding: 0 20px;
+  border-radius: 20px 0 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 60px;
+}
+
+.locationMapPart {
+  background: #FDFBF6;
+  padding: 8px;
+  /* Creates the distinct white space margin around the image */
+  border-radius: 20px 20px 20px 0;
+  /* Creates the step shape */
+  width: 150px;
+  height: 100px;
+  /* Taller than the text part */
+  position: relative;
+  margin-left: -1px;
+}
+
+.locationMapInner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px 12px 12px 2px;
+  /* Inner radius matching the frame */
+  overflow: hidden;
+}
+
+.locationMapImg {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.locationIcon {
+  color: #E85D04;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.locationText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.locationText strong {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-coklat-batik, #3B1F0C);
+}
+
+.locationText span {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.8rem;
+  color: rgba(59, 31, 12, 0.6);
+}
+
+/* === THE LORE & HISTORY === */
+.historySection {
+  padding: 150px 10%;
+  position: relative;
+  z-index: 20;
+  background-color: var(--color-krem-mori, #F2EAD3);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.historyTextWrapper {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 1.5rem;
+  line-height: 1.8;
+  color: var(--color-coklat-batik, #3B1F0C);
+}
+
+.historyChar {
+  display: inline-block;
+}
+
+.historyWord {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.imageGrid {
+  position: relative;
+  width: 100%;
+  height: 700px;
+}
+
+.editorialInsert {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80%;
+  height: 500px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(59, 31, 12, 0.15);
+}
+
+.editorialImage {
+  object-fit: cover;
+}
+
+.editorialInsert2 {
+  position: absolute;
+  width: 60%;
+  height: 400px;
+  bottom: 0;
+  left: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(59, 31, 12, 0.25);
+  border: 15px solid var(--color-krem-mori, #F2EAD3);
+  z-index: 2;
+}
+
+/* === INGREDIENTS === */
+.ingredientsSection {
+  padding: 120px 5%;
+  background-color: var(--color-coklat-batik, #3B1F0C);
+  color: var(--color-krem-mori, #F2EAD3);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.ingredientsTitle {
+  font-family: var(--font-playfair), serif;
+  font-size: 4rem;
+  margin-bottom: 80px;
+  color: var(--color-kuning-kepodang, #F5C400);
+}
+
+.ingredientsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.ingredientItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  cursor: pointer;
+  width: 150px;
+}
+
+.ingredientImgWrapper {
+  width: 120px;
+  height: 120px;
+  position: relative;
+  background-color: rgba(242, 234, 211, 0.05);
+  border-radius: 50%;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.ingredientItem:hover .ingredientImgWrapper {
+  background-color: rgba(245, 196, 0, 0.15);
+}
+
+.ingredientImage {
+  object-fit: contain;
+  width: 80% !important;
+  height: 80% !important;
+  position: relative !important;
+  filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.3));
+}
+
+.ingredientName {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 1.1rem;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+  color: rgba(242, 234, 211, 0.8);
+  transition: color 0.3s ease;
+}
+
+.ingredientItem:hover .ingredientName {
+  color: var(--color-kuning-kepodang, #F5C400);
+}
+
+/* === HOW TO COOK === */
+.howToCookSection {
+  padding: 120px 5%;
+  background-color: var(--color-krem-mori, #F2EAD3);
+  color: var(--color-coklat-batik, #3B1F0C);
+  position: relative;
+  overflow: hidden;
+}
+
+.cookingStepsContainer {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+.cookingStep {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  position: relative;
+}
+
+.stepNumber {
+  font-family: var(--font-playfair), serif;
+  font-size: 8rem;
+  font-weight: 700;
+  color: rgba(59, 31, 12, 0.05);
+  position: absolute;
+  left: -30px;
+  top: -40px;
+  z-index: 0;
+  line-height: 1;
+}
+
+.stepContent {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.4);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(59, 31, 12, 0.05);
+  backdrop-filter: blur(10px);
+  width: 100%;
+}
+
+.stepIconWrapper {
+  width: 90px;
+  height: 90px;
+  position: relative;
+  background-color: var(--color-coklat-batik, #3B1F0C);
+  border-radius: 50%;
+  padding: 15px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.stepIcon {
+  object-fit: contain;
+  width: 70% !important;
+  height: 70% !important;
+  position: relative !important;
+  filter: brightness(0) invert(1);
+}
+
+.stepText {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stepAction {
+  font-family: var(--font-playfair), serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-coklat-batik, #3B1F0C);
+  letter-spacing: 2px;
+}
+
+.stepDescription {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: rgba(59, 31, 12, 0.8);
+  margin: 0;
+}
+
+/* === NEXT JOURNEY === */
+.nextJourney {
+  padding: 150px 5%;
+  background-color: var(--color-krem-mori, #F2EAD3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.backBtn {
+  background-color: var(--color-coklat-batik, #3B1F0C);
+  color: var(--color-kuning-kepodang, #F5C400);
+  padding: 20px 60px;
+  border-radius: 50px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(59, 31, 12, 0.2);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+}
+
+.backBtn:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 20px 40px rgba(59, 31, 12, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .heroSection {
+    flex-direction: column;
+    padding-top: 80px; /* Reduced to bring breadcrumb higher */
+    height: auto;
+  }
+
+  .heroImageFadeMask {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .heroLeft {
+    width: 100%;
+    margin-bottom: 40px;
+    text-align: center;
+    order: 3;
+    padding: 0 20px;
+  }
+
+  .shortDesc {
+    margin: 0 auto 50px auto;
+  }
+
+  .breadcrumb {
+    justify-content: flex-start;
+    padding: 0 5%;
+    position: relative;
+    top: 0;
+    left: 0;
+    margin-bottom: 20px;
+    order: 1;
+  }
+
+  .subtitleWrapper {
+    justify-content: center;
+  }
+
+  .subtitleSeparator {
+    margin: 0 auto 30px auto;
+    background: linear-gradient(to right, transparent, #E85D04 50%, transparent);
+  }
+
+  .subtitleSeparator::before {
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+  }
+
+  .subtitleSeparator::after {
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    margin-left: 2px;
+    margin-top: 2px;
+  }
+
+  .mobileOnly {
+    display: flex;
+  }
+
+  .actionCards {
+    justify-content: center;
+  }
+
+  .heroRight {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    order: 2;
+    margin-bottom: 30px;
+  }
+
+  .locationContainer {
+    right: 20px;
+    bottom: 20px;
+    transform: scale(0.8);
+    transform-origin: bottom right;
+  }
+
+  .title {
+    font-size: 4rem;
+  }
+
+  .historySection {
+    grid-template-columns: 1fr;
+    padding: 100px 5%;
+    gap: 40px;
+  }
+
+  .imageGrid {
+    height: 550px;
+    margin-top: 40px;
+  }
+
+  .editorialInsert {
+    width: 90%;
+    height: 400px;
+  }
+
+  .editorialInsert2 {
+    width: 65%;
+    height: 300px;
+    bottom: 0;
+    left: 10px;
+    border-width: 10px;
+  }
+
+  .cookingStep {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroSection {
+    padding-top: 20px; /* Greatly reduce top padding on mobile */
+  }
+
+  .title {
+    font-size: 3rem;
+  }
+
+  .actionCard {
+    padding: 0 15px 0 55px; /* Increased padding to clear the image */
+    height: 40px;
+    min-width: 120px;
+  }
+
+  .actionCardImgPopup {
+    width: 70px;
+    height: 70px;
+    left: -20px;
+  }
+
+  .actionCardText strong {
+    font-size: 0.95rem;
+  }
+
+  .locationContainer {
+    right: 10px;
+    bottom: 10px;
+    transform: scale(0.65);
+  }
+
+  .ingredientsGrid {
+    gap: 20px;
+  }
+
+  .ingredientItem {
+    width: 110px;
+  }
+
+  .ingredientImgWrapper {
+    width: 90px;
+    height: 90px;
+  }
+
+  .stepContent {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .stepNumber {
+    font-size: 5rem;
+    left: 0;
+    top: -20px;
+  }
+}
+
+.notFound {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--color-krem-mori, #F2EAD3);
+  color: var(--color-coklat-batik, #3B1F0C);
+  font-family: var(--font-playfair), serif;
+}
