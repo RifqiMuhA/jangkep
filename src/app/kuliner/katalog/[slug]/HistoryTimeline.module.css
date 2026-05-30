@@ -1,0 +1,264 @@
+.timelineSection {
+  position: relative;
+  height: 100svh; /* Using svh (small viewport height) to prevent jumpiness on mobile when address bar hides */
+  width: 100vw;
+  background-color: #FDFBF6;
+  background-image: url('/batik/pattern_background.webp');
+  background-repeat: repeat;
+  background-size: 600px;
+  background-blend-mode: multiply;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.timelineHeader {
+  position: absolute;
+  top: 3%; /* Moved slightly higher to give more room */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0; /* No gap to make motifs very close to the text */
+}
+
+.title {
+  font-family: 'Playfair Display', serif; /* Explicitly use Playfair Display per design.md */
+  font-size: 3rem;
+  color: #3C2A21;
+  margin: 5px 0; /* Slight margin to prevent overlapping entirely */
+  text-align: center;
+  font-weight: 700;
+}
+
+.dekorAtas, .dekorBawah {
+  width: 250px;
+  height: auto;
+  object-fit: contain;
+}
+
+.scrollWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 30vh; /* Increased from 25vh to avoid colliding with the taller centered header */
+}
+
+/* TOP TIMELINE BAR */
+.topBar {
+  position: relative;
+  width: 100%;
+  height: 15vh;
+  margin-bottom: 2vh;
+}
+
+.birdIndicator {
+  position: absolute;
+  bottom: 50%; /* Anchor bottom to the 50% line */
+  left: 20vw; /* Fixed relative to viewport */
+  transform: translateX(-50%); /* Only translate X, let Y stay above the line */
+  z-index: 5;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: flex-end; /* Align image to bottom */
+  justify-content: center;
+}
+
+.birdImage {
+  object-fit: contain;
+  filter: drop-shadow(0 5px 10px rgba(0,0,0,0.15));
+}
+
+.yearsTrack {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  height: 100%;
+  padding-left: 20vw; /* Align first item with bird */
+  position: relative;
+  z-index: 2;
+  will-change: transform;
+}
+
+/* The lines now live inside the scrolling track */
+.dashedLine {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-image: linear-gradient(to right, rgba(60, 42, 33, 0.3) 50%, transparent 50%);
+  background-size: 15px 2px;
+  background-repeat: repeat-x;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.passedLine {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 20vw; /* Initial width, GSAP will animate this */
+  height: 12px; /* Reverted to thinner line */
+  background-image: url('/batik/batik_kawung.webp');
+  background-size: 100px auto; /* Scaled up heavily so pattern is large (zoomed in) */
+  background-repeat: repeat;
+  background-position: left center;
+  transform: translateY(-50%);
+  z-index: 2;
+  border-radius: 6px; /* Match half of height */
+  opacity: 0.9;
+}
+
+.yearMarker {
+  flex-shrink: 0;
+  width: 25vw; /* Smaller width for timeline markers */
+  height: 100%;
+  position: relative;
+}
+
+.yearDot {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  background-color: #E85D04;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(232, 93, 4, 0.2);
+  z-index: 3;
+}
+
+.yearText {
+  position: absolute;
+  top: calc(50% + 20px); /* Below the line/dot */
+  left: 0;
+  transform: translateX(-50%);
+  font-family: var(--font-heading), serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #3C2A21;
+  letter-spacing: 2px;
+}
+
+/* CONTENT PANELS BELOW */
+.contentTrack {
+  display: flex;
+  width: max-content;
+  align-items: stretch;
+  height: 65vh; /* Taller content area */
+  position: relative;
+  z-index: 2;
+  will-change: transform;
+}
+
+.panelWrapper {
+  flex-shrink: 0;
+  width: 100vw; /* Full width of screen */
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: row; /* Image next to text */
+  justify-content: flex-start;
+  align-items: center; /* Vertically align to center */
+  padding: 0 5vw 0 20vw; /* Left padding 20vw aligns with bird, right padding 5vw gives more room */
+  box-sizing: border-box; /* Ensures width is exactly 100vw */
+  gap: 0.5vw; /* Bring image and text very close together */
+}
+
+.eraImageWrapper {
+  width: 35vw; /* Larger image width */
+  height: 45vh; /* Larger height */
+  position: relative;
+  flex-shrink: 0;
+}
+
+.eraImage {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-position: left bottom; /* Anchor image to bottom left */
+}
+
+.panelContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align text to the left */
+  text-align: left;
+}
+
+.aksara {
+  font-size: 3.5rem;
+  color: rgba(60, 42, 33, 0.15);
+  margin-bottom: -15px;
+  line-height: 1;
+}
+
+.eraTitle {
+  font-family: var(--font-heading), serif;
+  font-size: 3rem; /* Slightly smaller to fit with image above */
+  color: #3C2A21;
+  margin: 0 0 15px 0;
+  line-height: 1.2;
+}
+
+.description {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 800px;
+}
+
+.endPadding {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .title {
+    font-size: 2rem;
+  }
+  
+  .birdIndicator {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .yearText {
+    font-size: 0.9rem;
+  }
+
+  .panelWrapper {
+    padding: 0 5vw 0 20vw; /* Reduce right padding to give text more space */
+    flex-direction: column; /* Keep stacked on mobile for readability */
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2vh;
+  }
+
+  .eraImageWrapper {
+    width: 65vw; /* Much wider image on mobile */
+    height: 30vh;
+  }
+  
+  .aksara {
+    font-size: 2rem;
+    margin-bottom: -10px;
+  }
+
+  .eraTitle {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  .description {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+}

@@ -5,8 +5,15 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import { kulinerData } from '@/data/kulinerData';
+import HistoryTimeline from './HistoryTimeline';
 import styles from './detail.module.css';
+
+const RecipeBook = dynamic(() => import('@/components/RecipeBook'), {
+  ssr: false,
+  loading: () => <div style={{ height: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#3B1F0C' }}>Membuka manuskrip kuno...</div>
+});
 
 // Helper mapping functions
 const getCategoryStyle = (category: string) => {
@@ -58,8 +65,7 @@ export default function KulinerDetail({ params }: { params: Promise<{ slug: stri
     );
   }
 
-  // Split history into words for text reveal
-  const words = item.history.split(' ');
+  // (History is now handled by HistoryTimeline)
 
   // Split title for styling (first word dark, rest orange)
   const nameParts = item.name.split(' ');
@@ -175,6 +181,7 @@ export default function KulinerDetail({ params }: { params: Promise<{ slug: stri
               src={item.galleryImages[0]}
               alt={item.name}
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
               className={styles.heroImage}
               priority
             />
@@ -205,7 +212,7 @@ export default function KulinerDetail({ params }: { params: Promise<{ slug: stri
             <div className={styles.locationMapPart}>
               <div className={styles.locationMapInner}>
                 <img
-                  src={item.locationImage || "https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?w=400&q=80"}
+                  src="/kuliner/pemandangan_jateng.webp"
                   alt={`Pemandangan ${item.origin}`}
                   className={styles.locationMapImg}
                 />
@@ -215,73 +222,48 @@ export default function KulinerDetail({ params }: { params: Promise<{ slug: stri
         </div>
       </section>
 
-      {/* 2. THE LORE & HISTORY (Editorial Inserts) */}
-      <section className={styles.historySection}>
-        <div className={styles.historyTextWrapper}>
-          {words.map((word, i) => (
-            <motion.span
-              key={i}
-              className={styles.historyWord}
-              initial={{ opacity: 0.2, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, margin: "-10%" }}
-              transition={{ duration: 0.4, delay: i * 0.02 }}
-            >
-              {word}
-            </motion.span>
-          ))}
-        </div>
+      {/* TRANSISI WAYANG */}
+      <div className={styles.transitionWrapper}>
+        <Image 
+          src="/motif/transisi_1.webp" 
+          alt="Transisi Wayang" 
+          fill 
+          sizes="100vw"
+          className={styles.transitionImage}
+          unoptimized 
+        />
+      </div>
 
-        <div className={styles.imageGrid}>
-          {item.galleryImages[1] && (
-            <motion.div className={styles.editorialInsert} style={{ y: image1Y }}>
-              <Image src={item.galleryImages[1]} alt={`${item.name} detail 1`} fill className={styles.editorialImage} />
-            </motion.div>
-          )}
-          {item.galleryImages[2] && (
-            <motion.div className={styles.editorialInsert2} style={{ y: image2Y }}>
-              <Image src={item.galleryImages[2]} alt={`${item.name} detail 2`} fill className={styles.editorialImage} />
-            </motion.div>
-          )}
-        </div>
-      </section>
+      {/* 2. THE LORE & HISTORY (GSAP Horizontal Timeline) */}
+      <HistoryTimeline item={item} />
 
       {/* 3. ANIMATED DECONSTRUCTED INGREDIENTS */}
       <section className={styles.ingredientsSection}>
-        <motion.h2
-          className={styles.ingredientsTitle}
+        {/* Spinning Side Motifs */}
+        <div className={styles.spinningMotifLeft}>
+          <Image src="/motif/motif_bunga_2.webp" alt="Motif Bunga Kiri" fill sizes="30vw" className={styles.spinningImage} unoptimized />
+        </div>
+        <div className={styles.spinningMotifRight}>
+          <Image src="/motif/motif_bunga_2.webp" alt="Motif Bunga Kanan" fill sizes="30vw" className={styles.spinningImage} unoptimized />
+        </div>
+
+        <motion.div
+          className={styles.sectionHeader}
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          Bahan-Bahan
-        </motion.h2>
+          <div className={styles.dekorWrapper}>
+            <Image src="/motif/dekor_header_atas.webp" alt="Dekorasi Atas" fill sizes="250px" className={styles.dekorImage} unoptimized />
+          </div>
+          <h2 className={styles.ingredientsTitle}>Bahan-Bahan</h2>
+          <div className={styles.dekorWrapper}>
+            <Image src="/motif/dekor_header_bawah.webp" alt="Dekorasi Bawah" fill sizes="250px" className={styles.dekorImage} unoptimized />
+          </div>
+        </motion.div>
 
-        <div className={styles.ingredientsGrid}>
-          {item.ingredients.map((ingredient, index) => (
-            <motion.div
-              key={ingredient}
-              className={styles.ingredientItem}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ type: "spring", stiffness: 200, damping: 20, delay: index * 0.1 }}
-              whileHover={{ y: -10 }}
-            >
-              <div className={styles.ingredientImgWrapper}>
-                <Image
-                  src={`/kuliner/ingredients/${ingredient}.webp`}
-                  alt={ingredient.replace(/-/g, ' ')}
-                  fill
-                  className={styles.ingredientImage}
-                  unoptimized // Required for animated webp to play in Next.js Image
-                />
-              </div>
-              <span className={styles.ingredientName}>{ingredient.replace(/-/g, ' ')}</span>
-            </motion.div>
-          ))}
-        </div>
+        {item.ingredients && <RecipeBook ingredients={item.ingredients} />}
       </section>
 
       {/* 4. HOW TO COOK / CARA MEMASAK */}
@@ -315,6 +297,7 @@ export default function KulinerDetail({ params }: { params: Promise<{ slug: stri
                     src={`/kuliner/methods/${step.action}.webp`}
                     alt={step.action}
                     fill
+                    sizes="(max-width: 768px) 100vw, 20vw"
                     className={styles.stepIcon}
                     unoptimized
                   />

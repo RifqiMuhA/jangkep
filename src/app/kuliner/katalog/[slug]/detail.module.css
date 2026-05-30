@@ -8,13 +8,15 @@
 
 /* === THE GRAND HERO - EDITORIAL SPLIT === */
 .heroSection {
-  min-height: 90vh;
+  min-height: 100vh;
+  /* Changed to 100vh so it fills the screen independently of the navbar */
   width: 100vw;
   position: relative;
   display: flex;
   align-items: center;
   overflow: hidden;
-  padding: 60px 5% 40px 5%;
+  padding: 120px 5% 12vw 5%;
+  /* Restored top padding to 120px to prevent content from crashing into the breadcrumb */
   background: var(--color-krem-mori, #F2EAD3);
 }
 
@@ -39,9 +41,9 @@
 .heroRight {
   position: absolute;
   top: 0;
+  bottom: 12vw;
   right: 0;
   width: 60%;
-  height: 100%;
   z-index: 1;
 }
 
@@ -49,6 +51,7 @@
 .breadcrumb {
   position: absolute;
   top: 100px;
+  /* Original position */
   left: 5%;
   display: flex;
   align-items: center;
@@ -152,13 +155,52 @@
   color: #E85D04;
 }
 
-.shortDesc {
+.heroMapCaption {
   font-family: var(--font-inter), sans-serif;
-  font-size: 1.2rem;
-  color: rgba(59, 31, 12, 0.8);
-  line-height: 1.7;
-  margin-bottom: 50px;
-  max-width: 80%;
+  font-size: 0.85rem;
+  color: rgba(59, 31, 12, 0.6);
+  margin-top: 10px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* === TRANSITION WAYANG === */
+.transitionWrapper {
+  position: relative;
+  width: 100vw;
+  height: 24vw;
+  /* Aspect ratio of 2048x499 */
+  background: transparent;
+  margin-top: -12vw;
+  /* Increased negative margin to overlap the hero section further up */
+  margin-bottom: -2px;
+  /* Prevent 1px gaps */
+  z-index: 15;
+  /* Higher than heroSection to overlap it */
+  pointer-events: none;
+  /* Ensure it doesn't block clicks on the hero */
+}
+
+/* Add pattern to the bottom half of the transition to match HistoryTimeline */
+.transitionWrapper::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #FDFBF6;
+  background-image: url('/batik/pattern_background.webp');
+  background-repeat: repeat;
+  background-size: 600px;
+  background-blend-mode: multiply;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.transitionImage {
+  object-fit: cover;
+  object-position: bottom;
 }
 
 /* Action Cards (Badges) */
@@ -171,15 +213,18 @@
 
 .actionCard {
   position: relative;
-  border-radius: 25px; /* Pill shape */
-  padding: 0 25px 0 65px; /* Left padding ensures text doesn't overlap image */
+  border-radius: 25px;
+  /* Pill shape */
+  padding: 0 25px 0 65px;
+  /* Left padding ensures text doesn't overlap image */
   display: flex;
   align-items: center;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   height: 50px;
   min-width: 140px;
   background-image: linear-gradient(rgba(253, 251, 246, 0.85), rgba(253, 251, 246, 0.85)), url('/batik/batik_kawung.webp');
-  background-size: 150px auto; /* Fixed size so the pattern scale is identical on all cards */
+  background-size: 150px auto;
+  /* Fixed size so the pattern scale is identical on all cards */
   background-repeat: repeat;
   background-position: center;
   color: var(--color-coklat-batik, #3B1F0C);
@@ -223,6 +268,18 @@
   height: 100%;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%);
   mask-image: linear-gradient(to right, transparent 0%, black 30%);
+}
+
+.heroImageFadeMask::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40%;
+  /* Fade distance from bottom */
+  background: linear-gradient(to top, var(--color-krem-mori, #F2EAD3) 0%, transparent 100%);
+  pointer-events: none;
 }
 
 .heroImage {
@@ -290,7 +347,8 @@
 /* Location Card Stepped */
 .locationContainer {
   position: absolute;
-  bottom: 40px;
+  bottom: 30px;
+  /* Reduced since .heroRight already accounts for the 12vw overlap */
   right: 50px;
   display: flex;
   align-items: flex-end;
@@ -430,18 +488,78 @@
 /* === INGREDIENTS === */
 .ingredientsSection {
   padding: 120px 5%;
-  background-color: var(--color-coklat-batik, #3B1F0C);
-  color: var(--color-krem-mori, #F2EAD3);
+  background-color: #FDFBF6;
+  background-image: url('/batik/pattern_background.webp');
+  background-repeat: repeat;
+  background-size: 600px;
+  background-blend-mode: multiply;
+  /* Dark blend for light background */
+  color: var(--color-coklat-batik, #3B1F0C);
   text-align: center;
   position: relative;
   overflow: hidden;
 }
 
+/* Spinning Side Motifs */
+.spinningMotifLeft {
+  position: absolute;
+  top: 0%;
+  left: -200px;
+  width: 380px;
+  height: 380px;
+  opacity: 1;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.spinningMotifRight {
+  position: absolute;
+  top: 20%;
+  right: -150px;
+  width: 300px;
+  height: 300px;
+  opacity: 1;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.spinningImage {
+  object-fit: contain;
+  animation: spinSlow 60s linear infinite;
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.sectionHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 80px;
+}
+
+.dekorWrapper {
+  position: relative;
+  width: 250px;
+  height: 40px;
+}
+
+.dekorImage {
+  object-fit: contain;
+}
+
 .ingredientsTitle {
   font-family: var(--font-playfair), serif;
-  font-size: 4rem;
-  margin-bottom: 80px;
-  color: var(--color-kuning-kepodang, #F5C400);
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 5px 0;
+  color: var(--color-coklat-batik, #3B1F0C);
 }
 
 .ingredientsGrid {
@@ -466,7 +584,8 @@
   width: 120px;
   height: 120px;
   position: relative;
-  background-color: rgba(242, 234, 211, 0.05);
+  background-color: rgba(59, 31, 12, 0.05);
+  /* Subtle dark background on light area */
   border-radius: 50%;
   padding: 20px;
   display: flex;
@@ -493,7 +612,7 @@
   font-size: 1.1rem;
   text-transform: capitalize;
   letter-spacing: 1px;
-  color: rgba(242, 234, 211, 0.8);
+  color: var(--color-coklat-batik, #3B1F0C);
   transition: color 0.3s ease;
 }
 
@@ -505,6 +624,11 @@
 .howToCookSection {
   padding: 120px 5%;
   background-color: var(--color-krem-mori, #F2EAD3);
+  background-image: url('/batik/pattern_background.webp');
+  background-repeat: repeat;
+  background-size: 600px;
+  background-blend-mode: multiply;
+  /* Dark blend for light background */
   color: var(--color-coklat-batik, #3B1F0C);
   position: relative;
   overflow: hidden;
@@ -629,7 +753,8 @@
 @media (max-width: 1024px) {
   .heroSection {
     flex-direction: column;
-    padding-top: 80px; /* Reduced to bring breadcrumb higher */
+    padding-top: 120px;
+    /* Increased to give breathing room on mobile */
     height: auto;
   }
 
@@ -652,6 +777,8 @@
 
   .breadcrumb {
     justify-content: flex-start;
+    align-self: flex-start;
+    /* Forces it to the left edge of the column flexbox */
     padding: 0 5%;
     position: relative;
     top: 0;
@@ -735,37 +862,18 @@
   .cookingStep {
     flex-direction: column;
   }
-}
 
-@media (max-width: 768px) {
-  .heroSection {
-    padding-top: 20px; /* Greatly reduce top padding on mobile */
+  .ingredientsTitle {
+    font-size: 2rem;
   }
 
-  .title {
-    font-size: 3rem;
+  .dekorWrapper {
+    width: 200px;
+    height: 32px;
   }
 
-  .actionCard {
-    padding: 0 15px 0 55px; /* Increased padding to clear the image */
-    height: 40px;
-    min-width: 120px;
-  }
-
-  .actionCardImgPopup {
-    width: 70px;
-    height: 70px;
-    left: -20px;
-  }
-
-  .actionCardText strong {
-    font-size: 0.95rem;
-  }
-
-  .locationContainer {
-    right: 10px;
-    bottom: 10px;
-    transform: scale(0.65);
+  .sectionHeader {
+    margin-bottom: 150px;
   }
 
   .ingredientsGrid {
@@ -790,7 +898,64 @@
   .stepNumber {
     font-size: 5rem;
     left: 0;
-    top: -20px;
+    top: -30px;
+  }
+
+  .spinningMotifLeft {
+    top: 0%;
+    left: -15vw;
+    width: 30vw;
+    height: 30vw;
+  }
+
+  .spinningMotifRight {
+    top: 15%;
+    right: -10vw;
+    width: 25vw;
+    height: 25vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroSection {
+    padding-top: 100px;
+    padding-bottom: 35vw;
+    /* Increased padding bottom on mobile to accommodate taller wayang transition */
+  }
+
+  .title {
+    font-size: 3rem;
+  }
+
+  .actionCard {
+    padding: 0 15px 0 55px;
+    /* Increased padding to clear the image */
+    height: 40px;
+    min-width: 120px;
+  }
+
+  .actionCardImgPopup {
+    width: 70px;
+    height: 70px;
+    left: -20px;
+  }
+
+  .actionCardText strong {
+    font-size: 0.95rem;
+  }
+
+  .locationContainer {
+    right: 10px;
+    bottom: 10px;
+    transform: scale(0.65);
+  }
+
+
+
+  .transitionWrapper {
+    height: 60vw;
+    margin-top: -30vw;
+    /* Makes the wayang transition much taller/larger on mobile screens */
   }
 }
 

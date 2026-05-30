@@ -7,11 +7,12 @@ export default function Navbar() {
       justifyContent: 'space-between',
       alignItems: 'center',
       padding: 'var(--spacing-16) var(--spacing-48)',
-      position: 'sticky',
+      position: 'absolute',
       top: 0,
+      left: 0,
+      width: '100%',
       zIndex: 50,
-      backgroundColor: 'var(--color-putih-santan)',
-      borderBottom: '1px solid var(--color-krem-tua)'
+      backgroundColor: 'transparent',
     }}>
       <div style={{
         fontFamily: 'var(--font-playfair)',

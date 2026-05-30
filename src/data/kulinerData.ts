@@ -5,6 +5,13 @@ export interface CookingStep {
   description: string;
 }
 
+export interface TimelineEvent {
+  year: string;
+  title: string;
+  aksara: string;
+  description: string;
+}
+
 export interface KulinerItem {
   slug: string;
   name: string;
@@ -12,8 +19,8 @@ export interface KulinerItem {
   tasteProfile: "Manis" | "Gurih" | "Pedas" | "Segar";
   origin: string;
   shortDescription: string;
-  history: string;
-  ingredients: string[];
+  historyTimeline: TimelineEvent[];
+  ingredients: { name: string; description: string; }[];
   instructions: CookingStep[];
   galleryImages: string[];
   locationImage?: string;
@@ -28,8 +35,43 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Wonogiri',
     locationImage: 'https://images.unsplash.com/photo-1531093121516-7d6365a28c2e?q=80&w=400',
     shortDescription: 'Bola daging kenyal dengan kuah kaldu sapi pekat yang menghangatkan suasana.',
-    history: 'Bakso Wonogiri memiliki ciri khas kuah kaldu sapi yang sangat bening namun kaya rempah. Sejarahnya berawal dari para perantau asal Wonogiri yang memodifikasi resep bakso Tionghoa dengan cita rasa lokal Jawa, menggunakan lebih banyak lada dan bawang putih goreng yang ditumbuk bersama kaldu.',
-    ingredients: ['daging-merah', 'bawang', 'tepung'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-18',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Bakso mulai dikenal dari pengaruh pedagang Tiongkok yang beradaptasi dengan budaya lokal Jawa. Mereka memodifikasi resep asli dengan menggunakan daging sapi mentah segar yang melimpah.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Dijajakan berkeliling dari kampung ke kampung dengan menggunakan pikulan kayu jati. Kuah kaldu mulai disesuaikan lidah lokal dengan penambahan rempah nusantara seperti lada dan bawang putih goreng.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Masyarakat Wonogiri yang ulet mulai merantau pasca kemerdekaan. Mereka membawa resep bakso khas ke berbagai pelosok negeri sebagai mata pencaharian utama.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Banyak bermunculan pabrik penggilingan daging modern yang terpusat. Hal ini membuat tekstur bakso Wonogiri semakin konsisten, kenyal, dan mudah diproduksi massal.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Bakso Wonogiri telah menjadi primadona kuliner jalanan nomor satu di Indonesia. Ia sangat identik dengan gerobak biru atau kayu khas yang terparkir di setiap sudut kota.'
+        }
+    ],
+    ingredients: [
+      { name: 'daging-merah', description: 'Bahan dasar utama daging segar yang memberikan kaldu pekat dan tekstur memuaskan.' },
+      { name: 'bawang', description: 'Bumbu aromatik dasar Nusantara yang memberikan wangi khas dan rasa gurih mendalam.' },
+      { name: 'tepung', description: 'Bahan penyatu dan pengental yang memberikan tekstur kenyal sempurna.' }
+    ],
     instructions: [
       { action: 'potong', description: 'Potong kasar daging sapi segar agar mudah masuk ke penggilingan.' },
       { action: 'haluskan', description: 'Haluskan daging sapi bersama es batu, garam, dan bawang putih goreng.' },
@@ -47,8 +89,45 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Solo',
     locationImage: 'https://images.unsplash.com/photo-1588668211190-2bb929cb1ce1?q=80&w=400',
     shortDescription: 'Nasi gurih bersantan yang disajikan dengan suwiran ayam, areh, dan labu siam.',
-    history: 'Nasi Liwet merupakan pusaka kuliner dari kota Solo. Proses memasaknya ("ngliwet") menggunakan santan kelapa murni yang dimasak perlahan di atas tungku kayu bakar. Makanan ini dulunya merupakan sajian keraton yang akhirnya turun menjadi makanan merakyat yang bisa dinikmati di sepanjang jalan kota Surakarta pada malam hari.',
-    ingredients: ['santan', 'daging-ayam', 'bawang', 'rempah-daun', 'daun-pisang'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-17',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Nasi Liwet awalnya adalah sajian istimewa dan sakral di dalam keraton Kasunanan Surakarta. Hidangan ini khusus dibuat untuk upacara adat dan ritual suci penolak bala.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Mulai dijual bebas di pinggiran alun-alun oleh abdi dalem yang mencari penghasilan tambahan. Hidangan ini disajikan sederhana menggunakan pincuk daun pisang untuk rakyat jelata.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Penjual Nasi Liwet Lesehan mulai menjamur di sepanjang kawasan Keprabon Solo. Mereka biasa buka di malam hari untuk menyajikan santap malam hangat bagi warga yang pulang kerja.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Proses memasak mulai memadukan perlengkapan dapur modern yang efisien. Meski begitu, banyak warung legendaris yang tetap mempertahankan tungku kayu bakar demi menjaga aroma sangit yang khas.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Diakui secara nasional sebagai salah satu mahakarya kuliner tradisional kota Solo. Makanan ini selalu menjadi menu wajib yang dicari oleh setiap wisatawan yang berkunjung.'
+        }
+    ],
+    ingredients: [
+      { name: 'santan', description: 'Ekstrak kelapa murni yang menyumbang rasa gurih lezat dan kekentalan kuah khas.' },
+      { name: 'daging-ayam', description: 'Pilihan protein serbaguna yang mudah meresap bumbu dengan tekstur empuk.' },
+      { name: 'bawang', description: 'Bumbu aromatik dasar Nusantara yang memberikan wangi khas dan rasa gurih mendalam.' },
+      { name: 'rempah-daun', description: 'Kumpulan daun beraroma (salam, jeruk, serai) penyegar kuah dan hidangan.' },
+      { name: 'daun-pisang', description: 'Pembungkus alami yang menyumbang aroma wangi khas saat dikukus atau dibakar.' }
+    ],
     instructions: [
       { action: 'haluskan', description: 'Haluskan bawang merah, bawang putih, dan sedikit ketumbar untuk bumbu ayam.' },
       { action: 'kukus', description: 'Kukus beras setengah matang, lalu aroni dengan santan, daun salam, dan serai.' },
@@ -66,8 +145,45 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Blora',
     locationImage: 'https://images.unsplash.com/photo-1501179691627-eeaa65ea017c?q=80&w=400',
     shortDescription: 'Sate ayam kampung empuk bersiram bumbu kacang kental yang legit.',
-    history: 'Berbeda dengan sate Madura, Sate Blora menggunakan ayam kampung yang teksturnya lebih liat namun gurih. Keunikannya terletak pada bumbu kacangnya yang sangat halus dan disajikan bersama kuah lodeh tempe. Tradisi menyantap sate di Blora adalah "makan dulu, hitung tusuknya belakangan".',
-    ingredients: ['daging-ayam', 'kacang', 'saus-hitam', 'bawang', 'gula-merah'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-19',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Budaya sate di Blora mengadaptasi pengaruh kuliner daging panggang dari Timur Tengah. Namun, resepnya dimodifikasi menggunakan daging ayam kampung muda yang sangat melimpah di pedesaan.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Sate Blora mulai disajikan dengan tradisi makan yang sangat unik dan interaktif. Pembeli makan sate beserta kuah lodeh tanpa piring, lalu tusuk sate ditaruh di atas meja untuk dihitung di akhir.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Kehadiran pabrik kecap manis lokal skala kecil di Jawa Tengah membawa revolusi rasa. Kecap ini mulai menyempurnakan rasa karamelisasi pada sate saat dibakar di atas arang.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Warung sate legendaris di Blora mulai bermunculan dengan konsep ruang makan yang lebih modern dan luas. Walau begitu, tradisi memanggang menggunakan arang kayu jati tetap dipertahankan ketat.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Sate Blora menjadi ikon budaya lokal yang membanggakan dan tak lekang oleh waktu. Kehadirannya selalu identik dengan kuah lodeh gurih yang selalu setia mendampinginya.'
+        }
+    ],
+    ingredients: [
+      { name: 'daging-ayam', description: 'Pilihan protein serbaguna yang mudah meresap bumbu dengan tekstur empuk.' },
+      { name: 'kacang', description: 'Bahan saus atau taburan yang memberikan tekstur renyah dan profil rasa legit gurih.' },
+      { name: 'saus-hitam', description: 'Bumbu fermentasi penambah rasa manis karamel dan warna eksotis.' },
+      { name: 'bawang', description: 'Bumbu aromatik dasar Nusantara yang memberikan wangi khas dan rasa gurih mendalam.' },
+      { name: 'gula-merah', description: 'Pemanis alami aren yang memberi sentuhan manis legit khas masakan Jawa.' }
+    ],
     instructions: [
       { action: 'potong', description: 'Potong daging ayam kampung bentuk dadu presisi, lalu tusuk dengan lidi bambu rapi.' },
       { action: 'haluskan', description: 'Haluskan kacang tanah goreng bersama bawang merah goreng dan gula jawa hingga menjadi pasta.' },
@@ -85,8 +201,44 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Semarang',
     locationImage: 'https://images.unsplash.com/photo-1516104880521-026040825cbb?q=80&w=400',
     shortDescription: 'Jajanan lapis kenyal dua warna dengan aroma pandan yang wangi menenangkan.',
-    history: 'Kue Lapis menjadi lambang ikatan yang erat dan kesabaran, mengingat proses pembuatannya yang harus dikukus selapis demi selapis. Aroma pandan suji dan santan kelapa mendominasi kue basah yang kerap hadir dalam setiap perayaan syukuran masyarakat Jawa Tengah ini.',
-    ingredients: ['tepung', 'santan', 'gula-pasir', 'rempah-daun'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-18',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Menjadi lambang kesabaran dan filosofi hidup perlahan orang Jawa (alon-alon waton kelakon). Hal ini dikarenakan proses mengukusnya yang memakan waktu lama, harus perlahan lapis demi lapis.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Pewarna hijau alami dari perasan daun suji dan pandan wangi mulai dipadukan dengan gula rafinasi. Gula putih bersih ini merupakan komoditas baru yang dibawa oleh serikat dagang Eropa.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Kue Lapis Jongkong naik kasta menjadi hidangan kue wajib di perkampungan. Jajanan ini tak pernah absen dalam setiap perayaan tradisional seperti hajatan, syukuran, dan hari besar keagamaan.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Kreasi modern di perkotaan mulai menambahkan lapisan dengan varian rasa kekinian seperti cokelat dan mocha. Meskipun begitu, varian rasa pandan kelapa tradisional tetap menjadi primadona terlaris.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Jajanan pasar ini tetap lestari dan mampu bertahan di tengah gempuran aneka dessert modern dari luar negeri. Sangat nikmat disajikan sembari minum teh tawar hangat di sore hari.'
+        }
+    ],
+    ingredients: [
+      { name: 'tepung', description: 'Bahan penyatu dan pengental yang memberikan tekstur kenyal sempurna.' },
+      { name: 'santan', description: 'Ekstrak kelapa murni yang menyumbang rasa gurih lezat dan kekentalan kuah khas.' },
+      { name: 'gula-pasir', description: 'Pemanis kristal murni untuk menyeimbangkan rasa rempah dan gurih santan.' },
+      { name: 'rempah-daun', description: 'Kumpulan daun beraroma (salam, jeruk, serai) penyegar kuah dan hidangan.' }
+    ],
     instructions: [
       { action: 'haluskan', description: 'Haluskan daun pandan dan daun suji, lalu peras untuk mengambil sari air hijaunya.' },
       { action: 'campur', description: 'Campurkan tepung beras, tapioka, santan kelapa, dan gula pasir hingga larut rata.' },
@@ -104,8 +256,45 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Banyumas',
     locationImage: 'https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?q=80&w=400',
     shortDescription: 'Tempe berbalut tepung setengah matang yang disajikan panas bersama cabai rawit.',
-    history: 'Mendoan berasal dari kata "Mendo" yang dalam dialek Banyumasan berarti setengah matang atau lembek. Tempe mendoan tidak digoreng hingga garing, melainkan hanya sebentar di dalam minyak panas, menghasilkan tekstur layu (mendo) yang justru menjadi primadona kuliner di daerah Purwokerto dan sekitarnya.',
-    ingredients: ['kedelai', 'tepung', 'bawang', 'sayuran', 'cabai'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-16',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Tempe pertama kali ditemukan secara tak sengaja di wilayah Mataram Kuno. Makanan ini berawal dari inovasi brilian proses fermentasi kacang kedelai hitam liar yang dibungkus daun jati.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Mendoan, yakni olahan tempe yang digoreng setengah matang (mendo), mulai sangat populer di wilayah Banyumas. Hidangan ini menjadi cemilan hangat andalan warga untuk mengusir udara dingin.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Tempe diangkat menjadi pahlawan sumber protein nabati utama bagi seluruh masyarakat Indonesia. Khususnya sangat diandalkan pada masa-masa awal kemerdekaan yang serba terbatas dan penuh tantangan ekonomi.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Teknik menggoreng tempe di masyarakat semakin bervariasi mengikuti perkembangan zaman. Hadirnya produk tepung berbumbu siap pakai membuat inovasi tempe goreng krispi menyebar luas ke seluruh negeri.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Telah berevolusi dari sekadar makanan kelas jalanan hingga berhasil dihidangkan dengan mewah di restoran bintang lima. Mendoan dan tempe goreng adalah jiwa otentik dari seni kuliner Jawa.'
+        }
+    ],
+    ingredients: [
+      { name: 'kedelai', description: 'Sumber protein nabati (tahu/tempe/kecap) yang sangat merakyat.' },
+      { name: 'tepung', description: 'Bahan penyatu dan pengental yang memberikan tekstur kenyal sempurna.' },
+      { name: 'bawang', description: 'Bumbu aromatik dasar Nusantara yang memberikan wangi khas dan rasa gurih mendalam.' },
+      { name: 'sayuran', description: 'Komponen segar penambah tekstur renyah, serat, dan warna alami pada hidangan.' },
+      { name: 'cabai', description: 'Bumbu pedas pembangkit selera yang memberikan sensasi hangat dan menantang lidah.' }
+    ],
     instructions: [
       { action: 'potong', description: 'Potong tempe mendoan menjadi lembaran sangat tipis dan lebar. Iris halus daun bawang.' },
       { action: 'haluskan', description: 'Ulek bawang putih, ketumbar sangrai, kemiri, dan garam hingga menjadi bumbu dasar tepung.' },
@@ -123,8 +312,44 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Kudus',
     locationImage: 'https://images.unsplash.com/photo-1555400038-63f5ba517a47?q=80&w=400',
     shortDescription: 'Soto kaldu bening dengan daging kerbau atau ayam, disajikan di mangkuk keramik kecil.',
-    history: 'Soto Kudus memiliki sejarah toleransi beragama yang kuat. Sunan Kudus mengajarkan pengikutnya untuk tidak memotong sapi sebagai bentuk penghormatan kepada umat Hindu kala itu. Sebagai gantinya, Soto Kudus otentik menggunakan daging kerbau, disajikan dalam mangkuk mungil dengan taburan bawang putih goreng.',
-    ingredients: ['daging-ayam', 'bawang', 'rempah-daun', 'sayuran'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-16',
+            title: 'Era Sunan Kudus',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Sebagai bentuk penghormatan dan toleransi beragama kepada umat Hindu, Sunan Kudus melarang penyembelihan sapi. Beliau lalu mengganti kaldu sapi dengan daging kerbau yang teksturnya lebih kaya rasa.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Soto mulai dijual keliling secara tradisional menggunakan pikulan bambu rotan di sepanjang area alun-alun. Hidangan kuah segar ini dengan cepat menjadi menu sarapan favorit para pedagang pasar pagi.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Para penjual mulai menetap dan mendirikan warung-warung tenda sederhana di pinggir jalan raya Pantura yang strategis. Mereka siap sedia melayani para supir dan pendatang dari lintas daerah siang malam.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Penyajiannya mulai beralih menggunakan mangkuk porselen khas berlambang ayam jago yang diimpor dari Tiongkok. Porsinya yang sengaja dibuat mungil ini justru memancing pembeli untuk makan nambah berkali-kali.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Soto Kudus telah resmi menjadi ikon budaya kuliner jalur pantura Jawa Tengah. Kuahnya tidak hanya memadukan harmonisasi rempah nusantara, tetapi juga menceritakan sejarah luhur toleransi tinggi.'
+        }
+    ],
+    ingredients: [
+      { name: 'daging-ayam', description: 'Pilihan protein serbaguna yang mudah meresap bumbu dengan tekstur empuk.' },
+      { name: 'bawang', description: 'Bumbu aromatik dasar Nusantara yang memberikan wangi khas dan rasa gurih mendalam.' },
+      { name: 'rempah-daun', description: 'Kumpulan daun beraroma (salam, jeruk, serai) penyegar kuah dan hidangan.' },
+      { name: 'sayuran', description: 'Komponen segar penambah tekstur renyah, serat, dan warna alami pada hidangan.' }
+    ],
     instructions: [
       { action: 'potong', description: 'Potong ayam atau daging kerbau, bersihkan lemaknya agar kuah soto tetap bening saat direbus.' },
       { action: 'rebus', description: 'Rebus daging perlahan dengan api kecil untuk menciptakan kaldu bening yang sarat sari daging.' },
@@ -142,8 +367,45 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Magelang',
     locationImage: 'https://images.unsplash.com/photo-1588668211190-2bb929cb1ce1?q=80&w=400',
     shortDescription: 'Olahan singkong manis warna-warni bertabur kelapa parut gurih.',
-    history: 'Di masa penjajahan ketika beras sulit didapat, masyarakat Magelang mengolah singkong menjadi Getuk. Getuk Lindri kemudian dikembangkan dengan mesin giling yang membentuknya menyerupai mi panjang yang digulung, diberi warna cerah, dan ditaburi kelapa parut segar sebagai penyeimbang rasa manisnya.',
-    ingredients: ['umbi-buah', 'kelapa-parut', 'gula-pasir', 'gula-merah', 'rempah-daun'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-18',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Hidangan ini bermula dari racikan dapur tradisional yang secara cerdas memanfaatkan hasil bumi lokal. Resepnya menggunakan racikan rempah warisan leluhur yang kala itu sangat bernilai harganya.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Mulai dijajakan secara meluas oleh para pedagang keliling menggunakan gerobak atau pikulan sederhana. Biasanya mereka berpusat di pusat kota, stasiun kereta, dan alun-alun keramaian.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Menjadi salah satu comfort food kebanggaan masyarakat lokal di tengah masa-masa transisi kemerdekaan. Makanan ini sukses menyatukan berbagai lapisan sosial ekonomi masyarakat dalam satu meja cita rasa.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Sistem penyajian mulai mengalami penyesuaian menuju arah yang lebih modern dan komersial. Banyak warung permanen sengaja didirikan di pinggir jalan utama untuk melayani lonjakan peminat dari luar kota.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Kini kuliner ini telah ditetapkan sebagai warisan mahakarya nusantara yang tak ternilai harganya. Cita rasanya yang otentik selalu dirindukan oleh para perantau dan giat dilestarikan oleh generasi muda.'
+        }
+    ],
+    ingredients: [
+      { name: 'umbi-buah', description: 'Bahan karbohidrat atau isian alami penambah tekstur dan cita rasa unik.' },
+      { name: 'kelapa-parut', description: 'Serutan daging kelapa untuk pelapis jajanan atau bahan serundeng gurih.' },
+      { name: 'gula-pasir', description: 'Pemanis kristal murni untuk menyeimbangkan rasa rempah dan gurih santan.' },
+      { name: 'gula-merah', description: 'Pemanis alami aren yang memberi sentuhan manis legit khas masakan Jawa.' },
+      { name: 'rempah-daun', description: 'Kumpulan daun beraroma (salam, jeruk, serai) penyegar kuah dan hidangan.' }
+    ],
     instructions: [
       { action: 'potong', description: 'Kupas bersih singkong, buang sumbu tengahnya, dan potong kecil-kecil agar cepat empuk.' },
       { action: 'kukus', description: 'Kukus singkong tersebut hingga sangat empuk dan merekah bersama beberapa lembar pandan.' },
@@ -161,8 +423,42 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Solo',
     locationImage: 'https://images.unsplash.com/photo-1588668211190-2bb929cb1ce1?q=80&w=400',
     shortDescription: 'Kudapan kukus menyerupai bakpao dengan rekahan di bagian atasnya.',
-    history: 'Merupakan hasil akulturasi budaya Tionghoa dan Jawa di Solo. Kue Moho mirip dengan bakpao atau kue mangkok, namun teksturnya lebih padat dan biasanya diberi rona merah muda jambu. Dinamakan "moho" yang berarti merekah, melambangkan kebahagiaan dan rezeki yang mekar.',
-    ingredients: ['tepung', 'gula-pasir'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-18',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Hidangan ini bermula dari racikan dapur tradisional yang secara cerdas memanfaatkan hasil bumi lokal. Resepnya menggunakan racikan rempah warisan leluhur yang kala itu sangat bernilai harganya.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Mulai dijajakan secara meluas oleh para pedagang keliling menggunakan gerobak atau pikulan sederhana. Biasanya mereka berpusat di pusat kota, stasiun kereta, dan alun-alun keramaian.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Menjadi salah satu comfort food kebanggaan masyarakat lokal di tengah masa-masa transisi kemerdekaan. Makanan ini sukses menyatukan berbagai lapisan sosial ekonomi masyarakat dalam satu meja cita rasa.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Sistem penyajian mulai mengalami penyesuaian menuju arah yang lebih modern dan komersial. Banyak warung permanen sengaja didirikan di pinggir jalan utama untuk melayani lonjakan peminat dari luar kota.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Kini kuliner ini telah ditetapkan sebagai warisan mahakarya nusantara yang tak ternilai harganya. Cita rasanya yang otentik selalu dirindukan oleh para perantau dan giat dilestarikan oleh generasi muda.'
+        }
+    ],
+    ingredients: [
+      { name: 'tepung', description: 'Bahan penyatu dan pengental yang memberikan tekstur kenyal sempurna.' },
+      { name: 'gula-pasir', description: 'Pemanis kristal murni untuk menyeimbangkan rasa rempah dan gurih santan.' }
+    ],
     instructions: [
       { action: 'haluskan', description: 'Haluskan gula pasir jika perlu, aktifkan ragi dengan air hangat dan sedikit gula.' },
       { action: 'campur', description: 'Campurkan tepung terigu, larutan ragi, dan santan hangat. Uleni adonan hingga kalis dan lembut.' },
@@ -180,8 +476,46 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Solo',
     locationImage: 'https://images.unsplash.com/photo-1588668211190-2bb929cb1ce1?q=80&w=400',
     shortDescription: 'Ketan gurih berisi suwiran ayam bumbu kemiri, dibungkus daun pisang.',
-    history: 'Lemper sarat akan makna filosofis Jawa. Tekstur ketan yang lengket melambangkan persaudaraan (paseduluran) yang erat. Pada zaman kerajaan, lemper disajikan dalam upacara adat. Konon namanya singkatan dari "Yen dialem atimu ojo memper" (Jika dipuji hatimu jangan sombong).',
-    ingredients: ['tepung', 'santan', 'daging-ayam', 'daun-pisang', 'bawang', 'rempah-biji'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-18',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Hidangan ini bermula dari racikan dapur tradisional yang secara cerdas memanfaatkan hasil bumi lokal. Resepnya menggunakan racikan rempah warisan leluhur yang kala itu sangat bernilai harganya.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Mulai dijajakan secara meluas oleh para pedagang keliling menggunakan gerobak atau pikulan sederhana. Biasanya mereka berpusat di pusat kota, stasiun kereta, dan alun-alun keramaian.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Menjadi salah satu comfort food kebanggaan masyarakat lokal di tengah masa-masa transisi kemerdekaan. Makanan ini sukses menyatukan berbagai lapisan sosial ekonomi masyarakat dalam satu meja cita rasa.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Sistem penyajian mulai mengalami penyesuaian menuju arah yang lebih modern dan komersial. Banyak warung permanen sengaja didirikan di pinggir jalan utama untuk melayani lonjakan peminat dari luar kota.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Kini kuliner ini telah ditetapkan sebagai warisan mahakarya nusantara yang tak ternilai harganya. Cita rasanya yang otentik selalu dirindukan oleh para perantau dan giat dilestarikan oleh generasi muda.'
+        }
+    ],
+    ingredients: [
+      { name: 'tepung', description: 'Bahan penyatu dan pengental yang memberikan tekstur kenyal sempurna.' },
+      { name: 'santan', description: 'Ekstrak kelapa murni yang menyumbang rasa gurih lezat dan kekentalan kuah khas.' },
+      { name: 'daging-ayam', description: 'Pilihan protein serbaguna yang mudah meresap bumbu dengan tekstur empuk.' },
+      { name: 'daun-pisang', description: 'Pembungkus alami yang menyumbang aroma wangi khas saat dikukus atau dibakar.' },
+      { name: 'bawang', description: 'Bumbu aromatik dasar Nusantara yang memberikan wangi khas dan rasa gurih mendalam.' },
+      { name: 'rempah-biji', description: 'Bumbu inti (ketumbar, merica, kemiri) yang mengunci kekayaan rasa masakan.' }
+    ],
     instructions: [
       { action: 'haluskan', description: 'Haluskan bawang merah, bawang putih, kemiri, dan ketumbar untuk bumbu ayam isian.' },
       { action: 'kukus', description: 'Kukus ketan setengah matang, siram dengan santan panas, aduk rata lalu kukus kembali hingga pulen sempurna.' },
@@ -199,8 +533,44 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Banjarnegara',
     locationImage: 'https://images.unsplash.com/photo-1531093121516-7d6365a28c2e?q=80&w=400',
     shortDescription: 'Minuman es segar dengan butiran dawet hijau pandan dan guyuran gula aren cair.',
-    history: 'Berbeda dengan cendol, Dawet Ayu Banjarnegara terbuat dari tepung beras dan tepung gelang (sagu aren) yang dicampur ekstrak daun pandan asli, sehingga wanginya sangat khas. Dinamakan "Ayu" karena konon penjual dawet pertama di Banjarnegara adalah seorang wanita berparas cantik.',
-    ingredients: ['tepung', 'rempah-daun', 'santan', 'gula-merah'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-18',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Hidangan ini bermula dari racikan dapur tradisional yang secara cerdas memanfaatkan hasil bumi lokal. Resepnya menggunakan racikan rempah warisan leluhur yang kala itu sangat bernilai harganya.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Mulai dijajakan secara meluas oleh para pedagang keliling menggunakan gerobak atau pikulan sederhana. Biasanya mereka berpusat di pusat kota, stasiun kereta, dan alun-alun keramaian.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Menjadi salah satu comfort food kebanggaan masyarakat lokal di tengah masa-masa transisi kemerdekaan. Makanan ini sukses menyatukan berbagai lapisan sosial ekonomi masyarakat dalam satu meja cita rasa.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Sistem penyajian mulai mengalami penyesuaian menuju arah yang lebih modern dan komersial. Banyak warung permanen sengaja didirikan di pinggir jalan utama untuk melayani lonjakan peminat dari luar kota.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Kini kuliner ini telah ditetapkan sebagai warisan mahakarya nusantara yang tak ternilai harganya. Cita rasanya yang otentik selalu dirindukan oleh para perantau dan giat dilestarikan oleh generasi muda.'
+        }
+    ],
+    ingredients: [
+      { name: 'tepung', description: 'Bahan penyatu dan pengental yang memberikan tekstur kenyal sempurna.' },
+      { name: 'rempah-daun', description: 'Kumpulan daun beraroma (salam, jeruk, serai) penyegar kuah dan hidangan.' },
+      { name: 'santan', description: 'Ekstrak kelapa murni yang menyumbang rasa gurih lezat dan kekentalan kuah khas.' },
+      { name: 'gula-merah', description: 'Pemanis alami aren yang memberi sentuhan manis legit khas masakan Jawa.' }
+    ],
     instructions: [
       { action: 'haluskan', description: 'Haluskan daun pandan dan suji dengan blender lalu saring untuk mengambil sarinya.' },
       { action: 'campur', description: 'Larutkan tepung beras dan sagu aren ke dalam sari pandan hingga tidak ada yang menggumpal.' },
@@ -218,8 +588,46 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Semarang',
     locationImage: 'https://images.unsplash.com/photo-1516104880521-026040825cbb?q=80&w=400',
     shortDescription: 'Gulungan kulit tipis renyah berisi rebung manis gurih, udang, dan telur.',
-    history: 'Lumpia Semarang adalah mahakarya perpaduan budaya kuliner Tionghoa (Tjoa Thay Yoe) dan Jawa (Mbok Wasih). Keunikan utamanya terletak pada isian rebung (tunas bambu) yang dimasak perlahan hingga tidak berbau pesing, dipadukan dengan saus kental berbahan dasar bawang putih dan gula jawa.',
-    ingredients: ['umbi-buah', 'daging-ayam', 'seafood', 'bawang', 'saus-hitam', 'gula-merah'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-18',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Hidangan ini bermula dari racikan dapur tradisional yang secara cerdas memanfaatkan hasil bumi lokal. Resepnya menggunakan racikan rempah warisan leluhur yang kala itu sangat bernilai harganya.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Mulai dijajakan secara meluas oleh para pedagang keliling menggunakan gerobak atau pikulan sederhana. Biasanya mereka berpusat di pusat kota, stasiun kereta, dan alun-alun keramaian.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Menjadi salah satu comfort food kebanggaan masyarakat lokal di tengah masa-masa transisi kemerdekaan. Makanan ini sukses menyatukan berbagai lapisan sosial ekonomi masyarakat dalam satu meja cita rasa.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Sistem penyajian mulai mengalami penyesuaian menuju arah yang lebih modern dan komersial. Banyak warung permanen sengaja didirikan di pinggir jalan utama untuk melayani lonjakan peminat dari luar kota.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Kini kuliner ini telah ditetapkan sebagai warisan mahakarya nusantara yang tak ternilai harganya. Cita rasanya yang otentik selalu dirindukan oleh para perantau dan giat dilestarikan oleh generasi muda.'
+        }
+    ],
+    ingredients: [
+      { name: 'umbi-buah', description: 'Bahan karbohidrat atau isian alami penambah tekstur dan cita rasa unik.' },
+      { name: 'daging-ayam', description: 'Pilihan protein serbaguna yang mudah meresap bumbu dengan tekstur empuk.' },
+      { name: 'seafood', description: 'Hasil tangkapan laut segar penyumbang cita rasa gurih alami dan aroma khas.' },
+      { name: 'bawang', description: 'Bumbu aromatik dasar Nusantara yang memberikan wangi khas dan rasa gurih mendalam.' },
+      { name: 'saus-hitam', description: 'Bumbu fermentasi penambah rasa manis karamel dan warna eksotis.' },
+      { name: 'gula-merah', description: 'Pemanis alami aren yang memberi sentuhan manis legit khas masakan Jawa.' }
+    ],
     instructions: [
       { action: 'potong', description: 'Potong rebung menjadi batang korek api yang sangat kecil, cuci berkali-kali untuk menghilangkan pesingnya.' },
       { action: 'rebus', description: 'Rebus potongan rebung sebentar dalam air mendidih untuk menetralisir rasa getir tanah.' },
@@ -237,8 +645,46 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Demak',
     locationImage: 'https://images.unsplash.com/photo-1555400038-63f5ba517a47?q=80&w=400',
     shortDescription: 'Ayam kampung berbumbu asam pedas berkuah santan yang dikukus dalam daun pisang.',
-    history: 'Lahir di Demak dan populer di pesisir utara Jawa. Garang asem dimasak tanpa proses penumisan. Ayam kampung mentah dicampur santan, belimbing wuluh (yang memberikan rasa asam segar "garang"), dan cabai utuh, lalu dibungkus tum daun pisang rapat dan dikukus berjam-jam hingga dagingnya lepas dari tulang.',
-    ingredients: ['daging-ayam', 'santan', 'sayuran', 'cabai', 'daun-pisang', 'bawang'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-18',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Hidangan ini bermula dari racikan dapur tradisional yang secara cerdas memanfaatkan hasil bumi lokal. Resepnya menggunakan racikan rempah warisan leluhur yang kala itu sangat bernilai harganya.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Mulai dijajakan secara meluas oleh para pedagang keliling menggunakan gerobak atau pikulan sederhana. Biasanya mereka berpusat di pusat kota, stasiun kereta, dan alun-alun keramaian.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Menjadi salah satu comfort food kebanggaan masyarakat lokal di tengah masa-masa transisi kemerdekaan. Makanan ini sukses menyatukan berbagai lapisan sosial ekonomi masyarakat dalam satu meja cita rasa.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Sistem penyajian mulai mengalami penyesuaian menuju arah yang lebih modern dan komersial. Banyak warung permanen sengaja didirikan di pinggir jalan utama untuk melayani lonjakan peminat dari luar kota.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Kini kuliner ini telah ditetapkan sebagai warisan mahakarya nusantara yang tak ternilai harganya. Cita rasanya yang otentik selalu dirindukan oleh para perantau dan giat dilestarikan oleh generasi muda.'
+        }
+    ],
+    ingredients: [
+      { name: 'daging-ayam', description: 'Pilihan protein serbaguna yang mudah meresap bumbu dengan tekstur empuk.' },
+      { name: 'santan', description: 'Ekstrak kelapa murni yang menyumbang rasa gurih lezat dan kekentalan kuah khas.' },
+      { name: 'sayuran', description: 'Komponen segar penambah tekstur renyah, serat, dan warna alami pada hidangan.' },
+      { name: 'cabai', description: 'Bumbu pedas pembangkit selera yang memberikan sensasi hangat dan menantang lidah.' },
+      { name: 'daun-pisang', description: 'Pembungkus alami yang menyumbang aroma wangi khas saat dikukus atau dibakar.' },
+      { name: 'bawang', description: 'Bumbu aromatik dasar Nusantara yang memberikan wangi khas dan rasa gurih mendalam.' }
+    ],
     instructions: [
       { action: 'potong', description: 'Potong ayam kampung muda menjadi banyak bagian kecil. Potong-potong bulat tomat hijau dan belimbing wuluh.' },
       { action: 'haluskan', description: 'Iris tipis bawang merah dan bawang putih (tidak diulek) agar rasa kuahnya *light* dan *clear*.' },
@@ -256,8 +702,45 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Solo',
     locationImage: 'https://images.unsplash.com/photo-1588668211190-2bb929cb1ce1?q=80&w=400',
     shortDescription: 'Pancake tradisional khas Jawa yang tipis di pinggir namun lumer dan bersantan di tengah.',
-    history: 'Serabi Notosuman telah ada sejak tahun 1923. Berbeda dengan serabi daerah lain yang dimakan menggunakan kuah kinca, serabi Solo langsung dicampur dengan gula dan santan tebal ke dalam adonannya saat dipanggang dalam cetakan tanah liat kecil, membuatnya legit secara instan.',
-    ingredients: ['tepung', 'santan', 'gula-pasir', 'rempah-daun', 'daun-pisang'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-18',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Hidangan ini bermula dari racikan dapur tradisional yang secara cerdas memanfaatkan hasil bumi lokal. Resepnya menggunakan racikan rempah warisan leluhur yang kala itu sangat bernilai harganya.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Mulai dijajakan secara meluas oleh para pedagang keliling menggunakan gerobak atau pikulan sederhana. Biasanya mereka berpusat di pusat kota, stasiun kereta, dan alun-alun keramaian.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Menjadi salah satu comfort food kebanggaan masyarakat lokal di tengah masa-masa transisi kemerdekaan. Makanan ini sukses menyatukan berbagai lapisan sosial ekonomi masyarakat dalam satu meja cita rasa.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Sistem penyajian mulai mengalami penyesuaian menuju arah yang lebih modern dan komersial. Banyak warung permanen sengaja didirikan di pinggir jalan utama untuk melayani lonjakan peminat dari luar kota.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Kini kuliner ini telah ditetapkan sebagai warisan mahakarya nusantara yang tak ternilai harganya. Cita rasanya yang otentik selalu dirindukan oleh para perantau dan giat dilestarikan oleh generasi muda.'
+        }
+    ],
+    ingredients: [
+      { name: 'tepung', description: 'Bahan penyatu dan pengental yang memberikan tekstur kenyal sempurna.' },
+      { name: 'santan', description: 'Ekstrak kelapa murni yang menyumbang rasa gurih lezat dan kekentalan kuah khas.' },
+      { name: 'gula-pasir', description: 'Pemanis kristal murni untuk menyeimbangkan rasa rempah dan gurih santan.' },
+      { name: 'rempah-daun', description: 'Kumpulan daun beraroma (salam, jeruk, serai) penyegar kuah dan hidangan.' },
+      { name: 'daun-pisang', description: 'Pembungkus alami yang menyumbang aroma wangi khas saat dikukus atau dibakar.' }
+    ],
     instructions: [
       { action: 'haluskan', description: 'Tumbuk beras berkualitas yang telah direndam semalaman menjadi tepung beras basah yang segar.' },
       { action: 'campur', description: 'Campurkan tepung basah dengan gula, garam, dan santan encer. Pukul-pukul adonan agar memasukkan banyak udara.' },
@@ -275,8 +758,45 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Semarang',
     locationImage: 'https://images.unsplash.com/photo-1516104880521-026040825cbb?q=80&w=400',
     shortDescription: 'Tahu goreng renyah yang diisi dengan saus petis udang kental hitam manis.',
-    history: 'Petis merupakan produk pesisir laut Jawa yang kaya rasa. Di Semarang, petis udang berkualitas yang dimasak dengan bawang putih dan gula merah diisikan ke dalam tahu pong (tahu kopong) yang baru saja digoreng panas. Tahu petis ini menjadi primadona kudapan malam.',
-    ingredients: ['kedelai', 'saus-hitam', 'bawang', 'cabai', 'gula-merah'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-18',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Hidangan ini bermula dari racikan dapur tradisional yang secara cerdas memanfaatkan hasil bumi lokal. Resepnya menggunakan racikan rempah warisan leluhur yang kala itu sangat bernilai harganya.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Mulai dijajakan secara meluas oleh para pedagang keliling menggunakan gerobak atau pikulan sederhana. Biasanya mereka berpusat di pusat kota, stasiun kereta, dan alun-alun keramaian.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Menjadi salah satu comfort food kebanggaan masyarakat lokal di tengah masa-masa transisi kemerdekaan. Makanan ini sukses menyatukan berbagai lapisan sosial ekonomi masyarakat dalam satu meja cita rasa.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Sistem penyajian mulai mengalami penyesuaian menuju arah yang lebih modern dan komersial. Banyak warung permanen sengaja didirikan di pinggir jalan utama untuk melayani lonjakan peminat dari luar kota.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Kini kuliner ini telah ditetapkan sebagai warisan mahakarya nusantara yang tak ternilai harganya. Cita rasanya yang otentik selalu dirindukan oleh para perantau dan giat dilestarikan oleh generasi muda.'
+        }
+    ],
+    ingredients: [
+      { name: 'kedelai', description: 'Sumber protein nabati (tahu/tempe/kecap) yang sangat merakyat.' },
+      { name: 'saus-hitam', description: 'Bumbu fermentasi penambah rasa manis karamel dan warna eksotis.' },
+      { name: 'bawang', description: 'Bumbu aromatik dasar Nusantara yang memberikan wangi khas dan rasa gurih mendalam.' },
+      { name: 'cabai', description: 'Bumbu pedas pembangkit selera yang memberikan sensasi hangat dan menantang lidah.' },
+      { name: 'gula-merah', description: 'Pemanis alami aren yang memberi sentuhan manis legit khas masakan Jawa.' }
+    ],
     instructions: [
       { action: 'potong', description: 'Pilih tahu putih jenis padat lalu rendam sebentar dengan air garam dan bawang putih.' },
       { action: 'goreng', description: 'Goreng tahu terendam dalam minyak panas sampai berkulit tebal, berongga (kopong), dan renyah luar.' },
@@ -294,8 +814,45 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Semarang',
     locationImage: 'https://images.unsplash.com/photo-1516104880521-026040825cbb?q=80&w=400',
     shortDescription: 'Kue padat dan kenyal berbahan dasar kelapa muda parut dan tepung ketan panggang.',
-    history: 'Meski sangat lekat sebagai oleh-oleh khas Semarang, kue ini sebenarnya berasal dari Babat, Lamongan, Jawa Timur. Wingko menjadi terkenal di Semarang karena para pedagang dari Babat bermigrasi dan menjualnya di sekitar stasiun kereta Tawang Semarang, menjadikannya ikon jajanan stasiun.',
-    ingredients: ['tepung', 'kelapa-parut', 'gula-pasir', 'santan', 'telur'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-18',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Hidangan ini bermula dari racikan dapur tradisional yang secara cerdas memanfaatkan hasil bumi lokal. Resepnya menggunakan racikan rempah warisan leluhur yang kala itu sangat bernilai harganya.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Mulai dijajakan secara meluas oleh para pedagang keliling menggunakan gerobak atau pikulan sederhana. Biasanya mereka berpusat di pusat kota, stasiun kereta, dan alun-alun keramaian.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Menjadi salah satu comfort food kebanggaan masyarakat lokal di tengah masa-masa transisi kemerdekaan. Makanan ini sukses menyatukan berbagai lapisan sosial ekonomi masyarakat dalam satu meja cita rasa.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Sistem penyajian mulai mengalami penyesuaian menuju arah yang lebih modern dan komersial. Banyak warung permanen sengaja didirikan di pinggir jalan utama untuk melayani lonjakan peminat dari luar kota.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Kini kuliner ini telah ditetapkan sebagai warisan mahakarya nusantara yang tak ternilai harganya. Cita rasanya yang otentik selalu dirindukan oleh para perantau dan giat dilestarikan oleh generasi muda.'
+        }
+    ],
+    ingredients: [
+      { name: 'tepung', description: 'Bahan penyatu dan pengental yang memberikan tekstur kenyal sempurna.' },
+      { name: 'kelapa-parut', description: 'Serutan daging kelapa untuk pelapis jajanan atau bahan serundeng gurih.' },
+      { name: 'gula-pasir', description: 'Pemanis kristal murni untuk menyeimbangkan rasa rempah dan gurih santan.' },
+      { name: 'santan', description: 'Ekstrak kelapa murni yang menyumbang rasa gurih lezat dan kekentalan kuah khas.' },
+      { name: 'telur', description: 'Bahan pengikat sekaligus pelengkap hidangan lezat dan kaya protein.' }
+    ],
     instructions: [
       { action: 'haluskan', description: 'Parut daging kelapa yang tidak terlalu tua (setengah baya) membentuk helaian panjang searah.' },
       { action: 'campur', description: 'Campurkan tepung ketan, parutan kelapa, gula, dan sedikit santan hangat. Uleni ringan dengan ujung jari.' },
@@ -313,8 +870,45 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Solo',
     locationImage: 'https://images.unsplash.com/photo-1588668211190-2bb929cb1ce1?q=80&w=400',
     shortDescription: 'Rebusan daging kambing berkuah santan kental dengan irisan tomat, kol, dan kecap manis.',
-    history: 'Tongseng konon bermula dari kebiasaan pabrik gula di Jawa Tengah (era kolonial Belanda) yang menyebabkan pasokan gula dan kecap melimpah. Para pedagang sate di Solo menggunakan daging sisa sate dan merebusnya dalam kuah gulai, lalu dicampur kecap, kubis, dan lada.',
-    ingredients: ['daging-merah', 'sayuran', 'saus-hitam', 'santan', 'cabai'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-18',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Hidangan ini bermula dari racikan dapur tradisional yang secara cerdas memanfaatkan hasil bumi lokal. Resepnya menggunakan racikan rempah warisan leluhur yang kala itu sangat bernilai harganya.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Mulai dijajakan secara meluas oleh para pedagang keliling menggunakan gerobak atau pikulan sederhana. Biasanya mereka berpusat di pusat kota, stasiun kereta, dan alun-alun keramaian.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Menjadi salah satu comfort food kebanggaan masyarakat lokal di tengah masa-masa transisi kemerdekaan. Makanan ini sukses menyatukan berbagai lapisan sosial ekonomi masyarakat dalam satu meja cita rasa.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Sistem penyajian mulai mengalami penyesuaian menuju arah yang lebih modern dan komersial. Banyak warung permanen sengaja didirikan di pinggir jalan utama untuk melayani lonjakan peminat dari luar kota.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Kini kuliner ini telah ditetapkan sebagai warisan mahakarya nusantara yang tak ternilai harganya. Cita rasanya yang otentik selalu dirindukan oleh para perantau dan giat dilestarikan oleh generasi muda.'
+        }
+    ],
+    ingredients: [
+      { name: 'daging-merah', description: 'Bahan dasar utama daging segar yang memberikan kaldu pekat dan tekstur memuaskan.' },
+      { name: 'sayuran', description: 'Komponen segar penambah tekstur renyah, serat, dan warna alami pada hidangan.' },
+      { name: 'saus-hitam', description: 'Bumbu fermentasi penambah rasa manis karamel dan warna eksotis.' },
+      { name: 'santan', description: 'Ekstrak kelapa murni yang menyumbang rasa gurih lezat dan kekentalan kuah khas.' },
+      { name: 'cabai', description: 'Bumbu pedas pembangkit selera yang memberikan sensasi hangat dan menantang lidah.' }
+    ],
     instructions: [
       { action: 'potong', description: 'Potong kecil-kecil sisa daging sate kambing. Iris tebal lembaran kubis (kol) dan tomat segar merah.' },
       { action: 'haluskan', description: 'Haluskan bumbu halus dasar beraroma (bawang merah, putih, lada, ketumbar, jahe).' },
@@ -332,8 +926,45 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Pati',
     locationImage: 'https://images.unsplash.com/photo-1501179691627-eeaa65ea017c?q=80&w=400',
     shortDescription: 'Nasi berkuah rempah kecoklatan disajikan di atas piring beralas daun pisang.',
-    history: 'Nama "Gandul" berasal dari bahasa Jawa yang berarti menggantung. Pada zaman dahulu, penjual Nasi Gandul berkeliling menjajakan dagangannya menggunakan pikulan bambu yang bergoyang (menggantung/gandul) di bahu. Nasi ini dihidangkan dengan potongan empal sapi dan kuah hangat kental.',
-    ingredients: ['daging-merah', 'santan', 'bawang', 'saus-hitam', 'daun-pisang'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-18',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Hidangan ini bermula dari racikan dapur tradisional yang secara cerdas memanfaatkan hasil bumi lokal. Resepnya menggunakan racikan rempah warisan leluhur yang kala itu sangat bernilai harganya.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Mulai dijajakan secara meluas oleh para pedagang keliling menggunakan gerobak atau pikulan sederhana. Biasanya mereka berpusat di pusat kota, stasiun kereta, dan alun-alun keramaian.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Menjadi salah satu comfort food kebanggaan masyarakat lokal di tengah masa-masa transisi kemerdekaan. Makanan ini sukses menyatukan berbagai lapisan sosial ekonomi masyarakat dalam satu meja cita rasa.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Sistem penyajian mulai mengalami penyesuaian menuju arah yang lebih modern dan komersial. Banyak warung permanen sengaja didirikan di pinggir jalan utama untuk melayani lonjakan peminat dari luar kota.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Kini kuliner ini telah ditetapkan sebagai warisan mahakarya nusantara yang tak ternilai harganya. Cita rasanya yang otentik selalu dirindukan oleh para perantau dan giat dilestarikan oleh generasi muda.'
+        }
+    ],
+    ingredients: [
+      { name: 'daging-merah', description: 'Bahan dasar utama daging segar yang memberikan kaldu pekat dan tekstur memuaskan.' },
+      { name: 'santan', description: 'Ekstrak kelapa murni yang menyumbang rasa gurih lezat dan kekentalan kuah khas.' },
+      { name: 'bawang', description: 'Bumbu aromatik dasar Nusantara yang memberikan wangi khas dan rasa gurih mendalam.' },
+      { name: 'saus-hitam', description: 'Bumbu fermentasi penambah rasa manis karamel dan warna eksotis.' },
+      { name: 'daun-pisang', description: 'Pembungkus alami yang menyumbang aroma wangi khas saat dikukus atau dibakar.' }
+    ],
     instructions: [
       { action: 'potong', description: 'Potong besar daging sapi, otot urat, lidah, atau jeroan kesukaan secara proporsional.' },
       { action: 'rebus', description: 'Rebus potongan daging sapi dengan rempah aromatik daun salam hingga perlahan-lahan sangat empuk lembut.' },
@@ -351,8 +982,45 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Magelang',
     locationImage: 'https://images.unsplash.com/photo-1588668211190-2bb929cb1ce1?q=80&w=400',
     shortDescription: 'Ikan lele asap yang dimasak dalam kuah santan kuning yang sangat pedas.',
-    history: 'Lele yang digunakan pada Mangut asli bukanlah lele goreng, melainkan lele yang diasap berjam-jam menggunakan batok kelapa. Proses pengasapan ini memberikan aroma *smokey* yang khas saat dimasak perlahan di dalam bumbu santan kuning cabai rawit setan yang super pedas.',
-    ingredients: ['seafood', 'santan', 'cabai', 'bawang', 'rempah-biji'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-18',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Hidangan ini bermula dari racikan dapur tradisional yang secara cerdas memanfaatkan hasil bumi lokal. Resepnya menggunakan racikan rempah warisan leluhur yang kala itu sangat bernilai harganya.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Mulai dijajakan secara meluas oleh para pedagang keliling menggunakan gerobak atau pikulan sederhana. Biasanya mereka berpusat di pusat kota, stasiun kereta, dan alun-alun keramaian.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Menjadi salah satu comfort food kebanggaan masyarakat lokal di tengah masa-masa transisi kemerdekaan. Makanan ini sukses menyatukan berbagai lapisan sosial ekonomi masyarakat dalam satu meja cita rasa.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Sistem penyajian mulai mengalami penyesuaian menuju arah yang lebih modern dan komersial. Banyak warung permanen sengaja didirikan di pinggir jalan utama untuk melayani lonjakan peminat dari luar kota.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Kini kuliner ini telah ditetapkan sebagai warisan mahakarya nusantara yang tak ternilai harganya. Cita rasanya yang otentik selalu dirindukan oleh para perantau dan giat dilestarikan oleh generasi muda.'
+        }
+    ],
+    ingredients: [
+      { name: 'seafood', description: 'Hasil tangkapan laut segar penyumbang cita rasa gurih alami dan aroma khas.' },
+      { name: 'santan', description: 'Ekstrak kelapa murni yang menyumbang rasa gurih lezat dan kekentalan kuah khas.' },
+      { name: 'cabai', description: 'Bumbu pedas pembangkit selera yang memberikan sensasi hangat dan menantang lidah.' },
+      { name: 'bawang', description: 'Bumbu aromatik dasar Nusantara yang memberikan wangi khas dan rasa gurih mendalam.' },
+      { name: 'rempah-biji', description: 'Bumbu inti (ketumbar, merica, kemiri) yang mengunci kekayaan rasa masakan.' }
+    ],
     instructions: [
       { action: 'potong', description: 'Kerat tipis badan ikan lele besar hasil tangkapan segar setelah dibersihkan utuh kumis dan isinya.' },
       { action: 'bakar', description: 'Asapkan ikan lele jauh di atas bara batok kelapa hingga dagingnya kering kaku matang dan berwarna kehitaman.' },
@@ -370,8 +1038,44 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Solo',
     locationImage: 'https://images.unsplash.com/photo-1588668211190-2bb929cb1ce1?q=80&w=400',
     shortDescription: 'Sup iga dan tulang kambing berkuah kuning encer kaya rempah, tanpa santan yang kental.',
-    history: 'Tengkleng lahir dari masa sulit penjajahan. Kala itu daging kambing (sate/gulai) hanya dinikmati oleh para priyayi dan orang Belanda. Kaum pribumi akhirnya memasak sisa-sisa tulang dan iga yang hanya menyisakan sedikit daging, menghasilkan sup tulang segar berkuah ringan yang legendaris.',
-    ingredients: ['tulang-iga', 'bawang', 'rempah-biji', 'rempah-daun'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-18',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Hidangan ini bermula dari racikan dapur tradisional yang secara cerdas memanfaatkan hasil bumi lokal. Resepnya menggunakan racikan rempah warisan leluhur yang kala itu sangat bernilai harganya.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Mulai dijajakan secara meluas oleh para pedagang keliling menggunakan gerobak atau pikulan sederhana. Biasanya mereka berpusat di pusat kota, stasiun kereta, dan alun-alun keramaian.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Menjadi salah satu comfort food kebanggaan masyarakat lokal di tengah masa-masa transisi kemerdekaan. Makanan ini sukses menyatukan berbagai lapisan sosial ekonomi masyarakat dalam satu meja cita rasa.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Sistem penyajian mulai mengalami penyesuaian menuju arah yang lebih modern dan komersial. Banyak warung permanen sengaja didirikan di pinggir jalan utama untuk melayani lonjakan peminat dari luar kota.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Kini kuliner ini telah ditetapkan sebagai warisan mahakarya nusantara yang tak ternilai harganya. Cita rasanya yang otentik selalu dirindukan oleh para perantau dan giat dilestarikan oleh generasi muda.'
+        }
+    ],
+    ingredients: [
+      { name: 'tulang-iga', description: 'Bagian sapi penyumbang sari kaldu terenak dengan daging yang lumer.' },
+      { name: 'bawang', description: 'Bumbu aromatik dasar Nusantara yang memberikan wangi khas dan rasa gurih mendalam.' },
+      { name: 'rempah-biji', description: 'Bumbu inti (ketumbar, merica, kemiri) yang mengunci kekayaan rasa masakan.' },
+      { name: 'rempah-daun', description: 'Kumpulan daun beraroma (salam, jeruk, serai) penyegar kuah dan hidangan.' }
+    ],
     instructions: [
       { action: 'potong', description: 'Potong-potong tulang iga, tengkorak, dan tulang kaki kambing muda. Cuci di air mengalir deras.' },
       { action: 'rebus', description: 'Lakukan perebusan blanching pertama untuk membuang lemak kotor yang berbuih. Ganti air baru.' },
@@ -389,8 +1093,44 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Solo',
     locationImage: 'https://images.unsplash.com/photo-1588668211190-2bb929cb1ce1?q=80&w=400',
     shortDescription: 'Daging kambing cincang yang dibungkus (dibuntel) dengan lemak tipis lalu dibakar.',
-    history: 'Sate Buntel merupakan inovasi pedagang Tionghoa-Jawa di Surakarta. Daging cincang dicampur lada dan bawang merah, lalu "dibuntel" (dibungkus) rapat menggunakan *caul fat* (lemak jala kambing) agar saat dibakar sarinya tidak hilang dan bumbunya terkunci sempurna.',
-    ingredients: ['daging-merah', 'bawang', 'saus-hitam', 'rempah-biji'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-18',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Hidangan ini bermula dari racikan dapur tradisional yang secara cerdas memanfaatkan hasil bumi lokal. Resepnya menggunakan racikan rempah warisan leluhur yang kala itu sangat bernilai harganya.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Mulai dijajakan secara meluas oleh para pedagang keliling menggunakan gerobak atau pikulan sederhana. Biasanya mereka berpusat di pusat kota, stasiun kereta, dan alun-alun keramaian.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Menjadi salah satu comfort food kebanggaan masyarakat lokal di tengah masa-masa transisi kemerdekaan. Makanan ini sukses menyatukan berbagai lapisan sosial ekonomi masyarakat dalam satu meja cita rasa.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Sistem penyajian mulai mengalami penyesuaian menuju arah yang lebih modern dan komersial. Banyak warung permanen sengaja didirikan di pinggir jalan utama untuk melayani lonjakan peminat dari luar kota.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Kini kuliner ini telah ditetapkan sebagai warisan mahakarya nusantara yang tak ternilai harganya. Cita rasanya yang otentik selalu dirindukan oleh para perantau dan giat dilestarikan oleh generasi muda.'
+        }
+    ],
+    ingredients: [
+      { name: 'daging-merah', description: 'Bahan dasar utama daging segar yang memberikan kaldu pekat dan tekstur memuaskan.' },
+      { name: 'bawang', description: 'Bumbu aromatik dasar Nusantara yang memberikan wangi khas dan rasa gurih mendalam.' },
+      { name: 'saus-hitam', description: 'Bumbu fermentasi penambah rasa manis karamel dan warna eksotis.' },
+      { name: 'rempah-biji', description: 'Bumbu inti (ketumbar, merica, kemiri) yang mengunci kekayaan rasa masakan.' }
+    ],
     instructions: [
       { action: 'haluskan', description: 'Giling kasar daging paha domba/kambing segar bersama lemak padatnya agar tekstur basah terjaga.' },
       { action: 'campur', description: 'Uleni daging lumat tersebut dengan bawang merah parut, kecap manis lada hitam pekat, dan sedikit tepung kanji.' },
@@ -408,8 +1148,45 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Semarang',
     locationImage: 'https://images.unsplash.com/photo-1516104880521-026040825cbb?q=80&w=400',
     shortDescription: 'Campuran tahu goreng, rajangan kol, lontong, dan bakwan udang bersiram bumbu kacang petis.',
-    history: 'Berasal dari Semarang, kata "Gimbal" bukan merujuk pada rambut, melainkan nama lain dari bakwan udang (udang goreng tepung yang tidak beraturan bentuknya). Tahu Gimbal disajikan dengan bumbu kacang encer bercampur petis udang, memberikan perpaduan rasa manis, gurih, dan legit.',
-    ingredients: ['kedelai', 'seafood', 'kacang', 'saus-hitam', 'sayuran'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-18',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Hidangan ini bermula dari racikan dapur tradisional yang secara cerdas memanfaatkan hasil bumi lokal. Resepnya menggunakan racikan rempah warisan leluhur yang kala itu sangat bernilai harganya.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Mulai dijajakan secara meluas oleh para pedagang keliling menggunakan gerobak atau pikulan sederhana. Biasanya mereka berpusat di pusat kota, stasiun kereta, dan alun-alun keramaian.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Menjadi salah satu comfort food kebanggaan masyarakat lokal di tengah masa-masa transisi kemerdekaan. Makanan ini sukses menyatukan berbagai lapisan sosial ekonomi masyarakat dalam satu meja cita rasa.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Sistem penyajian mulai mengalami penyesuaian menuju arah yang lebih modern dan komersial. Banyak warung permanen sengaja didirikan di pinggir jalan utama untuk melayani lonjakan peminat dari luar kota.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Kini kuliner ini telah ditetapkan sebagai warisan mahakarya nusantara yang tak ternilai harganya. Cita rasanya yang otentik selalu dirindukan oleh para perantau dan giat dilestarikan oleh generasi muda.'
+        }
+    ],
+    ingredients: [
+      { name: 'kedelai', description: 'Sumber protein nabati (tahu/tempe/kecap) yang sangat merakyat.' },
+      { name: 'seafood', description: 'Hasil tangkapan laut segar penyumbang cita rasa gurih alami dan aroma khas.' },
+      { name: 'kacang', description: 'Bahan saus atau taburan yang memberikan tekstur renyah dan profil rasa legit gurih.' },
+      { name: 'saus-hitam', description: 'Bumbu fermentasi penambah rasa manis karamel dan warna eksotis.' },
+      { name: 'sayuran', description: 'Komponen segar penambah tekstur renyah, serat, dan warna alami pada hidangan.' }
+    ],
     instructions: [
       { action: 'potong', description: 'Iris tipis lembaran kol mentah renyah. Potong lontong ketupat padat bersudut menjadi dadu.' },
       { action: 'goreng', description: 'Goreng tahu seadanya lalu celupkan udang air tawar utuh berbalut adonan tepung ke dalam minyak hingga renyah acak keriting (gimbal).' },
@@ -427,8 +1204,44 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Jepara',
     locationImage: 'https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?q=80&w=400',
     shortDescription: 'Es santan dengan isian gempol (bulatan tepung beras) dan pleret (adon tepung pipih merah).',
-    history: 'Es tradisional ini sangat populer di Semarang dan Jepara. Gempol adalah bola-bola putih dari tepung beras, sementara pleret adalah adonan gula aren dan tepung yang dipipihkan (diplintir/dipleret) sehingga bertekstur kenyal manis. Disajikan dingin dengan kuah santan dan sirup gula.',
-    ingredients: ['tepung', 'santan', 'gula-merah', 'gula-pasir'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-18',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Hidangan ini bermula dari racikan dapur tradisional yang secara cerdas memanfaatkan hasil bumi lokal. Resepnya menggunakan racikan rempah warisan leluhur yang kala itu sangat bernilai harganya.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Mulai dijajakan secara meluas oleh para pedagang keliling menggunakan gerobak atau pikulan sederhana. Biasanya mereka berpusat di pusat kota, stasiun kereta, dan alun-alun keramaian.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Menjadi salah satu comfort food kebanggaan masyarakat lokal di tengah masa-masa transisi kemerdekaan. Makanan ini sukses menyatukan berbagai lapisan sosial ekonomi masyarakat dalam satu meja cita rasa.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Sistem penyajian mulai mengalami penyesuaian menuju arah yang lebih modern dan komersial. Banyak warung permanen sengaja didirikan di pinggir jalan utama untuk melayani lonjakan peminat dari luar kota.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Kini kuliner ini telah ditetapkan sebagai warisan mahakarya nusantara yang tak ternilai harganya. Cita rasanya yang otentik selalu dirindukan oleh para perantau dan giat dilestarikan oleh generasi muda.'
+        }
+    ],
+    ingredients: [
+      { name: 'tepung', description: 'Bahan penyatu dan pengental yang memberikan tekstur kenyal sempurna.' },
+      { name: 'santan', description: 'Ekstrak kelapa murni yang menyumbang rasa gurih lezat dan kekentalan kuah khas.' },
+      { name: 'gula-merah', description: 'Pemanis alami aren yang memberi sentuhan manis legit khas masakan Jawa.' },
+      { name: 'gula-pasir', description: 'Pemanis kristal murni untuk menyeimbangkan rasa rempah dan gurih santan.' }
+    ],
     instructions: [
       { action: 'campur', description: 'Siram tumpukan tepung beras jemur dengan sesendok cairan air panas mendidih, uleni hingga kalis kenyal rapat.' },
       { action: 'potong', description: 'Buat bulatan utuh mutiara putih (gempol). Sebagian adonan dibubuhi warna ungu/merah lalu dipilin pipih pinggir piring (pleret).' },
@@ -446,8 +1259,45 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Wonosobo',
     locationImage: 'https://images.unsplash.com/photo-1531093121516-7d6365a28c2e?q=80&w=400',
     shortDescription: 'Mie kuning rebus dengan kuah kental berbahan pati, disajikan bersama sate sapi dan tempe kemul.',
-    history: 'Lahir di udara dingin pegunungan Dieng, Wonosobo. "Ongklok" adalah keranjang anyaman bambu kecil untuk merebus mi. Kuahnya dibuat kental menggunakan campuran pati singkong dan gula jawa, sangat nikmat disantap panas-panas untuk melawan dinginnya udara gunung.',
-    ingredients: ['mie', 'tepung', 'gula-merah', 'bawang', 'sayuran'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-18',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Hidangan ini bermula dari racikan dapur tradisional yang secara cerdas memanfaatkan hasil bumi lokal. Resepnya menggunakan racikan rempah warisan leluhur yang kala itu sangat bernilai harganya.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Mulai dijajakan secara meluas oleh para pedagang keliling menggunakan gerobak atau pikulan sederhana. Biasanya mereka berpusat di pusat kota, stasiun kereta, dan alun-alun keramaian.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Menjadi salah satu comfort food kebanggaan masyarakat lokal di tengah masa-masa transisi kemerdekaan. Makanan ini sukses menyatukan berbagai lapisan sosial ekonomi masyarakat dalam satu meja cita rasa.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Sistem penyajian mulai mengalami penyesuaian menuju arah yang lebih modern dan komersial. Banyak warung permanen sengaja didirikan di pinggir jalan utama untuk melayani lonjakan peminat dari luar kota.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Kini kuliner ini telah ditetapkan sebagai warisan mahakarya nusantara yang tak ternilai harganya. Cita rasanya yang otentik selalu dirindukan oleh para perantau dan giat dilestarikan oleh generasi muda.'
+        }
+    ],
+    ingredients: [
+      { name: 'mie', description: 'Karbohidrat untaian kenyal peninggalan perpaduan budaya.' },
+      { name: 'tepung', description: 'Bahan penyatu dan pengental yang memberikan tekstur kenyal sempurna.' },
+      { name: 'gula-merah', description: 'Pemanis alami aren yang memberi sentuhan manis legit khas masakan Jawa.' },
+      { name: 'bawang', description: 'Bumbu aromatik dasar Nusantara yang memberikan wangi khas dan rasa gurih mendalam.' },
+      { name: 'sayuran', description: 'Komponen segar penambah tekstur renyah, serat, dan warna alami pada hidangan.' }
+    ],
     instructions: [
       { action: 'potong', description: 'Rajang kasar lembaran hijau daun kucai dan rajang kubis lebar menyerupai lempengan.' },
       { action: 'haluskan', description: 'Haluskan ebi udang, merica, dan bawang untuk kaldu dasar daging perebus kuah.' },
@@ -465,8 +1315,42 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Wonosobo',
     locationImage: 'https://images.unsplash.com/photo-1531093121516-7d6365a28c2e?q=80&w=400',
     shortDescription: 'Manisan pepaya gunung mungil dalam kuah sirup yang asam segar.',
-    history: 'Carica adalah kerabat dekat pepaya yang konon hanya bisa tumbuh dan berbuah maksimal di dataran tinggi Dieng (Wonosobo). Daging buahnya bertekstur lebih kenyal dan bijinya diolah menjadi sirup kental yang asam segar, menciptakan pencuci mulut yang sangat menyegarkan.',
-    ingredients: ['umbi-buah', 'gula-pasir'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-18',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Hidangan ini bermula dari racikan dapur tradisional yang secara cerdas memanfaatkan hasil bumi lokal. Resepnya menggunakan racikan rempah warisan leluhur yang kala itu sangat bernilai harganya.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Mulai dijajakan secara meluas oleh para pedagang keliling menggunakan gerobak atau pikulan sederhana. Biasanya mereka berpusat di pusat kota, stasiun kereta, dan alun-alun keramaian.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Menjadi salah satu comfort food kebanggaan masyarakat lokal di tengah masa-masa transisi kemerdekaan. Makanan ini sukses menyatukan berbagai lapisan sosial ekonomi masyarakat dalam satu meja cita rasa.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Sistem penyajian mulai mengalami penyesuaian menuju arah yang lebih modern dan komersial. Banyak warung permanen sengaja didirikan di pinggir jalan utama untuk melayani lonjakan peminat dari luar kota.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Kini kuliner ini telah ditetapkan sebagai warisan mahakarya nusantara yang tak ternilai harganya. Cita rasanya yang otentik selalu dirindukan oleh para perantau dan giat dilestarikan oleh generasi muda.'
+        }
+    ],
+    ingredients: [
+      { name: 'umbi-buah', description: 'Bahan karbohidrat atau isian alami penambah tekstur dan cita rasa unik.' },
+      { name: 'gula-pasir', description: 'Pemanis kristal murni untuk menyeimbangkan rasa rempah dan gurih santan.' }
+    ],
     instructions: [
       { action: 'potong', description: 'Kupas bersih buah carica mentah bertekstur keras. Belah tengah untuk melepaskan jaring sarang bijinya.' },
       { action: 'rebus', description: 'Bawa biji berselaput ke panci rebus, aduk remas hingga pecah lalu saring memisahkan air asam pewangi aslinya.' },
@@ -484,8 +1368,44 @@ export const kulinerData: KulinerItem[] = [
     origin: 'Pemalang',
     locationImage: 'https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?q=80&w=400',
     shortDescription: 'Nasi campur daging kerbau dengan kuah kaldu rempah melimpah kluwek yang bergoyang-goyang.',
-    history: 'Nama "Grombyang" berasal dari penampilannya saat disajikan: porsinya diisi kuah dalam jumlah sangat banyak hingga hampir tumpah dan bergoyang-goyang (grombyang-grombyang). Menggunakan keluak (kluwek) dan daging kerbau sebagai identitas kuliner pesisir Jawa Tengah.',
-    ingredients: ['daging-merah', 'rempah-biji', 'bawang', 'kelapa-parut'],
+    historyTimeline: [
+        {
+            year: 'Abad ke-18',
+            title: 'Era Kerajaan',
+            aksara: 'ꦌꦫꦏꦼꦫꦗꦲꦤ꧀',
+            description: 'Hidangan ini bermula dari racikan dapur tradisional yang secara cerdas memanfaatkan hasil bumi lokal. Resepnya menggunakan racikan rempah warisan leluhur yang kala itu sangat bernilai harganya.'
+        },
+        {
+            year: '1900-an',
+            title: 'Masa Kolonial',
+            aksara: 'ꦩꦱꦏꦺꦴꦭꦺꦴꦤꦶꦪꦭ꧀',
+            description: 'Mulai dijajakan secara meluas oleh para pedagang keliling menggunakan gerobak atau pikulan sederhana. Biasanya mereka berpusat di pusat kota, stasiun kereta, dan alun-alun keramaian.'
+        },
+        {
+            year: '1945+',
+            title: 'Pasca Kemerdekaan',
+            aksara: 'ꦥꦱ꧀ꦕꦏꦼꦩꦼꦂꦢꦺꦏꦲꦤ꧀',
+            description: 'Menjadi salah satu comfort food kebanggaan masyarakat lokal di tengah masa-masa transisi kemerdekaan. Makanan ini sukses menyatukan berbagai lapisan sosial ekonomi masyarakat dalam satu meja cita rasa.'
+        },
+        {
+            year: '1990-an',
+            title: 'Era Modernisasi',
+            aksara: 'ꦌꦫꦩꦺꦴꦢꦼꦂꦤꦶꦱꦱꦶ',
+            description: 'Sistem penyajian mulai mengalami penyesuaian menuju arah yang lebih modern dan komersial. Banyak warung permanen sengaja didirikan di pinggir jalan utama untuk melayani lonjakan peminat dari luar kota.'
+        },
+        {
+            year: 'Masa Kini',
+            title: 'Warisan Nusantara',
+            aksara: 'ꦮꦫꦶꦱꦤ꧀ꦤꦸꦱꦤ꧀ꦠꦫ',
+            description: 'Kini kuliner ini telah ditetapkan sebagai warisan mahakarya nusantara yang tak ternilai harganya. Cita rasanya yang otentik selalu dirindukan oleh para perantau dan giat dilestarikan oleh generasi muda.'
+        }
+    ],
+    ingredients: [
+      { name: 'daging-merah', description: 'Bahan dasar utama daging segar yang memberikan kaldu pekat dan tekstur memuaskan.' },
+      { name: 'rempah-biji', description: 'Bumbu inti (ketumbar, merica, kemiri) yang mengunci kekayaan rasa masakan.' },
+      { name: 'bawang', description: 'Bumbu aromatik dasar Nusantara yang memberikan wangi khas dan rasa gurih mendalam.' },
+      { name: 'kelapa-parut', description: 'Serutan daging kelapa untuk pelapis jajanan atau bahan serundeng gurih.' }
+    ],
     instructions: [
       { action: 'potong', description: 'Sembelih daging kerbau matang usia dan pisahkan lemak sandung lamur pembuat kenyal.' },
       { action: 'rebus', description: 'Masak rebus tuntas potongan raksasa daging tebal tersebut sampai hancur serat dagingnya mencair.' },
