@@ -1,0 +1,338 @@
+.pageBackground {
+  min-height: 100vh;
+  background-color: var(--color-krem-mori);
+}
+
+.gridContainer {
+  width: 100%;
+  padding: 0 0 var(--spacing-128) 0;
+}
+
+/* === HERO SECTION AWWWARDS STYLE === */
+.heroSection {
+  position: relative;
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-64) var(--spacing-24) var(--spacing-32);
+}
+
+.heroTitle {
+  font-size: var(--text-display-sm, 48px);
+  color: var(--color-hitam-arang);
+  font-weight: 800;
+  margin-bottom: var(--spacing-24);
+  z-index: 2;
+  text-align: center;
+}
+
+.heroDescription {
+  max-width: 1100px; /* Jauh lebih lebar agar mengisi layar */
+  text-align: justify; /* Rata kanan kiri kotak */
+  font-size: var(--text-body-lg, 18px);
+  color: var(--color-coklat-batik);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-48);
+}
+
+.aksaraInline {
+  font-family: inherit;
+  font-size: 1.5em; /* Aksara sedikit dibesarkan agar lebih deskriptif/menonjol */
+  color: var(--color-emas-keris);
+  font-weight: bold;
+  vertical-align: baseline;
+}
+
+.avatarContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-16);
+}
+
+.avatarGroupWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-32); /* Jarak antara motif awan dan jejeran avatar */
+  position: relative;
+}
+
+.avatarSubtext {
+  font-size: var(--text-subheading, 20px);
+  color: var(--color-coklat-batik);
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: -16px; /* Merapatkan dengan avatar karena AnimatedTooltip punya margin-bottom bawaan */
+}
+
+.highlightLeft, .highlightRight {
+  width: 80px;
+  height: 120px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.9;
+}
+
+.highlightLeft {
+  background-image: url('/motif/motif_highlight_kiri.webp');
+}
+
+.highlightRight {
+  background-image: url('/motif/motif_highlight_kanan.webp');
+}
+
+/* Responsive CSS Grid */
+.gridScattered {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr); /* Mobile default: 1 col */
+  gap: var(--spacing-64);
+  width: 100%;
+  max-width: var(--container-max);
+  padding: var(--spacing-64) var(--spacing-24);
+  margin: 0 auto;
+  justify-items: center; /* Center mascot in its cell */
+}
+
+/* Mobile (1 col) Scatter Effect: Horizontal Shift */
+@media (max-width: 639px) {
+  .mascotItem:nth-child(3n + 1) { transform: translateX(-30px); }
+  .mascotItem:nth-child(3n + 2) { transform: translateX(30px); }
+  .mascotItem:nth-child(3n + 3) { transform: translateX(0px); }
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 640px) and (max-width: 899px) {
+  .gridScattered {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-16) var(--spacing-16); /* Celah baris jauh lebih rapat */
+  }
+  .mascotItem:nth-child(even) { margin-top: 60px; }
+  .mascotItem:nth-child(odd) { margin-top: -20px; }
+}
+
+/* Tablet Large: 3 columns */
+@media (min-width: 900px) and (max-width: 1279px) {
+  .gridScattered {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-24) var(--spacing-24); /* Celah baris dirapatkan */
+  }
+  .mascotItem:nth-child(1) { margin-top: 40px; }
+  .mascotItem:nth-child(2) { margin-top: -30px; }
+  .mascotItem:nth-child(3) { margin-top: 60px; }
+  .mascotItem:nth-child(4) { margin-top: -10px; }
+  .mascotItem:nth-child(5) { margin-top: 50px; }
+  .mascotItem:nth-child(6) { margin-top: -40px; }
+  .mascotItem:nth-child(7) { margin-top: 20px; }
+  .mascotItem:nth-child(8) { margin-top: 70px; }
+  .mascotItem:nth-child(9) { margin-top: -20px; }
+  .mascotItem:nth-child(10) { margin-top: 80px; }
+}
+
+/* Desktop: 5 columns */
+@media (min-width: 1280px) {
+  .gridScattered {
+    grid-template-columns: repeat(5, 1fr);
+    max-width: 1600px;
+    padding: var(--spacing-96) var(--spacing-48);
+    gap: var(--spacing-24) var(--spacing-16); /* Celah antar baris diperkecil drastis */
+  }
+
+  /* Scattered effect completely random across 15 items! Tidak sama per baris */
+  /* Baris 1 */
+  .mascotItem:nth-child(1) { margin-top: 40px; }
+  .mascotItem:nth-child(2) { margin-top: -30px; }
+  .mascotItem:nth-child(3) { margin-top: 60px; }
+  .mascotItem:nth-child(4) { margin-top: -10px; }
+  .mascotItem:nth-child(5) { margin-top: 40px; }
+  /* Baris 2 */
+  .mascotItem:nth-child(6) { margin-top: -20px; }
+  .mascotItem:nth-child(7) { margin-top: 60px; }
+  .mascotItem:nth-child(8) { margin-top: -40px; }
+  .mascotItem:nth-child(9) { margin-top: 30px; }
+  .mascotItem:nth-child(10) { margin-top: 80px; }
+}
+
+/* Mascot Item wraps the entire height so it NEVER overlaps */
+.mascotItem {
+  position: relative;
+  width: 240px; 
+  /* Safe minimum height to contain image (240px) + bubble + margins */
+  height: 380px; 
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end; /* Push content to bottom */
+}
+
+/* Removed z-index on hover per user request so floor tile does not overlap elements below */
+
+/* Floor SVG matches the new tile exactly */
+.floorSvg {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 184px;
+  height: 108px;
+  z-index: 1; /* Below the mascot */
+}
+
+.floorPath {
+  fill: transparent;
+  stroke: var(--color-krem-tua);
+  stroke-width: 2px;
+  stroke-dasharray: 6, 6; /* Garis putus-putus */
+  transition: all var(--duration-micro) var(--ease-reveal);
+}
+
+.mascotItem:hover .floorPath {
+  fill: url(#batikHover); /* Use SVG pattern on hover! */
+  stroke: var(--color-coklat-batik);
+  stroke-dasharray: none; 
+}
+
+/* Mascot Content Wrapper */
+.mascotContent {
+  position: relative; /* Not absolute! Flows naturally */
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.imgWrapper {
+  position: relative;
+  width: 180px; 
+  height: 220px; 
+  /* Push feet exactly 54px from bottom to align with SVG center! */
+  margin-bottom: 54px; 
+  z-index: 5; /* Posisi di depan tulisan aksara Jawa (z-index: 1) */
+}
+
+/* Chat Bubble */
+.bubble {
+  position: relative;
+  background-color: var(--color-putih-santan);
+  color: var(--color-coklat-batik);
+  padding: 14px 20px;
+  border-radius: var(--radius-bubble);
+  border: 1.5px solid var(--color-emas-keris);
+  font-size: var(--text-body-sm);
+  font-weight: 500;
+  text-align: center;
+  box-shadow: var(--shadow-tooltip);
+  width: max-content;
+  max-width: 220px;
+  z-index: 10;
+  margin-bottom: 24px;
+  transition: all var(--duration-micro) var(--ease-transition);
+}
+
+/* Thought Bubble Circles (CURVED TAIL to the center) */
+.bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 25%; /* Posisi dari kiri */
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--color-putih-santan);
+  border: 1.5px solid var(--color-emas-keris);
+  transition: all var(--duration-micro) var(--ease-transition);
+  z-index: 11;
+}
+
+.bubble::before {
+  content: '';
+  position: absolute;
+  bottom: -36px;
+  left: 35%; /* Menukik tajam ke arah tengah (karakter) */
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--color-putih-santan);
+  border: 1.5px solid var(--color-emas-keris);
+  transition: all var(--duration-micro) var(--ease-transition);
+  z-index: 11;
+}
+
+/* Alternate Thought Bubble Circles (From Right curving IN) */
+.mascotItem:nth-child(even) .bubble::after {
+  left: auto;
+  right: 25%; 
+}
+
+.mascotItem:nth-child(even) .bubble::before {
+  left: auto;
+  right: 35%; 
+}
+
+/* Bubble on Hover - Terapkan Batik Kawung! */
+.mascotItem:hover .bubble {
+  background-color: var(--color-kuning-kepodang);
+  /* Lapisan warna kuning transparan di atas gambar batik */
+  background-image: linear-gradient(rgba(235, 172, 0, 0.85), rgba(235, 172, 0, 0.85)), url('/batik/batik_kawung.webp');
+  background-size: 150px;
+  border-color: var(--color-kuning-kepodang);
+  color: var(--color-coklat-batik);
+  font-weight: 700;
+}
+
+.mascotItem:hover .bubble::after,
+.mascotItem:hover .bubble::before {
+  background-color: var(--color-kuning-kepodang);
+  background-image: linear-gradient(rgba(235, 172, 0, 0.85), rgba(235, 172, 0, 0.85)), url('/batik/batik_kawung.webp');
+  background-size: 150px;
+  border-color: var(--color-kuning-kepodang);
+}
+
+/* Animasi Aksara Jawa */
+.aksaraLeft, .aksaraRight {
+  position: absolute;
+  top: 130px; /* Naik sedikit karena ada 2 baris teks */
+  left: 50%;
+  font-size: var(--text-heading-sm, 1.25rem); /* Diperkecil dari sebelumnya */
+  font-weight: bold;
+  color: var(--color-coklat-batik);
+  opacity: 0;
+  z-index: 1; /* Di belakang gambar maskot */
+  pointer-events: none;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); /* Efek membal (bouncy) */
+  display: flex;
+  flex-direction: column;
+  gap: 6px; /* Jarak antar baris kata */
+  white-space: nowrap; /* Mencegah teks terpotong/terlipat menjadi 3 baris */
+}
+
+/* Posisi awal (tersembunyi di balik maskot, menyusut) */
+.aksaraLeft { 
+  transform: translate(-50%, -50%) scale(0.5); 
+  align-items: flex-end; /* Rata kanan agar menempel ke maskot */
+  text-align: right;
+}
+.aksaraRight { 
+  transform: translate(-50%, -50%) scale(0.5); 
+  align-items: flex-start; /* Rata kiri agar menempel ke maskot */
+  text-align: left;
+}
+
+/* Saat di-hover: Muncul, membesar, dan terbang ke samping */
+.mascotItem:hover .aksaraLeft {
+  opacity: 0.9;
+  transform: translate(calc(-50% - 95px), -50%) scale(1);
+}
+
+.mascotItem:hover .aksaraRight {
+  opacity: 0.9;
+  transform: translate(calc(-50% + 95px), -50%) scale(1);
+}

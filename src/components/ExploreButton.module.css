@@ -1,0 +1,37 @@
+.textDesktop {
+  display: inline;
+}
+
+.textTablet {
+  display: none;
+}
+
+.textMobile {
+  display: none;
+}
+
+/* Tablet / Medium screens */
+@media (max-width: 1024px) {
+  .textDesktop {
+    display: none;
+  }
+  .textTablet {
+    display: inline;
+  }
+  .textMobile {
+    display: none;
+  }
+}
+
+/* Mobile screens */
+@media (max-width: 768px) {
+  .textDesktop {
+    display: none;
+  }
+  .textTablet {
+    display: none;
+  }
+  .textMobile {
+    display: inline;
+  }
+}

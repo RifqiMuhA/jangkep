@@ -1,0 +1,837 @@
+.pageBackground {
+  min-height: 100vh;
+  background-color: var(--color-krem-mori, #F2EAD3);
+  color: var(--color-coklat-batik, #3B1F0C);
+  font-family: var(--font-inter), sans-serif;
+  position: relative;
+}
+
+/* Split Screen Layout */
+.splitContainer {
+  display: grid;
+  grid-template-columns: 35% 65%;
+  min-height: 100vh;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* Kiri: Command Center */
+.commandCenter {
+  position: sticky;
+  top: 80px;
+  height: calc(100vh - 80px);
+  padding: 30px 40px 40px; /* Ditambah sedikit agar tidak terlalu mepet dengan header */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  z-index: 50;
+  background-color: var(--color-krem-mori, #F2EAD3);
+}
+
+.upperContentWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.stickyMobileWrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Fills remaining space so search section goes to bottom */
+}
+
+/* Typography & Sentence Filter */
+.sentenceWrapper {
+  margin-bottom: 10px;
+  /* Diperkecil agar lebih padat ke atas */
+}
+
+.sentenceText {
+  font-family: var(--font-playfair), serif;
+  font-size: 1.75rem;
+  /* Dikecilkan dari 2rem agar layout 3 baris tetap stabil di desktop */
+  line-height: 1.6;
+  /* Ditinggikan sedikit agar tidak terlalu rapat antar baris */
+  color: rgba(59, 31, 12, 0.85);
+  font-weight: 500;
+  letter-spacing: 0px;
+}
+
+.subtitleText {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.95rem;
+  color: rgba(59, 31, 12, 0.6);
+  margin-top: 10px;
+  /* Diberi sedikit jarak dari kalimat utama */
+  max-width: 80%;
+  line-height: 1.5;
+}
+
+/* Divider Section */
+.dividerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 5px 0 10px 0;
+  /* Margin atas dikurangi agar naik sedikit, bawah dikurangi agar visualisasi naik */
+  opacity: 0.8;
+}
+
+.dividerText {
+  font-family: var(--font-playfair), serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--color-coklat-batik, #3B1F0C);
+}
+
+.dividerMotif {
+  height: 10px;
+  width: auto;
+  opacity: 0.5;
+}
+
+.selector {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-coklat-batik, #3B1F0C);
+  border-bottom: 3px solid var(--color-kuning-kepodang, #F5C400);
+  cursor: pointer;
+  position: relative;
+  font-weight: 700;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+}
+
+.selector:hover {
+  color: var(--color-kuning-kepodang, #F5C400);
+}
+
+/* Radial Bubble Menu (menggantikan cycleHint) */
+.bubbleMenu {
+  position: absolute;
+  top: 50%;
+  right: -10px;
+  /* Base position at the right edge of the text */
+  width: 0;
+  height: 0;
+  z-index: 10;
+}
+
+.bubbleItem {
+  position: absolute;
+  background-color: var(--color-kuning-kepodang, #F5C400);
+  /* Default kuning jika bukan kategori spesifik */
+  color: var(--color-coklat-batik, #3B1F0C);
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  /* Lebih tebal agar sesuai badge */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  box-shadow: 0 4px 10px rgba(59, 31, 12, 0.1);
+  pointer-events: none;
+  /* Non-clickable and no hover effects */
+}
+
+/* Removed .bubbleItem::before and .bubbleItem:hover */
+
+/* Radial Positions (Tujuan Akhir untuk Layout Animation) */
+.bubble1 {
+  top: -55px;
+  /* Lebih merapat ke tengah (dari -80px) */
+  left: 15px;
+  /* Lebih merapat ke teks */
+}
+
+.bubble2 {
+  top: -10px;
+  /* Tengah */
+  left: 45px;
+  /* Lebih merapat ke teks, tapi tetap membentuk lengkungan */
+}
+
+.bubble3 {
+  top: 35px;
+  /* Lebih merapat ke tengah (dari 50px) */
+  left: 15px;
+  /* Lebih merapat ke teks */
+}
+
+/* Search Input */
+.searchSection {
+  margin-top: 0;
+  /* Margin besar dihapus agar tidak mendorong ke bawah (membuat terpotong) */
+  position: relative;
+}
+
+/* Visual Filter Section (In-flow layout) */
+.visualFilterContainer {
+  position: relative;
+  /* Kembali ke normal flow, tidak lagi absolut */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  /* Dipusatkan ke tengah */
+  gap: 40px;
+  /* Jarak antar grup visual diperkecil agar muat */
+  margin-bottom: 0;
+  /* Margin dihapus karena space-between sudah memisahkan dengan searchSection */
+  z-index: 5;
+}
+
+.visualGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.filterBadge {
+  background-color: var(--color-kuning-kepodang, #F5C400);
+  color: var(--color-coklat-batik, #3B1F0C);
+  padding: 4px 16px;
+  border-radius: 20px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 10px rgba(245, 196, 0, 0.3);
+  margin-top: 5px;
+}
+
+.visualCategories,
+.visualTastes {
+  position: relative;
+  width: 160px;
+  /* Diperlebar agar gambar bisa menyebar */
+  height: 90px;
+}
+
+.filterImg {
+  position: absolute;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 12px rgba(59, 31, 12, 0.2));
+  /* pointer-events dihapus agar elemen ini bisa merespon klik */
+}
+
+/* Left: Categories overlap styling */
+.imgMakananBerat {
+  bottom: 0;
+  left: 20px;
+  /* Digeser ke kanan sedikit */
+  width: 95px;
+  z-index: 1;
+}
+
+.imgJajanan {
+  bottom: 0px;
+  left: 95px;
+  /* Digeser jauh ke kanan agar tidak menabrak makanan berat */
+  width: 75px;
+  z-index: 2;
+}
+
+.imgMinuman {
+  bottom: 5px;
+  left: -5px;
+  /* Digeser sedikit ke kanan agar lebih mepet dengan makanan berat */
+  width: 50px;
+  z-index: 0;
+}
+
+/* Right: Tastes on Tampah styling */
+.imgTampah {
+  bottom: -5px;
+  right: 15px;
+  width: 130px;
+  z-index: 0;
+  filter: drop-shadow(0 15px 15px rgba(59, 31, 12, 0.15));
+}
+
+.imgCabai {
+  bottom: 5px;
+  right: 95px;
+  width: 45px;
+  z-index: 10;
+}
+
+.imgGaram {
+  bottom: 20px;
+  right: 20px;
+  width: 40px;
+  z-index: 1;
+}
+
+.imgLemon {
+  bottom: 15px;
+  right: 65px;
+  width: 55px;
+  z-index: -1;
+}
+
+.imgMadu {
+  bottom: 6px;
+  right: 45px;
+  width: 35px;
+  z-index: 4;
+}
+
+/* Mascot Peeking Animation */
+.mascotPeekingContainer {
+  position: absolute;
+  bottom: calc(100% - 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 120px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.mascotImg {
+  object-fit: contain;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.mascot1 {
+  opacity: 1;
+}
+
+.mascot2 {
+  animation: mascotBlink2 4s infinite;
+  opacity: 0;
+}
+
+.mascot3 {
+  animation: mascotBlink3 4s infinite;
+  opacity: 0;
+}
+
+@keyframes mascotBlink2 {
+
+  0%,
+  88%,
+  92%,
+  100% {
+    opacity: 0;
+  }
+
+  89%,
+  91% {
+    opacity: 1;
+  }
+}
+
+@keyframes mascotBlink3 {
+
+  0%,
+  89%,
+  91%,
+  100% {
+    opacity: 0;
+  }
+
+  90% {
+    opacity: 1;
+  }
+}
+
+/* Floating Question Marks */
+.floatingQuestions {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  /* Di belakang maskot */
+}
+
+.qMark {
+  position: absolute;
+  top: 50px;
+  /* Posisi awal di tengah (di balik maskot) */
+  left: 50px;
+  font-family: var(--font-playfair), serif;
+  font-weight: 700;
+  opacity: 0;
+  transform: scale(0.2) rotate(0deg);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  /* Bouncy effect saat menyebar */
+  text-shadow: 0 2px 4px rgba(59, 31, 12, 0.2);
+}
+
+/* Pengaturan 2 Warna Saja & Ukuran Berbeda */
+.q1 {
+  font-size: 2rem;
+  color: var(--color-kuning-kepodang, #F5C400);
+}
+
+.q2 {
+  font-size: 1.4rem;
+  color: var(--color-coklat-batik, #3B1F0C);
+}
+
+.q3 {
+  font-size: 1.8rem;
+  color: var(--color-kuning-kepodang, #F5C400);
+}
+
+/* Efek saat search bar di-klik (fokus) */
+.searchSection:focus-within .q1 {
+  opacity: 1;
+  transform: scale(1) rotate(-15deg);
+  translate: -50px -35px;
+  /* Menyebar ke kiri atas */
+  animation: bobbing 2s ease-in-out infinite alternate;
+  animation-delay: 0.5s;
+  /* Mulai melayang setelah selesai menyebar */
+}
+
+.searchSection:focus-within .q2 {
+  opacity: 1;
+  transform: scale(1) rotate(10deg);
+  translate: 5px -55px;
+  /* Menyebar ke atas agak tengah */
+  animation: bobbing 1.8s ease-in-out infinite alternate;
+  animation-delay: 0.6s;
+}
+
+.searchSection:focus-within .q3 {
+  opacity: 1;
+  transform: scale(1) rotate(25deg);
+  translate: 55px -20px;
+  /* Menyebar ke kanan atas */
+  animation: bobbing 2.2s ease-in-out infinite alternate;
+  animation-delay: 0.4s;
+}
+
+/* Efek melayang perlahan di tempat */
+@keyframes bobbing {
+  0% {
+    margin-top: 0px;
+  }
+
+  100% {
+    margin-top: -10px;
+  }
+}
+
+.searchSection {
+  position: relative;
+  width: 100%;
+  margin-top: auto; /* Direset di desktop karena flex-grow sudah mendorongnya ke bawah */
+  z-index: 20;
+}
+
+.searchContainer {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 50px;
+  padding: 16px 24px;
+  box-shadow: 0 10px 30px rgba(59, 31, 12, 0.05);
+  border: 1px solid rgba(59, 31, 12, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 20;
+}
+
+.searchContainer:focus-within {
+  border-color: var(--color-kuning-kepodang, #F5C400);
+  box-shadow: 0 10px 30px rgba(245, 196, 0, 0.15);
+}
+
+.searchIcon {
+  color: rgba(59, 31, 12, 0.4);
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.styledSearch {
+  width: 100%;
+  background: transparent;
+  border: none;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 1.1rem;
+  color: var(--color-coklat-batik, #3B1F0C);
+  outline: none;
+}
+
+.styledSearch::placeholder {
+  color: rgba(59, 31, 12, 0.3);
+}
+
+.clearSearchStyled {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: rgba(59, 31, 12, 0.4);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s ease;
+  margin-left: 12px;
+}
+
+.clearSearchStyled:hover {
+  color: var(--color-coklat-batik, #3B1F0C);
+}
+
+/* Kanan: Parallax Playground */
+.parallaxPlayground {
+  padding: 40px 40px 100px;
+  /* Disamakan jarak atasnya (40px) agar rata dengan teks di sebelah kiri */
+}
+
+.parallaxColumns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ======= CARD ======= */
+.neatCard {
+  background-color: var(--color-krem-mori, #F2EAD3);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(59, 31, 12, 0.08);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-shadow: 0 4px 15px rgba(59, 31, 12, 0.05);
+  position: relative;
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+}
+
+.neatCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(59, 31, 12, 0.1);
+}
+
+.neatCard:hover .cardImage {
+  transform: scale(1.05);
+}
+
+.neatCard:hover .cardOverlay {
+  opacity: 1;
+}
+
+.cardImageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1;
+  background-color: rgba(59, 31, 12, 0.02);
+  /* Memotong bagian bawah gambar dengan bentuk gelombang (inverse dari wave SVG sebelumnya) */
+  mask-image: linear-gradient(black, black), url("data:image/svg+xml,%3Csvg viewBox='0 0 500 50' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,0 L500,0 L500,25 C350,65 150,-15 0,25 Z' fill='black' /%3E%3C/svg%3E");
+  mask-size: 100% calc(100% - 49px), 100% 50px;
+  mask-position: top left, bottom left;
+  mask-repeat: no-repeat;
+  -webkit-mask-image: linear-gradient(black, black), url("data:image/svg+xml,%3Csvg viewBox='0 0 500 50' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,0 L500,0 L500,25 C350,65 150,-15 0,25 Z' fill='black' /%3E%3C/svg%3E");
+  -webkit-mask-size: 100% calc(100% - 49px), 100% 50px;
+  -webkit-mask-position: top left, bottom left;
+  -webkit-mask-repeat: no-repeat;
+  z-index: 2;
+  /* Gambar berada di atas cardInfo */
+}
+
+.cardImage {
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.cardOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(59, 31, 12, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 5;
+}
+
+.exploreText {
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 8px 16px;
+  border-radius: 30px;
+  backdrop-filter: blur(4px);
+}
+
+/* === CARD INFO (Bagian Bawah) === */
+.cardInfo {
+  padding: 50px 20px 24px;
+  /* Padding atas diperbesar untuk memberi ruang di bawah wave */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+  background-color: var(--color-krem-mori, #F2EAD3);
+  flex-grow: 1;
+  position: relative;
+  overflow: hidden;
+  /* Sekarang aman dikembalikan agar motif tidak keluar dari tepi kartu */
+  align-items: center;
+  margin-top: -60px;
+  /* Mundur menjorok ke bawah gambar */
+  z-index: 1;
+  /* DI BAWAH GAMBAR */
+}
+
+/* === MOTIF BUNGA INDIVIDUAL === */
+.motif {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.25;
+  z-index: 0;
+}
+
+/* Kiri Atas: terpotong setengah, lebih ke atas */
+.motifLeftTop {
+  width: 100px;
+  height: 100px;
+  top: -5px;
+  left: -25px;
+}
+
+/* Kiri Bawah: terpotong setengah, lebih ke bawah */
+.motifLeftBottom {
+  width: 120px;
+  height: 120px;
+  bottom: -45px;
+  left: -37px;
+}
+
+/* Kiri Tengah: hanya muncul sebagian kecil */
+.motifLeftCenter {
+  width: 70px;
+  height: 70px;
+  top: 55%;
+  transform: translateY(-50%);
+  left: -50px;
+  /* Lebih keluar, hanya sedikit terlihat */
+}
+
+/* Kanan Atas: ukuran sedang */
+.motifRightTop {
+  width: 115px;
+  height: 115px;
+  top: -15px;
+  right: -25px;
+}
+
+/* Kanan Bawah: ukuran besar */
+.motifRightBottom {
+  width: 180px;
+  height: 180px;
+  bottom: -85px;
+  right: -85px;
+}
+
+/* === TEKS CARD === */
+.cardCategoryBadge {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.65rem;
+  border: none;
+  padding: 5px 14px;
+  border-radius: 40px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  z-index: 4;
+  position: relative;
+  margin-bottom: 8px;
+  margin-top: 10px;
+  /* Jarak dari gelombang SVG */
+}
+
+.badgeMakananBerat {
+  background-color: var(--color-emas-keris, #B8860B);
+  /* Diganti dari kuning menjadi Emas Keris agar beda dengan default */
+  color: white;
+  box-shadow: 0 4px 10px rgba(184, 134, 11, 0.2);
+}
+
+.badgeJajanan {
+  background-color: var(--color-rasa-pedas, #C0392B);
+  color: white;
+  box-shadow: 0 4px 10px rgba(192, 57, 43, 0.2);
+}
+
+.badgeMinuman {
+  background-color: var(--color-hijau-daun, #4A7C3F);
+  color: white;
+  box-shadow: 0 4px 10px rgba(74, 124, 63, 0.2);
+}
+
+.badgePedas {
+  background-color: var(--color-rasa-pedas, #C0392B);
+  color: white;
+  box-shadow: 0 4px 10px rgba(192, 57, 43, 0.2);
+}
+
+.badgeGurih {
+  background-color: #E67E22;
+  color: white;
+  box-shadow: 0 4px 10px rgba(230, 126, 34, 0.2);
+}
+
+.badgeSegar {
+  background-color: #27AE60;
+  color: white;
+  box-shadow: 0 4px 10px rgba(39, 174, 96, 0.2);
+}
+
+.badgeManis {
+  background-color: var(--color-rasa-legit, #6B3A2A);
+  /* Warna coklat legit agar sesuai tema, tidak ungu */
+  color: white;
+  box-shadow: 0 4px 10px rgba(107, 58, 42, 0.2);
+}
+
+.cardTitle {
+  font-family: var(--font-playfair), serif;
+  color: var(--color-coklat-batik, #3B1F0C);
+  font-size: 1.7rem;
+  font-weight: 500;
+  /* Lebih tipis agar terlihat elegan */
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  position: relative;
+  z-index: 4;
+}
+
+.cardOriginText {
+  font-family: var(--font-playfair), serif;
+  font-size: 1.05rem;
+  font-style: italic;
+  color: #8C2B16;
+  /* Warna merah bata / terakota untuk kontras yang klasik */
+  margin-top: 4px;
+  position: relative;
+  z-index: 4;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 60px 0;
+  color: var(--color-coklat-batik, #3B1F0C);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.notFoundImg {
+  object-fit: contain;
+  opacity: 0.9;
+  filter: drop-shadow(0 10px 15px rgba(59, 31, 12, 0.15));
+}
+
+.notFoundText {
+  font-family: var(--font-playfair), serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--color-coklat-batik, #3B1F0C);
+  margin: 0;
+  max-width: 400px;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 1024px) {
+  .splitContainer {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .commandCenter {
+    display: contents; /* Menghilangkan struktur pembungkus asli di mobile */
+  }
+
+  .sentenceWrapper {
+    padding: 30px 5% 10px;
+    background-color: var(--color-krem-mori, #F2EAD3);
+    margin-bottom: 0;
+  }
+
+  .stickyMobileWrapper {
+    position: sticky;
+    top: 60px; /* Lengket persis di bawah header */
+    z-index: 50;
+    background-color: var(--color-krem-mori, #F2EAD3);
+    padding: 10px 5% 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-grow: 0;
+  }
+
+  .parallaxPlayground {
+    padding: 40px 5% 100px;
+  }
+
+  .visualFilterContainer {
+    gap: 140px; /* Jarak dibuat sangat lebar khusus di mobile sesuai permintaan */
+  }
+
+  .sentenceText {
+    font-size: 1.6rem;
+  }
+
+  .searchContainer {
+    padding: 12px 20px;
+  }
+
+  .searchSection {
+    margin-top: 40px; /* Menggantikan margin auto dengan margin statis */
+  }
+
+  .desktopBr {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .parallaxColumns {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sentenceText {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .parallaxColumns {
+    grid-template-columns: 1fr;
+  }
+}
