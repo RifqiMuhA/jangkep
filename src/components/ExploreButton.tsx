@@ -14,6 +14,7 @@ interface ExploreButtonProps {
   textTablet?: string;
   textMobile?: string;
   className?: string;
+  hideMotif?: boolean;
 }
 
 export const ExploreButton: React.FC<ExploreButtonProps> = ({ 
@@ -22,7 +23,8 @@ export const ExploreButton: React.FC<ExploreButtonProps> = ({
   textDesktop, 
   textTablet, 
   textMobile, 
-  className 
+  className,
+  hideMotif = false
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -42,9 +44,11 @@ export const ExploreButton: React.FC<ExploreButtonProps> = ({
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Motif Kiri */}
-        <div style={{ position: 'relative', width: '80px', height: '130px', flexShrink: 0, opacity: 0.8 }}>
-          <Image src="/motif/motif_button_kiri.webp" alt="Motif Kiri" fill style={{ objectFit: 'contain' }} unoptimized />
-        </div>
+        {!hideMotif && (
+          <div style={{ position: 'relative', width: '80px', height: '130px', flexShrink: 0, opacity: 0.8 }}>
+            <Image src="/motif/motif_button_kiri.webp" alt="Motif Kiri" fill style={{ objectFit: 'contain' }} unoptimized />
+          </div>
+        )}
 
         {/* Sub-container untuk tombol dan aksara */}
         <div style={{ position: 'relative', display: 'inline-flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -155,9 +159,11 @@ export const ExploreButton: React.FC<ExploreButtonProps> = ({
         </div>
 
         {/* Motif Kanan */}
-        <div style={{ position: 'relative', width: '80px', height: '130px', flexShrink: 0, opacity: 0.8 }}>
-          <Image src="/motif/motif_button_kanan.webp" alt="Motif Kanan" fill style={{ objectFit: 'contain' }} unoptimized />
-        </div>
+        {!hideMotif && (
+          <div style={{ position: 'relative', width: '80px', height: '130px', flexShrink: 0, opacity: 0.8 }}>
+            <Image src="/motif/motif_button_kanan.webp" alt="Motif Kanan" fill style={{ objectFit: 'contain' }} unoptimized />
+          </div>
+        )}
       </div>
     </Link>
   );

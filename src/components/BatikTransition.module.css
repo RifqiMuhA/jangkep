@@ -1,0 +1,79 @@
+.transitionContainer {
+  width: 100%;
+  height: 0; /* Changed to 0 so it doesn't take up space */
+  position: relative;
+  z-index: 10;
+  overflow: visible; /* Allow ribbons to bleed out */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ribbonWrapper {
+  position: absolute;
+  width: 110%; /* Slightly wider to cover edges when rotated */
+  height: 0; /* Centered around the 0-height container */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ribbon {
+  position: absolute;
+  width: 100%;
+  height: 50px;
+  background-image: url('/batik/batik_parang.webp');
+  background-size: 200px auto; /* Force pattern to be much larger */
+  background-position-y: center;
+  background-repeat: repeat-x;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.8), inset 0 0 10px rgba(0, 0, 0, 0.6);
+  border-top: 2px solid #d4af37;
+  border-bottom: 2px solid #d4af37;
+}
+
+.ribbon1 {
+  transform: rotate(-2deg);
+  z-index: 2;
+  animation: scrollRight 30s linear infinite;
+}
+
+.ribbon2 {
+  transform: rotate(2deg);
+  z-index: 1;
+  animation: scrollLeft 40s linear infinite;
+  opacity: 0.9;
+  filter: brightness(0.8);
+}
+
+@keyframes scrollRight {
+  0% {
+    background-position-x: 0;
+  }
+  100% {
+    background-position-x: 500px;
+  }
+}
+
+@keyframes scrollLeft {
+  0% {
+    background-position-x: 0;
+  }
+  100% {
+    background-position-x: -500px;
+  }
+}
+
+@media (max-width: 768px) {
+  .transitionContainer {
+    height: 0;
+  }
+  .ribbon {
+    height: 35px;
+  }
+  .ribbon1 {
+    transform: rotate(-3deg);
+  }
+  .ribbon2 {
+    transform: rotate(3deg);
+  }
+}

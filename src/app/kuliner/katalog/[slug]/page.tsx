@@ -8,11 +8,18 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { kulinerData } from '@/data/kulinerData';
 import HistoryTimeline from './HistoryTimeline';
+import BatikTransition from '@/components/BatikTransition';
+import { ExploreButton } from '@/components/ExploreButton';
 import styles from './detail.module.css';
 
 const RecipeBook = dynamic(() => import('@/components/RecipeBook'), {
   ssr: false,
   loading: () => <div style={{ height: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#3B1F0C' }}>Membuka manuskrip kuno...</div>
+});
+
+const CookingMethods = dynamic(() => import('@/components/CookingMethods'), {
+  ssr: false,
+  loading: () => <div style={{ height: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#3B1F0C' }}>Menyiapkan dapur...</div>
 });
 
 // Helper mapping functions
@@ -88,6 +95,8 @@ export default function KulinerDetail({ params }: { params: Promise<{ slug: stri
           <Link href="/" className={styles.breadcrumbLink}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
           </Link>
+          <span className={styles.breadcrumbSeparator}>›</span>
+          <Link href="/kuliner" className={styles.breadcrumbLink}>Kuliner</Link>
           <span className={styles.breadcrumbSeparator}>›</span>
           <Link href="/kuliner/katalog" className={styles.breadcrumbLink}>Katalog</Link>
           <span className={styles.breadcrumbSeparator}>›</span>
@@ -255,68 +264,56 @@ export default function KulinerDetail({ params }: { params: Promise<{ slug: stri
           transition={{ duration: 0.8 }}
         >
           <div className={styles.dekorWrapper}>
-            <Image src="/motif/dekor_header_atas.webp" alt="Dekorasi Atas" fill sizes="250px" className={styles.dekorImage} unoptimized />
+            <Image src="/motif/dekor_header_atas.webp" alt="Dekorasi Atas" width={250} height={40} className={styles.dekorImage} unoptimized />
           </div>
           <h2 className={styles.ingredientsTitle}>Bahan-Bahan</h2>
           <div className={styles.dekorWrapper}>
-            <Image src="/motif/dekor_header_bawah.webp" alt="Dekorasi Bawah" fill sizes="250px" className={styles.dekorImage} unoptimized />
+            <Image src="/motif/dekor_header_bawah.webp" alt="Dekorasi Bawah" width={250} height={40} className={styles.dekorImage} unoptimized />
           </div>
         </motion.div>
 
         {item.ingredients && <RecipeBook ingredients={item.ingredients} />}
       </section>
 
-      {/* 4. HOW TO COOK / CARA MEMASAK */}
-      <section className={styles.howToCookSection}>
-        <motion.h2
-          className={styles.ingredientsTitle}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          Cara Memasak
-        </motion.h2>
+      {/* TRANSITION DIVIDER */}
+      <BatikTransition />
 
-        <div className={styles.cookingStepsContainer}>
-          {item.instructions?.map((step, index) => (
-            <motion.div
-              key={index}
-              className={styles.cookingStep}
-              initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-10%" }}
-              transition={{ duration: 0.7 }}
-            >
-              <div className={styles.stepNumber}>
-                {String(index + 1).padStart(2, '0')}
-              </div>
-              <div className={styles.stepContent}>
-                <div className={styles.stepIconWrapper}>
-                  <Image
-                    src={`/kuliner/methods/${step.action}.webp`}
-                    alt={step.action}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 20vw"
-                    className={styles.stepIcon}
-                    unoptimized
-                  />
-                </div>
-                <div className={styles.stepText}>
-                  <span className={styles.stepAction}>{step.action}</span>
-                  <p className={styles.stepDescription}>{step.description}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+      {/* 4. HOW TO COOK / CARA MEMASAK */}
+      {item.instructions && item.instructions.length > 0 && (
+        <CookingMethods instructions={item.instructions} />
+      )}
 
       {/* 5. NEXT JOURNEY */}
       <section className={styles.nextJourney}>
-        <Link href="/kuliner/katalog" className={styles.backBtn}>
-          Kembali ke Katalog
-        </Link>
+        {/* Motif Tengah (Sangat Transparan) */}
+        <Image src="/motif/motif_bunga_card.webp" alt="Motif Latar" width={600} height={600} className={styles.centerMotif} unoptimized />
+
+        {/* Lampu */}
+        <Image src="/kuliner/methods/lampu.webp" alt="Lampu Kiri" width={120} height={350} className={styles.lampLeft} unoptimized />
+        <Image src="/kuliner/methods/lampu.webp" alt="Lampu Kanan" width={120} height={350} className={styles.lampRight} unoptimized />
+
+        {/* Ornamen Bawah - Array Cekung (Wayang di kiri, Gunungan di kanan) */}
+        {/* Lapis 1 (Pojok Besar) */}
+        <Image src="/kuliner/methods/bawah_kiri.webp" alt="Ornamen Kiri 1" width={450} height={500} className={styles.ornamentLeft} unoptimized />
+        <Image src="/kuliner/methods/bawah_kanan.webp" alt="Ornamen Kanan 1" width={450} height={500} className={styles.ornamentRight} unoptimized />
+        
+        {/* Lapis 2 (Menengah) */}
+        <Image src="/kuliner/methods/bawah_kiri.webp" alt="Ornamen Kiri 2" width={300} height={350} className={styles.ornamentLeftMid} unoptimized />
+        <Image src="/kuliner/methods/bawah_kanan.webp" alt="Ornamen Kanan 2" width={300} height={350} className={styles.ornamentRightMid} unoptimized />
+        
+        {/* Lapis 3 (Kecil Tengah) */}
+        <Image src="/kuliner/methods/bawah_kiri.webp" alt="Ornamen Kiri 3" width={200} height={250} className={styles.ornamentLeftInner} unoptimized />
+        <Image src="/kuliner/methods/bawah_kanan.webp" alt="Ornamen Kanan 3" width={200} height={250} className={styles.ornamentRightInner} unoptimized />
+
+        <div style={{ display: 'flex', justifyContent: 'center', width: '100%', position: 'relative', zIndex: 10 }}>
+          <ExploreButton 
+            href="/kuliner/katalog" 
+            textDesktop="Kembali ke Katalog" 
+            textTablet="Kembali ke Katalog"
+            textMobile="Kembali"
+            hideMotif={true}
+          />
+        </div>
       </section>
     </div>
   );
