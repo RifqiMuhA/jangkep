@@ -9,20 +9,14 @@ const LINE2 = 'Jangkep Critane';
 
 export default function HeroSection() {
   const [revealed, setRevealed] = useState(false);
-  const [sipodoVisible, setSipodoVisible] = useState(false);
   const [isAksara, setIsAksara] = useState(false);
   const heroRef = useRef<HTMLElement>(null);
   const textLayerRef = useRef<HTMLDivElement>(null);
-  const imageLayerRef = useRef<HTMLDivElement>(null);
 
   // Trigger char reveal after mount
   useEffect(() => {
     const revealTimer = setTimeout(() => setRevealed(true), 300);
-    const sipodoTimer = setTimeout(() => setSipodoVisible(true), 1200);
-    return () => {
-      clearTimeout(revealTimer);
-      clearTimeout(sipodoTimer);
-    };
+    return () => clearTimeout(revealTimer);
   }, []);
 
   // Mouse parallax tracking with lerp for smoothness
@@ -51,10 +45,6 @@ export default function HeroSection() {
       if (textLayerRef.current) {
         textLayerRef.current.style.transform =
           `translate(${curr.x * 12}px, ${curr.y * 8}px)`;
-      }
-      if (imageLayerRef.current) {
-        imageLayerRef.current.style.transform =
-          `translate(${curr.x * 20}px, calc(-50% + ${curr.y * 14}px))`;
       }
 
       rafRef.current = requestAnimationFrame(animate);
@@ -123,19 +113,6 @@ export default function HeroSection() {
       {/* Layer 2: Radial gradient vignette */}
       <div className={styles.gradientOverlay} aria-hidden="true" />
 
-      {/* Layer 3: Si Podo center image */}
-      <div ref={imageLayerRef} className={styles.sipodoCenter}>
-        <Image
-          src="/sipodo/dapur jawa.webp"
-          alt="Si Podo, maskot Jangkep, sedang memasak di dapur Jawa"
-          width={580}
-          height={580}
-          className={styles.sipodoCenterImg}
-          style={{ width: 'auto' }}
-          priority
-        />
-      </div>
-
       {/* Layer 4: Headline text */}
       <div ref={textLayerRef} className={styles.heroContent}>
         <h1 className={styles.headlineWrapper}>
@@ -152,12 +129,6 @@ export default function HeroSection() {
             {line2Word2Chars}
           </span>
         </h1>
-
-        {/* Layer 5: CTA button */}
-        <a href="#rempah" className={styles.ctaButton}>
-          Mulai Perjalanan
-          <span className={styles.ctaArrow} aria-hidden="true">→</span>
-        </a>
       </div>
 
       {/* Scroll indicator */}
@@ -166,20 +137,16 @@ export default function HeroSection() {
         <span className={styles.scrollArrow}>↓</span>
       </div>
 
-      {/* Layer 6: Si Podo corner + dialog bubble */}
-      <div className={`${styles.sipodoCorner} ${sipodoVisible ? styles.sipodoCornerVisible : ''}`}>
-        <div className={styles.dialogBubble}>
-          <p className={styles.dialogText}>
-            Wis siap njelajah Jawa Tengah?
-          </p>
-        </div>
+      {/* ─── Transisi Wayang (ditempatkan di dalam Hero agar tekstur nyambung) ─── */}
+      <div className={styles.heroFooter}>
         <Image
-          src="/sipodo/halo.webp"
-          alt="Si Podo menyapa"
-          width={80}
-          height={80}
-          style={{ width: 'auto' }}
-          className={styles.sipodoCornerImg}
+          src="/motif/transisi_1.webp"
+          alt=""
+          width={1152}
+          height={281}
+          className={styles.transisiImg}
+          priority={false}
+          aria-hidden="true"
         />
       </div>
     </section>

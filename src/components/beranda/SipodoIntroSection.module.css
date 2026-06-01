@@ -1,0 +1,371 @@
+/* ============================
+   SIPODO INTRO — FILOSOFI LOGO
+   ============================ */
+
+/* ── Background: Krem Mori + Kawung Texture ── */
+.section {
+  position: relative;
+  background-color: var(--color-krem-mori); /* #F2EAD3 */
+  padding: 140px 0 80px; /* Lebih turun agar tidak mepet transisi wayang */
+  overflow: hidden;
+}
+
+/* Kawung texture layer */
+.section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/batik/batik_kawung.webp');
+  background-repeat: repeat;
+  background-size: 220px 220px;
+  opacity: 0.07;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Warm overlay for grain effect */
+.section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(242, 234, 211, 0.6);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure all children above textures */
+.section > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Section Header ── */
+.header {
+  position: relative;
+  max-width: var(--container-max, 1280px);
+  margin: 0 auto;
+  padding: 0 48px;
+  text-align: center;
+}
+
+.headline {
+  font-family: var(--font-playfair), 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--color-coklat-batik);
+  line-height: 1.2;
+  margin-bottom: 0;
+}
+
+.headlineAccent {
+  color: var(--color-kuning-kepodang);
+  font-style: italic;
+}
+
+.desc {
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--color-coklat-batik);
+  opacity: 0.75;
+  line-height: 1.65;
+  max-width: 520px;
+  margin: 16px auto 0;
+}
+
+/* ── Carousel ── */
+.carouselRegion {
+  position: relative;
+  margin-top: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  outline: none;
+}
+
+.carouselTrack {
+  position: relative;
+  width: 320px;
+  height: 380px;
+  /* slides are absolutely positioned inside */
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 320px;
+  margin-left: -160px; /* center anchor */
+  transition: transform 500ms var(--ease-reveal),
+              opacity 500ms var(--ease-reveal),
+              filter 500ms var(--ease-reveal);
+  will-change: transform, opacity, filter;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Hover on active slide */
+.slideActive {
+  cursor: default;
+}
+
+.slideActive:hover {
+  transform: translateX(0) scale(1) translateY(-6px) !important;
+}
+
+/* ── Slide Image (no card background) ── */
+.slideImg {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  max-height: 400px;
+  filter: brightness(1.05);
+  transition: transform 250ms ease;
+}
+
+.slideActive:hover .slideImg {
+  transform: scale(1.02);
+}
+
+/* ── Slide Text — hidden by default, shown when active ── */
+.slideText {
+  text-align: center;
+  margin-top: 16px;
+  padding: 0 8px;
+  max-width: 320px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 400ms var(--ease-reveal),
+              transform 400ms var(--ease-reveal);
+  pointer-events: none;
+}
+
+.slideTextVisible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.slideNum {
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--color-emas-keris);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.slideTitle {
+  font-family: var(--font-playfair), 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-coklat-batik);
+  margin: 0 0 8px;
+}
+
+.slideDesc {
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--color-coklat-batik);
+  opacity: 0.7;
+  line-height: 1.6;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Arrow Buttons ── */
+.arrowBtn {
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--color-putih-santan);
+  border: 1px solid var(--color-emas-keris);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 24px;
+  color: var(--color-coklat-batik);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+  flex-shrink: 0;
+  z-index: 20;
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
+  outline: none;
+}
+
+.arrowBtn:hover {
+  background: var(--color-emas-keris);
+  color: var(--color-putih-santan);
+  box-shadow: 0 4px 16px rgba(184, 134, 11, 0.25);
+}
+
+.arrowBtn:active {
+  transform: scale(0.92);
+}
+
+.arrowLeft {
+  margin-right: 32px;
+}
+
+.arrowRight {
+  margin-left: 32px;
+}
+
+/* ── Dot Indicators ── */
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.dot {
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--color-krem-tua);
+  border: none;
+  border-radius: 99px;
+  width: 8px;
+  height: 8px;
+  cursor: pointer;
+  transition: width 300ms var(--ease-reveal),
+              background 300ms var(--ease-reveal);
+  padding: 0;
+  margin: 0;
+  outline: none;
+  box-shadow: none;
+}
+
+.dot:hover {
+  background: var(--color-emas-keris);
+}
+
+.dotActive {
+  width: 24px;
+  background: var(--color-kuning-kepodang);
+}
+
+/* ══════════════════════════════════
+   SCROLL REVEAL ANIMATION
+   ══════════════════════════════════ */
+
+.revealItem {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 500ms var(--ease-reveal),
+              transform 500ms var(--ease-reveal);
+}
+
+.isVisible .revealItem {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.revealDelay0 { transition-delay: 0ms; }
+.revealDelay1 { transition-delay: 80ms; }
+.revealDelay2 { transition-delay: 160ms; }
+.revealDelay3 { transition-delay: 240ms; }
+
+/* ══════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .header {
+    padding: 0 32px;
+  }
+
+  .arrowLeft {
+    margin-right: 16px;
+  }
+
+  .arrowRight {
+    margin-left: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 64px 0 56px;
+  }
+
+  .header {
+    padding: 0 24px;
+  }
+
+  .headline {
+    font-size: 36px;
+  }
+
+  .desc {
+    font-size: 15px;
+    max-width: 100%;
+    padding: 0 8px;
+  }
+
+  .carouselRegion {
+    margin-top: 48px;
+  }
+
+  .carouselTrack {
+    width: 260px;
+    height: 500px;
+  }
+
+  .slide {
+    width: 260px;
+    margin-left: -130px;
+  }
+
+  .slideTitle {
+    font-size: 20px;
+  }
+
+  .slideDesc {
+    font-size: 13px;
+  }
+
+  .arrowBtn {
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
+  }
+
+  .arrowLeft {
+    margin-right: 8px;
+  }
+
+  .arrowRight {
+    margin-left: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .headline {
+    font-size: 30px;
+  }
+
+  .carouselTrack {
+    width: 240px;
+    height: 460px;
+  }
+
+  .slide {
+    width: 240px;
+    margin-left: -120px;
+  }
+
+  .slideImg {
+    max-height: 300px;
+  }
+}

@@ -1,104 +1,140 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import styles from './PromoGamesSection.module.css';
 
-const floatingItems = [
-  { emoji: '🌶️', className: styles.floaterTopLeft },
-  { emoji: '🥥', className: styles.floaterTopRight },
-  { emoji: '🥜', className: styles.floaterBottomLeft },
-  { emoji: '🌿', className: styles.floaterBottomRight },
-  { emoji: '🧅', className: styles.floaterMidLeft },
+const ambientRempah = [
+  { src: '/rempah/rempah-10.webp', name: 'Kayu Manis', w: 180, h: 180, class: styles.amb1 },
+  { src: '/rempah/rempah-11.webp', name: 'Cengkeh',    w: 160, h: 160, class: styles.amb2 },
+  { src: '/rempah/rempah-3.webp',  name: 'Lengkuas',   w: 220, h: 220, class: styles.amb3 },
+  { src: '/rempah/rempah-7.webp',  name: 'Kluwek',     w: 190, h: 190, class: styles.amb4 },
+  { src: '/rempah/rempah.webp',    name: 'Jahe',       w: 240, h: 240, class: styles.amb5 },
+  { src: '/rempah/rempah-15.webp', name: 'Gula Merah', w: 200, h: 200, class: styles.amb6 },
 ];
 
 export default function PromoGamesSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.2 }
-    );
+    let ctx: any;
+    const init = async () => {
+      const gsap = (await import('gsap')).default;
+      
+      ctx = gsap.context(() => {
+        // 1. Label fade up
+        gsap.from('.heroLabel', {
+          y: 20, opacity: 0, duration: 0.6, ease: 'power2.out', delay: 0.1
+        });
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
+        // 2. Headline — tiap baris stagger
+        gsap.from(['.hlRow1', '.hlRow2'], {
+          y: 60, opacity: 0, duration: 0.7,
+          ease: 'power3.out',
+          stagger: 0.12,
+          delay: 0.3
+        });
 
-    return () => observer.disconnect();
+        // 3. Subline + button
+        gsap.from(['.heroSubline', '.ctaBtn'], {
+          y: 30, opacity: 0, duration: 0.6,
+          ease: 'power2.out',
+          stagger: 0.1,
+          delay: 0.85
+        });
+
+        // 4. Si Podo fly up dari bawah
+        gsap.from('.sipodoWrap', {
+          y: 120, opacity: 0, duration: 1.0,
+          ease: 'back.out(1.3)',
+          delay: 0.5
+        });
+
+        // 5. Dekorasi stagger masuk dari luar
+        gsap.from('.deco', {
+          scale: 0, opacity: 0,
+          duration: 0.6,
+          ease: 'back.out(1.6)',
+          stagger: { each: 0.08, from: 'random' },
+          delay: 0.9
+        });
+
+        // 6. Rempah ambient fade in pelan
+        gsap.from('.amb', {
+          opacity: 0, scale: 0.7,
+          duration: 1.2,
+          ease: 'power2.out',
+          stagger: { each: 0.15, from: 'edges' },
+          delay: 0.2
+        });
+      });
+    };
+
+    init();
+    return () => {
+      if (ctx) ctx.revert();
+    };
   }, []);
 
   return (
-    <section 
-      ref={sectionRef} 
-      className={`${styles.quizSection} ${isVisible ? styles.isVisible : ''}`} 
-      aria-label="Promosi Mini Games"
-    >
-      {/* Floating ingredients */}
-      {floatingItems.map((item, index) => (
-        <span
-          key={index}
-          className={`${styles.quizFloater} ${item.className}`}
-          aria-hidden="true"
-        >
-          {item.emoji}
-        </span>
-      ))}
-
-      <div className={styles.quizInner}>
-        {/* Left Column: Headline & CTA */}
-        <div className={styles.quizContentCol}>
-          <div className={styles.quizHeadlineStack}>
-            <div className={`${styles.quizLine} ${styles.line1}`}>
-              <span className={styles.blockPlain}>Waktune</span>
-            </div>
-            <div className={`${styles.quizLine} ${styles.line2}`}>
-              <span className={`${styles.blockFilled} ${styles.bgKuning}`}>Dolan</span>
-              <span className={styles.blockOutline}>!</span>
-            </div>
-            <div className={`${styles.quizLine} ${styles.line3}`}>
-              <span className={styles.blockScript}>— Ayo uji ilmumu soal kuliner Jawa</span>
-            </div>
+    <section className={styles.heroSection}>
+      
+      {/* ── LAYER 3: REMPAH AMBIENT ── */}
+      <div className={styles.rempahAmbient}>
+        {ambientRempah.map((item, idx) => (
+          <div key={idx} className={`${styles.amb} ${item.class || ''} amb`}>
+            <Image src={item.src} alt={item.name} width={item.w} height={item.h} style={{ objectFit: 'contain' }} unoptimized priority={idx < 3}/>
           </div>
-
-          <Link href="/games" className={styles.quizCta}>
-            Main Sekarang! &rarr;
-          </Link>
-        </div>
-
-        {/* Right Column: Si Podo */}
-        <div className={styles.quizSipodoCol}>
-          <div className={styles.sipodoQuizWrapper}>
-            {/* Thought bubble */}
-            <div className={styles.sipodoThoughtBubble}>
-              <div className={styles.bubbleMain}>
-                Ayo, bisa tebak ini masakan apa?
-              </div>
-              <div className={styles.bubbleDots}>
-                <span className={`${styles.dot} ${styles.dot1}`}></span>
-                <span className={`${styles.dot} ${styles.dot2}`}></span>
-                <span className={`${styles.dot} ${styles.dot3}`}></span>
-              </div>
-            </div>
-
-            <Image
-              src="/sipodo/games.webp"
-              alt="Si Podo mengajak bermain tebak masakan"
-              width={280}
-              height={280}
-              className={styles.sipodoQuizImg}
-              priority={false}
-            />
-          </div>
-        </div>
+        ))}
       </div>
+
+      {/* ── LAYER 4: HERO CONTENT ── */}
+      <div className={styles.heroContent}>
+        {/* Headline */}
+        <h1 className={styles.heroHeadline}>
+          <div className={`${styles.headlineRow} hlRow1`}>
+            <span className={styles.hlTextNormal}>Wis Siap</span>
+            <span className={styles.hlTextItalic}>Ngerti</span>
+          </div>
+          <div className={`${styles.headlineRow} hlRow2`}>
+            <span className={styles.hlTextNormal}>Masakan</span>
+            <span className={styles.hlTextHighlight}>
+              Jawa?
+              <svg className={styles.underlineSvg} viewBox="0 0 220 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3,9 C45,3 90,13 135,7 C178,2 205,10 217,8" stroke="#F5C400" strokeWidth="3.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </span>
+          </div>
+        </h1>
+
+        {/* CTA Button */}
+        <button className={`${styles.ctaBtn} ctaBtn`} onClick={() => router.push('/games')}>
+          <span className={styles.ctaOrn}>✦</span>
+          Ayo Mulai!
+        </button>
+      </div>
+
+      {/* ── LAYER 5: HAPUS EMOTICON ── */}
+      {/* Emoticon dihapus sesuai permintaan */}
+
+      {/* ── LAYER 6: SI PODO ── */}
+      <div className={`${styles.sipodoWrap} sipodoWrap`}>
+        <Image
+          src="/sipodo/games.webp"
+          alt="Si Podo"
+          width={420}
+          height={480}
+          className={styles.sipodoImg}
+          priority
+        />
+      </div>
+
+      {/* ── LAYER 7: GROUND CURVE ── */}
+      <div className={styles.groundCurve}>
+        <img src="/batik/bg-games.png" alt="" className={styles.groundImg} />
+      </div>
+
     </section>
   );
 }

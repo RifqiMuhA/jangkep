@@ -5,7 +5,6 @@
 .hero {
   min-height: 100vh;
   position: relative;
-  overflow: hidden;
   background-color: var(--color-coklat-batik);
   display: flex;
   align-items: center;
@@ -38,26 +37,6 @@
   z-index: 2;
 }
 
-/* ─── Layer 3: Si Podo Center Image ─── */
-.sipodoCenter {
-  position: absolute;
-  top: 50%;
-  right: 0%;
-  transform: translateY(-50%);
-  z-index: 3;
-  pointer-events: none;
-  will-change: transform;
-}
-
-.sipodoCenterImg {
-  width: auto;
-  height: 48vh;
-  max-height: 480px;
-  min-height: 280px;
-  object-fit: contain;
-  filter: drop-shadow(0px 24px 48px rgba(26, 10, 2, 0.4));
-}
-
 /* ─── Layer 4: Headline Content ─── */
 .heroContent {
   position: relative;
@@ -67,7 +46,7 @@
   margin: 0 auto;
   width: 100%;
   /* Offset slightly above center */
-  margin-top: -5vh;
+  margin-top: -15vh;
   will-change: transform;
 }
 
@@ -198,47 +177,6 @@
   }
 }
 
-/* ─── CTA Ghost Button ─── */
-.ctaButton {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: transparent;
-  border: 1.5px solid var(--color-emas-keris);
-  color: var(--color-krem-mori);
-  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  padding: 14px 28px;
-  border-radius: var(--radius-buttons);
-  cursor: pointer;
-  transition: all 200ms ease;
-  text-decoration: none;
-  margin-top: 32px;
-  position: relative;
-  z-index: 5;
-}
-
-.ctaButton:hover {
-  background-color: var(--color-emas-keris);
-  color: var(--color-krem-mori);
-  box-shadow: var(--shadow-button-accent);
-}
-
-.ctaButton:active {
-  transform: scale(0.97);
-}
-
-.ctaArrow {
-  font-size: 18px;
-  transition: transform 200ms ease;
-}
-
-.ctaButton:hover .ctaArrow {
-  transform: translateX(4px);
-}
-
 /* ─── Scroll Indicator ─── */
 .scrollIndicator {
   position: absolute;
@@ -278,115 +216,30 @@
   }
 }
 
-/* ─── Si Podo Corner (bottom-right) ─── */
-.sipodoCorner {
+/* ─── Transisi Wayang di Footer ─── */
+.heroFooter {
   position: absolute;
-  bottom: 40px;
-  right: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px; /* Space for the thought circles */
-  z-index: 20;
-  opacity: 0;
-  transform: translateY(20px);
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 5;
+  line-height: 0;
   pointer-events: none;
+  transform: translateY(30%); /* Dinaikkan lagi sesuai permintaan */
 }
 
-.sipodoCornerVisible {
-  animation: sipodoAppear 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  pointer-events: all;
-}
-
-@keyframes sipodoAppear {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.sipodoCornerImg {
-  flex-shrink: 0;
-  object-fit: contain;
-  cursor: help;
-  transition: transform 0.3s var(--ease-transition);
-}
-
-.sipodoCorner:hover .sipodoCornerImg {
-  transform: scale(1.05) rotate(-3deg);
-}
-
-/* Dialog bubble */
-.dialogBubble {
-  position: relative;
-  background-color: var(--color-putih-santan);
-  border: 1.5px solid var(--color-emas-keris);
-  border-radius: var(--radius-bubble);
-  padding: 12px 16px;
-  max-width: 200px;
-  line-height: 1.5;
-  box-shadow: var(--shadow-tooltip);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(10px) scale(0.95);
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform-origin: bottom center;
-}
-
-.sipodoCorner:hover .dialogBubble {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0) scale(1);
-}
-
-/* Thought bubble circles pointing down toward Si Podo */
-.dialogBubble::before {
-  content: '';
-  position: absolute;
-  bottom: -14px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 10px;
-  height: 10px;
-  background-color: var(--color-putih-santan);
-  border: 1.5px solid var(--color-emas-keris);
-  border-radius: 50%;
-}
-
-.dialogBubble::after {
-  content: '';
-  position: absolute;
-  bottom: -26px;
-  left: 46%;
-  transform: translateX(-50%);
-  width: 6px;
-  height: 6px;
-  background-color: var(--color-putih-santan);
-  border: 1.5px solid var(--color-emas-keris);
-  border-radius: 50%;
-  z-index: 1;
-}
-
-.dialogText {
-  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--color-coklat-batik);
-  margin: 0;
+.transisiImg {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  filter: drop-shadow(0px 17px 10.5px rgba(26, 10, 2, 1));
 }
 
 /* ─── Responsive ─── */
 @media (max-width: 1024px) {
   .heroContent {
     padding: 0 32px;
-  }
-
-  .sipodoCenterImg {
-    height: 50vh;
   }
 }
 
@@ -404,30 +257,6 @@
     font-size: clamp(38px, 10vw, 60px);
     margin-top: -4px;
   }
-
-  .sipodoCenterImg {
-    height: 40vh;
-    min-height: 240px;
-  }
-
-  .sipodoCorner {
-    right: 16px;
-    bottom: 80px;
-  }
-
-  .dialogBubble {
-    max-width: 160px;
-    padding: 10px 14px;
-  }
-
-  .dialogText {
-    font-size: 12px;
-  }
-
-  .ctaButton {
-    padding: 12px 24px;
-    font-size: 13px;
-  }
 }
 
 @media (max-width: 480px) {
@@ -441,19 +270,6 @@
 
   .line2 {
     font-size: 36px;
-  }
-
-  .sipodoCenterImg {
-    height: 32vh;
-    min-height: 200px;
-  }
-
-  .sipodoCorner {
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    bottom: 70px;
-    right: 12px;
   }
 
   .scrollIndicator {
