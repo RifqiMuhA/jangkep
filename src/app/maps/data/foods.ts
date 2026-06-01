@@ -46,14 +46,22 @@ const categoryIcon: Record<string, string> = {
   'Minuman': '🍹'
 };
 
-export const foodsData: Food[] = kulinerData.map(item => {
+export const foodsData: Food[] = kulinerData.map((item, index) => {
   const coords = cityCoords[item.origin] || { lat: -7.0, lng: 110.0 };
+  
+  // Add a small deterministic offset so pins in the same city spread out
+  // Offset radius ~ 3-5km (0.03 to 0.05 degrees)
+  const angle = index * 137.5 * (Math.PI / 180); // golden angle
+  const distance = 0.02 + (index % 3) * 0.015;
+  const latOffset = Math.sin(angle) * distance;
+  const lngOffset = Math.cos(angle) * distance;
+
   return {
     id: item.slug,
     name: item.name,
     city: item.origin,
-    latitude: coords.lat,
-    longitude: coords.lng,
+    latitude: coords.lat + latOffset,
+    longitude: coords.lng + lngOffset,
     icon: categoryIcon[item.category] || '📍',
     flavors: [item.tasteProfile],
     story: item.shortDescription,

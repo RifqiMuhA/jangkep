@@ -80,12 +80,13 @@ interface Chapter {
     bearing: number;
   };
   alignment: 'center' | 'left' | 'right';
+  label?: string;
 }
 
 const scrollChapters: Chapter[] = [
   {
     id: 'intro',
-    title: 'Perjalanan\nDimulai',
+    title: 'Perjalanan Dimulai',
     subtitle: 'MEMASUKI PETA JAWA TENGAH',
     description: 'Mari kita mulai perjalanan menelusuri kekayaan bumbu, tradisi, dan sejarah yang membentuk identitas kuliner Jawa Tengah.',
     location: { center: [110.4, -7.3], zoom: 7.8, pitch: 45, bearing: -20 },
@@ -99,7 +100,7 @@ const scrollChapters: Chapter[] = [
     javaneseSubtitle: 'ꦭꦸꦩ꧀ꦥꦶꦪ • ꦠꦲꦸꦒꦶꦩ꧀ꦧꦭ꧀ • ꦮꦶꦁꦏꦺꦴꦧꦧꦠ꧀',
     description: 'Sebagai kota pelabuhan utama, Semarang menjadi titik temu budaya Jawa dan Tionghoa, menciptakan harmoni rasa kuliner yang tak lekang oleh waktu.',
     javaneseDescription: 'ꦩꦶꦤꦁꦏ ꦏꦸꦛ ꦥꦭꦧꦸꦲꦤ꧀ ꦲꦸꦠꦩ꧈ ꦱꦼꦩꦫꦁ ꦢꦢꦶ ꦥꦥꦤ꧀ ꦥꦼꦛꦸꦏ꧀ ꦧꦸꦢꦪ ꦗꦮ ꦭꦤ꧀ ꦠꦶꦪꦺꦴꦁꦲꦺꦴꦮ꧈ ꦤ꧀ꦝꦢꦺꦏꦏꦺ ꦫꦱ ꦏꦸꦭꦶꦤꦺꦂ ꦏꦁ ꦲꦺꦤꦏ꧀ ꦭꦤ꧀ ꦲꦮꦺꦠ꧀꧈',
-    location: { center: [110.42, -6.99], zoom: 11, pitch: 58, bearing: 25 },
+    location: { center: [110.45, -7.03], zoom: 11, pitch: 58, bearing: 25 },
     alignment: 'right',
   },
   {
@@ -110,7 +111,7 @@ const scrollChapters: Chapter[] = [
     javaneseSubtitle: 'ꦤꦱꦶꦭꦶꦮꦼꦠ꧀ • ꦠꦼꦁꦏ꧀ꦭꦺꦁ • ꦧꦏ꧀ꦱꦺꦴ',
     description: 'Di jantung budaya Jawa, kuliner Solo memancarkan keanggunan keraton. Ditambah kehangatan kaldu Bakso Wonogiri yang saling melengkapi dalam satu karesidenan.',
     javaneseDescription: 'ꦲꦶꦁ ꦥꦸꦱꦼꦂ ꦧꦸꦢꦪ ꦗꦮ꧈ ꦏꦸꦭꦶꦤꦺꦂ ꦱꦺꦴꦭꦺꦴ ꦤ꧀ꦢꦸꦮꦺꦤꦶ ꦏꦼꦲꦒꦸꦔꦤ꧀ ꦏꦿꦠꦺꦴꦤ꧀꧈ ꦢꦶꦠꦩ꧀ꦧꦃ ꦏꦭ꧀ꦢꦸ ꦧꦏ꧀ꦱꦺꦴ ꦮꦺꦴꦤꦺꦴꦒꦶꦫꦶ ꦏꦁ ꦔꦁꦒꦼꦠꦏꦺ ꦲꦶꦁ ꦱꦮꦶꦗꦶꦤꦶꦁ ꦏꦫꦺꦱꦶꦢꦺꦤꦤ꧀꧈',
-    location: { center: [110.85, -7.65], zoom: 10.8, pitch: 55, bearing: -40 },
+    location: { center: [110.88, -7.62], zoom: 10.8, pitch: 55, bearing: -40 },
     alignment: 'left',
   },
   {
@@ -121,39 +122,51 @@ const scrollChapters: Chapter[] = [
     javaneseSubtitle: 'ꦒꦫꦁꦄꦱꦼꦩ꧀ • ꦱꦺꦴꦠꦺꦴꦏꦸꦢꦸꦱ꧀ • ꦤꦱꦶꦒꦤ꧀ꦢꦸꦭ꧀',
     description: 'Dari Demak hingga Jepara, deretan pesisir utara ini menyimpan sajian khas yang kaya kaldu dan bumbu. Merupakan perwujudan akulturasi maritim dan toleransi antar umat.',
     javaneseDescription: 'ꦱꦏ ꦢꦼꦩꦏ꧀ ꦠꦼꦏꦤ꧀ ꦗꦼꦥꦫ꧈ ꦥꦼꦱꦶꦱꦶꦂ ꦭꦺꦴꦂ ꦲꦶꦏꦶ ꦤ꧀ꦢꦸꦮꦺ ꦥꦔꦤꦤ꧀ ꦏꦁ ꦏꦪ ꦏꦭ꧀ꦢꦸ ꦭꦤ꧀ ꦧꦸꦩ꧀ꦧꦸ꧈ ꦩꦶꦤꦁꦏ ꦧꦸꦏ꧀ꦠꦶ ꦄꦏꦸꦭ꧀ꦠꦸꦫꦱꦶ ꦩꦫꦶꦠꦶꦩ꧀ ꦭꦤ꧀ ꦠꦺꦴꦭꦺꦫꦤ꧀ꦱꦶ꧈',
-    location: { center: [110.8, -6.75], zoom: 10.2, pitch: 55, bearing: 30 },
+    location: { center: [110.85, -6.78], zoom: 10.2, pitch: 55, bearing: 30 },
     alignment: 'right',
   },
   {
     id: 'kedu_raya',
     title: 'Kedu Raya:\nKuliner Kaki Gunung',
+    javaneseTitle: 'ꦏꦼꦢꦸꦫꦪ:\nꦏꦸꦭꦶꦤꦺꦂ ꦏꦏꦶ ꦒꦸꦤꦸꦁ',
     subtitle: 'Mie Ongklok • Carica • Getuk',
+    javaneseSubtitle: 'ꦩꦶꦲꦺꦎꦁꦏ꧀ꦭꦺꦴꦏ꧀ • ꦕꦫꦶꦕ • ꦒꦼꦛꦸꦏ꧀',
     description: 'Terjepit gunung-gunung berapi raksasa, kawasan Magelang dan Wonosobo menyimpan kekayaan kuliner dataran tinggi. Hangat, manis, dan menyegarkan.',
-    location: { center: [110.05, -7.42], zoom: 10.5, pitch: 58, bearing: 35 },
+    javaneseDescription: 'ꦏꦗꦼꦥꦶꦠ꧀ ꦒꦸꦤꦸꦁ ꦒꦸꦤꦸꦁ ꦒꦼꦢꦺ꧈ ꦏꦮꦱꦤ꧀ ꦩꦒꦼꦭꦁ ꦭꦤ꧀ ꦮꦺꦴꦤꦺꦴꦱꦺꦴꦧꦺꦴ ꦚꦶꦩ꧀ꦥꦼꦤ꧀ ꦏꦏꦪꦤ꧀ ꦏꦸꦭꦶꦤꦺꦂ ꦥꦒꦸꦤꦸꦔꦤ꧀꧈ ꦲꦔꦼꦠ꧀꧈ ꦩꦤꦶꦱ꧀꧈ ꦭꦤ꧀ ꦚꦼꦒꦼꦫꦏꦺ꧈',
+    location: { center: [110.10, -7.45], zoom: 10.5, pitch: 58, bearing: 35 },
     alignment: 'left',
   },
   {
     id: 'banyumas_raya',
     title: 'Lembah Serayu:\nHangat di Balik Dingin',
+    javaneseTitle: 'ꦊꦩ꧀ꦧꦃꦱꦼꦫꦪꦸ:\nꦲꦔꦼꦠ꧀ ꦲꦶꦁ ꦮալꦶꦏ꧀ ꦲꦝꦼꦩ꧀',
     subtitle: 'Tempe Mendoan • Dawet Ayu',
+    javaneseSubtitle: 'ꦠꦺꦩ꧀ꦥꦺꦩꦼꦤ꧀ꦢꦺꦴꦮꦤ꧀ • ꦢꦮꦼꦠ꧀ꦄꦪꦸ',
     description: 'Dari dataran tinggi hingga lembah Sungai Serayu di Banyumas dan Banjarnegara. Cuaca sejuk melahirkan sajian hangat seperti Mendoan dan segarnya Dawet Ayu.',
-    location: { center: [109.45, -7.45], zoom: 11, pitch: 60, bearing: -50 },
+    javaneseDescription: 'ꦱꦏ ꦥꦒꦸꦤꦸꦔꦤ꧀ ꦠꦼꦏꦤ꧀ ꦊꦩ꧀ꦧꦃ ꦏꦭꦶ ꦱꦼꦫꦪꦸ ꦲꦶꦁ ꦧꦚꦸꦩꦱ꧀ ꦭꦤ꧀ ꦧꦤ꧀ꦗꦂꦤꦼꦒꦫ꧈ ꦲꦮ ꦲꦝꦼꦩ꧀ ꦔ꧀ꦭꦲꦶꦫꦏꦺ ꦥꦔꦤꦤ꧀ ꦲꦔꦼꦠ꧀ ꦏꦪ ꦩꦼꦤ꧀ꦢꦺꦴꦮꦤ꧀ ꦭꦤ꧀ ꦱꦼꦒꦼꦂꦫꦺ ꦢꦮꦼꦠ꧀ ꦄꦪꦸ꧈',
+    location: { center: [109.50, -7.48], zoom: 11, pitch: 60, bearing: -50 },
     alignment: 'right',
   },
   {
     id: 'blora',
     title: 'Blora:\nKekayaan Rasa Timur',
+    javaneseTitle: 'ꦧ꧀ꦭꦺꦴꦫ:\nꦏꦏꦪꦤ꧀ ꦫꦱ ꦠꦶꦩꦸꦂ',
     subtitle: 'Sate Ayam Blora',
+    javaneseSubtitle: 'ꦱꦠꦺꦄꦪꦩ꧀ꦧ꧀ꦭꦺꦴꦫ',
     description: 'Menyusuri sisi timur Jawa Tengah, kita disuguhkan kelembutan Sate Ayam Blora dengan siraman bumbu kacang yang melimpah dan gurih.',
-    location: { center: [111.41, -7.11], zoom: 11, pitch: 55, bearing: -20 },
+    javaneseDescription: 'ꦚꦸꦱꦸꦫꦶ ꦱꦶꦱꦶ ꦮꦺꦠꦤ꧀ ꦗꦮ ꦠꦼꦔꦃ꧈ ꦏꦶꦠ ꦢꦶꦱꦸꦒꦸꦲꦶ ꦏꦊꦩ꧀ꦧꦸꦠꦤ꧀ ꦱꦠꦺ ꦄꦪꦩ꧀ ꦧ꧀ꦭꦺꦴꦫ ꦏꦫꦺꦴ ꦱꦶꦫꦩꦤ꧀ ꦧꦸꦩ꧀ꦧꦸ ꦏꦕꦁ ꦏꦁ ꦩ꧀ꦭꦶꦩ꧀ꦥꦃ ꦭꦤ꧀ ꦒꦸꦫꦶꦃ꧈',
+    location: { center: [111.45, -7.15], zoom: 11, pitch: 55, bearing: -20 },
     alignment: 'left',
   },
   {
     id: 'pemalang',
     title: 'Pemalang:\nPesisir Pantura Barat',
+    javaneseTitle: 'ꦥꦼꦩꦭꦁ:\nꦥꦼꦱꦶꦱꦶꦂ ꦥꦤ꧀ꦠꦸꦫ ꦏꦸꦭꦺꦴꦤ꧀',
     subtitle: 'Nasi Grombyang',
+    javaneseSubtitle: 'ꦤꦱꦶꦒꦿꦺꦴꦩ꧀ꦧ꧀ꦪꦁ',
     description: 'Berada di jalur perdagangan legendaris Daendels, Pemalang menyajikan Nasi Grombyang — potongan daging kerbau empuk dengan kuah kluwek berlimpah.',
-    location: { center: [109.38, -6.89], zoom: 11.5, pitch: 55, bearing: 15 },
+    javaneseDescription: 'ꦢꦸꦩꦸꦤꦸꦁ ꦲꦶꦁ ꦢꦭꦤ꧀ ꦥꦒꦸꦪꦸꦧꦤ꧀ ꦢꦲꦺꦤ꧀ꦢꦼꦭ꧀ꦱ꧀꧈ ꦥꦼꦩꦭꦁ ꦚꦗꦶꦏꦏꦺ ꦤꦱꦶ ꦒꦿꦺꦴꦩ꧀ꦧ꧀ꦪꦁ — ꦥꦺꦴꦠꦺꦴꦔꦤ꧀ ꦢꦒꦶꦁ ꦏꦼꦧꦺꦴ ꦲꦼꦩ꧀ꦥꦸꦏ꧀ ꦏꦫꦺꦴ ꦏꦸꦮꦃ ꦏ꧀ꦭꦸꦮꦼꦏ꧀ ꦏꦁ ꦩ꧀ꦭꦶꦩ꧀ꦥꦃ꧈',
+    location: { center: [109.42, -6.95], zoom: 11, pitch: 55, bearing: 15 },
     alignment: 'right',
   },
   {
@@ -227,7 +240,7 @@ export default function StoryMapsClient() {
 
     const flyingInterval = setInterval(() => {
       setFlyingFrame((f) => (f % 3) + 1);
-    }, 100);
+    }, 200);
 
     return () => {
       clearInterval(peekingInterval);
@@ -264,13 +277,62 @@ export default function StoryMapsClient() {
     }
   }, [activeChapter]);
 
+  // Update thought bubble and pin data when chapter or food selection changes
+  useEffect(() => {
+    if (!mascotMarkerRef.current) return;
+    const walker = mascotMarkerRef.current.getElement().querySelector('.si-podo-walker') as HTMLDivElement;
+    if (!walker) return;
+
+    if (activeChapter >= 1 && activeChapter < scrollChapters.length - 1) {
+      const chapter = scrollChapters[activeChapter];
+      const foodItem = activeFoodItems[chapter.id] || CHAPTER_GALLERIES[chapter.id]?.[0];
+      
+      const bubbleText = walker.querySelector('.bubble-text');
+      const pinImg = walker.querySelector('.pin-image') as HTMLImageElement;
+      
+      if (foodItem) {
+        if (bubbleText) bubbleText.textContent = `"${foodItem.title} enak tenan!"`;
+        if (pinImg) pinImg.src = foodItem.url;
+      }
+    }
+  }, [activeChapter, activeFoodItems]);
+
   /* ── Explore mode state ── */
   const [selectedFood, setSelectedFood] = useState<Food | null>(null);
   const [activeRegion, setActiveRegion] = useState('Semua');
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredFoods = useMemo(() => {
-    if (mode !== 'explore') return foodsData;
+    if (mode === 'story') {
+      if (activeChapter >= 1 && activeChapter < scrollChapters.length - 1) {
+        const chapter = scrollChapters[activeChapter];
+        const origins = chapterOriginMap[chapter.id] || [];
+        const baseFoods = foodsData.filter((f) => origins.includes(f.city));
+        
+        if (baseFoods.length === 0) return [];
+
+        const randomized: Food[] = [];
+        const centerLng = chapter.location.center[0];
+        const centerLat = chapter.location.center[1];
+
+        // Generate 5 scattered pins to make the map look rich (Figma design)
+        for (let i = 0; i < 5; i++) {
+          const food = baseFoods[i % baseFoods.length];
+          const angle = i * (Math.PI * 2 / 5);
+          // deterministic distance
+          const dist = 0.05 + (i % 2) * 0.05; 
+          randomized.push({
+            ...food,
+            id: `${food.id}-rand-${i}`,
+            longitude: centerLng + Math.cos(angle) * dist,
+            latitude: centerLat + Math.sin(angle) * dist,
+          });
+        }
+        return randomized;
+      }
+      return [];
+    }
+
     let filtered = foodsData;
     if (activeRegion !== 'Semua') {
       const cities = regionCityMap[activeRegion];
@@ -283,7 +345,7 @@ export default function StoryMapsClient() {
       );
     }
     return filtered;
-  }, [activeRegion, searchQuery, mode]);
+  }, [activeRegion, searchQuery, mode, activeChapter]);
 
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
@@ -373,8 +435,8 @@ export default function StoryMapsClient() {
       // ── ADD MASCOT MARKER (EMOJI / IMG) ──
       const mascotContainer = document.createElement('div');
       mascotContainer.className = 'si-podo-container-map';
-      mascotContainer.style.width = '80px';
-      mascotContainer.style.height = '80px';
+      mascotContainer.style.width = '120px';
+      mascotContainer.style.height = '120px';
       mascotContainer.style.display = 'none'; // Hide completely during intro
       mascotContainer.style.justifyContent = 'center';
       mascotContainer.style.alignItems = 'center';
@@ -390,12 +452,31 @@ export default function StoryMapsClient() {
       mascotInner.style.alignItems = 'center';
 
       const mascotImg = document.createElement('img');
+      mascotImg.className = 'si-podo-img';
       mascotImg.src = '/kuliner/sejarah/terbang_1.webp';
       mascotImg.style.width = '100%';
       mascotImg.style.height = '100%';
       mascotImg.style.objectFit = 'contain';
       mascotImg.style.filter = 'drop-shadow(0px 8px 16px rgba(0,0,0,0.5))';
 
+      // Thought bubble
+      const thoughtBubble = document.createElement('div');
+      thoughtBubble.className = 'podo-thought-bubble';
+      thoughtBubble.innerHTML = `
+        <div class="bubble-text"></div>
+        <div class="bubble-tail-1"></div>
+        <div class="bubble-tail-2"></div>
+      `;
+      
+      // Popup pin
+      const popupPin = document.createElement('div');
+      popupPin.className = 'podo-popup-pin';
+      popupPin.innerHTML = `
+        <img class="pin-image" src="" alt="Food" />
+      `;
+
+      mascotInner.appendChild(thoughtBubble);
+      mascotInner.appendChild(popupPin);
       mascotInner.appendChild(mascotImg);
       mascotContainer.appendChild(mascotInner);
 
@@ -410,17 +491,19 @@ export default function StoryMapsClient() {
       flyInterval = setInterval(() => {
         const walker = mascotContainer.querySelector('.si-podo-walker');
         if (walker) {
-          const img = walker.querySelector('img');
+          const img = walker.querySelector('.si-podo-img') as HTMLImageElement;
           if (img) {
             if (walker.classList.contains('is-walking')) {
               frame = (frame % 3) + 1;
               img.src = `/kuliner/sejarah/terbang_${frame}.webp`;
+            } else if (walker.classList.contains('is-standing')) {
+              img.src = '/kuliner/mascot_kuliner_1.webp';
             } else {
               img.src = '/kuliner/sejarah/terbang_1.webp';
             }
           }
         }
-      }, 120);
+      }, 200);
 
       // ── WORLD DIMMING LAYER (Hides the bright green base map) ──
       map.addSource('world-dim-source', {
@@ -592,41 +675,49 @@ export default function StoryMapsClient() {
       });
     });
 
-    // 2b. Chaotic Screen Flying Mascot Overlay (Si Podo flies forward to front of screen)
-    const horizContainer = document.querySelector('.horizontal-scroll-container');
-    if (horizContainer && firstMapTriggerRef.current) {
+    // 2b. Screen Flying Mascot Overlay (Si Podo flies from Intro to Semarang)
+    const introRef = chapterRefs.current[0];
+    if (introRef && mascotMarkerRef.current) {
       const flightTl = gsap.timeline({
         scrollTrigger: {
-          trigger: horizContainer,
-          start: 'top bottom',
-          endTrigger: firstMapTriggerRef.current,
-          end: 'bottom top',
-          scrub: 1.8, // extremely smooth lag
+          trigger: introRef,
+          start: 'bottom bottom', // Trigger precisely when the Intro section finishes and its card starts scrolling up
+          toggleActions: 'play none none none', // Play once
+          onEnter: () => {
+            const el = mascotMarkerRef.current?.getElement();
+            if (el) {
+              el.style.display = 'flex';
+              el.style.opacity = '1';
+            }
+          }
         }
       });
 
-      // Fly closer to screen, erratically swooping and rotating, then diving down to map
-      flightTl.fromTo('#podo-flying-overlay',
-        { 
-          x: '50vw', 
-          y: '80vh', 
-          scale: 0.3, 
-          rotation: -10, 
-          opacity: 0,
-        },
-        {
-          opacity: 1,
-          keyframes: [
-            { x: '20vw', y: '45vh', scale: 1.4, rotation: 25, duration: 1, ease: 'sine.inOut' },
-            { x: '85vw', y: '20vh', scale: 2.3, rotation: -15, duration: 1, ease: 'sine.inOut' },
-            { x: '30vw', y: '15vh', scale: 1.8, rotation: 10, duration: 1.2, ease: 'sine.inOut' },
-            { x: '75vw', y: '65vh', scale: 1.2, rotation: -20, duration: 1, ease: 'sine.inOut' },
-            { x: '45vw', y: '40vh', scale: 0.9, rotation: 30, duration: 1.2, ease: 'sine.inOut' },
-            { x: '65vw', y: '50vh', scale: 0.6, rotation: -10, opacity: 0.8, duration: 1, ease: 'sine.inOut' },
-            { x: '42vw', y: '35vh', scale: 0.3, rotation: -45, opacity: 0, duration: 0.8, ease: 'power2.in' } // Dives down into Semarang location on map
-          ]
-        }
-      );
+      const walkerEl = mascotMarkerRef.current?.getElement()?.querySelector('.si-podo-walker');
+      
+      if (walkerEl) {
+        flightTl.fromTo(walkerEl,
+          { 
+            x: '100vw', // Start offscreen right
+            y: '-80vh', // Start high up relative to its final map position
+            scale: 0.5, 
+            rotation: 20, 
+          },
+          {
+            duration: 2.5,
+            ease: 'power2.inOut',
+            keyframes: [
+              // Membesar menyapa kita
+              { x: '45vw', y: '-40vh', scale: 2.5, rotation: -10, duration: 0.7 },
+              // Melingkar seperti burung
+              { x: '35vw', y: '-25vh', scale: 1.8, rotation: -45, duration: 0.5 },
+              { x: '55vw', y: '-20vh', scale: 1.2, rotation: -80, duration: 0.5 },
+              // Dive down to Semarang (its natural pinned position is 0, 0)
+              { x: 0, y: 0, scale: 1, rotation: 0, duration: 0.8 }
+            ]
+          }
+        );
+      }
     }
 
     // 3. Map flyTo triggers for each chapter
@@ -636,7 +727,7 @@ export default function StoryMapsClient() {
       const trigger = ScrollTrigger.create({
         trigger: ref,
         start: 'top 60%',
-        end: 'bottom 40%',
+        end: 'bottom 60%',
         onEnter: () => {
           setActiveChapter(index);
           const chapter = scrollChapters[index];
@@ -645,7 +736,7 @@ export default function StoryMapsClient() {
             zoom: chapter.location.zoom,
             pitch: chapter.location.pitch,
             bearing: chapter.location.bearing,
-            duration: 2800, // Slightly slower flyTo camera for smoother look
+            duration: 3500, // Slower flyTo camera for smoother look
             curve: 0.9,
             essential: true,
           });
@@ -658,7 +749,7 @@ export default function StoryMapsClient() {
             zoom: chapter.location.zoom,
             pitch: chapter.location.pitch,
             bearing: chapter.location.bearing,
-            duration: 2800,
+            duration: 3500,
             curve: 0.9,
             essential: true,
           });
@@ -684,9 +775,8 @@ export default function StoryMapsClient() {
         trigger: ref,
         start: 'top bottom', // Start walking when card begins to enter the screen
         end: 'top center',   // Stop walking when card is focused
-        scrub: 2.2,          // slow, beautiful glide with soft inertia (terbang smooth)
+        scrub: 4,          // much slower, beautiful glide with soft inertia (terbang smooth)
         onUpdate: (self) => {
-          const velocity = self.getVelocity();
           if (mascotMarkerRef.current) {
             // Flip the mascot inside the walker container based on direction
             const isGoingForward = self.direction > 0;
@@ -695,27 +785,12 @@ export default function StoryMapsClient() {
             
             const walker = mascotMarkerRef.current.getElement().querySelector('.si-podo-walker') as HTMLDivElement;
             if (walker) {
-              const img = walker.querySelector('img') as HTMLImageElement;
+              const img = walker.querySelector('.si-podo-img') as HTMLImageElement;
               if (img) {
                 img.style.transform = goingLeftNow ? 'scaleX(-1)' : 'scaleX(1)';
               }
-              
-              // Only trigger bounce/walk animation if scroll velocity is non-zero
-              if (Math.abs(velocity) > 5) {
-                walker.classList.add('is-walking');
-              } else {
-                walker.classList.remove('is-walking');
-              }
             }
           }
-        },
-        onLeave: () => {
-          const walker = mascotMarkerRef.current?.getElement().querySelector('.si-podo-walker');
-          walker?.classList.remove('is-walking');
-        },
-        onLeaveBack: () => {
-          const walker = mascotMarkerRef.current?.getElement().querySelector('.si-podo-walker');
-          walker?.classList.remove('is-walking');
         },
         animation: gsap.to(pos, {
           lng: endCenter[0],
@@ -724,6 +799,17 @@ export default function StoryMapsClient() {
           onUpdate: function () {
             if (mascotMarkerRef.current) {
               mascotMarkerRef.current.setLngLat([pos.lng, pos.lat]);
+              const walker = mascotMarkerRef.current.getElement().querySelector('.si-podo-walker');
+              if (walker) {
+                const progress = this.progress();
+                if (progress > 0.95 || progress < 0.05) {
+                  walker.classList.remove('is-walking');
+                  walker.classList.add('is-standing');
+                } else {
+                  walker.classList.add('is-walking');
+                  walker.classList.remove('is-standing');
+                }
+              }
             }
           }
         })
@@ -915,7 +1001,7 @@ export default function StoryMapsClient() {
     if (!mapRef.current || !isMapLoaded) return;
     markersRef.current.forEach((m) => m.remove());
     markersRef.current.clear();
-    if (mode !== 'explore') return;
+    markersRef.current.clear();
 
     const cityGroups = filteredFoods.reduce((acc, food) => {
       if (!acc[food.city]) acc[food.city] = [];
@@ -936,11 +1022,31 @@ export default function StoryMapsClient() {
         markersRef.current.set(`cluster-${city}`, marker);
       } else {
         const food = foods[0];
-        const isActive = selectedFood?.id === food.id;
+        
+        let isActive = false;
+        if (mode === 'explore') {
+          isActive = selectedFood?.id === food.id;
+        } else if (mode === 'story' && activeChapter >= 1 && activeChapter < scrollChapters.length - 1) {
+          const chapId = scrollChapters[activeChapter].id;
+          const activeId = activeFoodItems[chapId]?.id || CHAPTER_GALLERIES[chapId]?.[0]?.id;
+          isActive = activeId === food.id;
+        }
+
         const isTour = currentAutoTourFood?.id === food.id;
         const el = document.createElement('div');
         el.className = `food-marker-wrapper ${isActive ? 'active' : ''} ${isTour ? 'auto-tour' : ''}`;
-        el.innerHTML = `<div class="food-marker">${food.icon}</div>`;
+        
+        // In story mode, show images for all randomized pins to match Figma design
+        if ((isActive || mode === 'story') && food.image) {
+          el.innerHTML = `
+            <div class="food-marker active-marker">
+              <img src="${food.image}" alt="${food.name}" />
+            </div>
+          `;
+        } else {
+          el.innerHTML = `<div class="food-marker inactive-dot"></div>`;
+        }
+        
         el.addEventListener('click', () => handleMarkerClick(food));
         const marker = new mapboxgl.Marker({ element: el, anchor: 'bottom' })
           .setLngLat([food.longitude, food.latitude])
@@ -949,7 +1055,7 @@ export default function StoryMapsClient() {
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filteredFoods, selectedFood, currentAutoTourFood, isMapLoaded, mode]);
+  }, [filteredFoods, selectedFood, currentAutoTourFood, isMapLoaded, mode, activeChapter, activeFoodItems]);
 
   useEffect(() => {
     if (isAutoTourActive && !isAutoTourPaused && filteredFoods.length > 0) {
@@ -1036,12 +1142,7 @@ export default function StoryMapsClient() {
   return (
     <div className={`maps-page mode-${mode}`}>
 
-      {/* 0b. Chaotic Screen Flying Mascot Overlay */}
-      {mode === 'story' && activeChapter < 1 && (
-        <div id="podo-flying-overlay" className="podo-flying-overlay">
-          <img src={`/kuliner/sejarah/terbang_${flyingFrame}.webp`} alt="Si Podo Flying" />
-        </div>
-      )}
+
 
       {/* ████ FULL-SCREEN MAP (Fixed in background) ████ */}
       <div className="map-fixed-layer">
@@ -1124,7 +1225,7 @@ export default function StoryMapsClient() {
                 <div
                   key={chapter.id}
                   ref={(el) => { chapterRefs.current[index] = el; }}
-                  className="chapter-section"
+                  className={`chapter-section ${isLast ? 'last-chapter-section' : ''}`}
                 >
                   <ChapterCard 
                     chapter={chapter}

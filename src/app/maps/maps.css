@@ -71,7 +71,8 @@
   right: 0;
   bottom: 0;
   background: var(--color-hitam-arang);
-  z-index: 8; /* Above map, below story content */
+  z-index: 8;
+  /* Above map, below story content */
   pointer-events: none;
 }
 
@@ -165,16 +166,21 @@
   position: relative;
   z-index: 10;
   width: 100%;
-  pointer-events: none; 
+  pointer-events: none;
 }
 
 /* ══════ CHAPTER SECTIONS ══════ */
 .chapter-section {
   width: 100%;
-  min-height: 120vh;
+  min-height: 200vh;
+  /* Increased from 120vh to give more scroll distance (pause effect) */
   display: flex;
   padding: 10vh 6vw;
   position: relative;
+}
+
+.chapter-section.last-chapter-section {
+  min-height: 120vh; /* Reduced from 200vh to avoid excessive dead scrolling at the end */
 }
 
 .chapter-content-wrapper {
@@ -186,15 +192,25 @@
   pointer-events: auto;
 }
 
-.chapter-center { justify-content: center; text-align: center; }
-.chapter-left { justify-content: flex-start; }
-.chapter-right { justify-content: flex-end; }
+.chapter-center {
+  justify-content: center;
+  text-align: center;
+}
+
+.chapter-left {
+  justify-content: flex-start;
+}
+
+.chapter-right {
+  justify-content: flex-end;
+}
 
 /* ══════ WEB STORY CARDS ══════ */
 .web-story-card {
   max-width: 480px;
-  padding: 48px 40px;
-  background-color: #F8F3E6; /* Light cream */
+  padding: 48px 40px 100px 40px;
+  background-color: #F8F3E6;
+  /* Light cream */
   background-image: url('/batik/pattern_background.webp');
   background-size: 200px;
   background-repeat: repeat;
@@ -210,7 +226,7 @@
 /* ── GOLD KERIS ORNAMENTS (REMOVED - Replaced by img tags in ChapterCard) ── */
 
 /* Fix inner padding for the card content to stay clear of ornaments */
-.web-story-card > * {
+.web-story-card>* {
   position: relative;
   z-index: 5;
 }
@@ -223,6 +239,7 @@
   border: none;
   box-shadow: none;
 }
+
 .web-story-card.hero-card::before {
   display: none;
 }
@@ -242,6 +259,16 @@
   display: none;
 }
 
+.podo-epilogue-sitting {
+  position: absolute !important;
+  top: -175px;
+  right: -55px;
+  width: 230px;
+  z-index: 20;
+  pointer-events: none;
+  filter: drop-shadow(0 12px 16px rgba(0, 0, 0, 0.3));
+}
+
 /* ══════ STORY TYPOGRAPHY ══════ */
 .story-label {
   display: inline-flex;
@@ -255,6 +282,7 @@
   color: var(--color-kuning-kepodang);
   margin-bottom: 20px;
 }
+
 .story-label-line {
   width: 24px;
   height: 2px;
@@ -265,40 +293,46 @@
   font-family: var(--font-playfair);
   font-size: 36px;
   font-weight: 700;
-  color: #3B1F0C; /* Dark brown from the design */
+  color: #3B1F0C;
+  /* Dark brown from the design */
   line-height: 1.2;
   margin: 0 0 12px 0;
 }
+
 .hero-card .story-title {
   font-size: 72px;
-  text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
 }
 
 .story-subtitle {
   font-family: var(--font-dm-sans);
   font-size: 14px;
   font-weight: 600;
-  color: #8C6A48; /* Medium brown */
+  color: #8C6A48;
+  /* Medium brown */
   letter-spacing: 2px;
   text-transform: uppercase;
   margin-bottom: 24px;
 }
+
 .hero-card .story-subtitle {
-  text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
 }
 
 .story-description {
   font-family: var(--font-dm-sans);
   font-size: 16px;
-  color: #4A3A31; /* Dark grey-brown */
+  color: #4A3A31;
+  /* Dark grey-brown */
   line-height: 1.7;
   margin: 0;
 }
+
 .hero-card .story-description {
   font-size: 20px;
   max-width: 600px;
   margin: 0 auto;
-  text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
 }
 
 /* ══════ EXPLORE CTA HUGE ══════ */
@@ -349,10 +383,25 @@
 }
 
 @keyframes scrollWheel {
-  0% { transform: translateY(0); opacity: 1; }
-  50% { transform: translateY(8px); opacity: 0; }
-  51% { transform: translateY(-8px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+
+  51% {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .scroll-indicator-bridge span {
@@ -362,7 +411,7 @@
   color: var(--color-krem-mori);
   letter-spacing: 2px;
   text-transform: uppercase;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
 }
 
 /* ══════ STORY PROGRESS NAV ══════ */
@@ -553,8 +602,15 @@
 }
 
 @keyframes radar-pulse {
-  0% { transform: scale(0.1); opacity: 1; }
-  100% { transform: scale(1.5); opacity: 0; }
+  0% {
+    transform: scale(0.1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
 }
 
 .cluster-marker-wrapper {
@@ -571,7 +627,7 @@
   height: 44px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--color-kuning-kepodang) 0%, var(--color-emas-keris) 100%);
-  border: 3px solid rgba(255,255,255,0.9);
+  border: 3px solid rgba(255, 255, 255, 0.9);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -591,27 +647,53 @@
 }
 
 .food-marker {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: var(--color-putih-santan);
-  border: 3px solid var(--color-emas-keris);
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
-  position: relative;
 }
 
-.food-marker::after {
+.food-marker.inactive-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #E0E0E0; /* Light gray */
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+}
+
+.food-marker-wrapper:hover .inactive-dot {
+  transform: scale(1.2);
+  background: var(--color-kuning-kepodang);
+}
+
+.food-marker.active-marker {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid var(--color-emas-keris);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  overflow: visible; /* To allow the tail to show if we add it */
+}
+
+.food-marker.active-marker img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.food-marker.active-marker::after {
   content: '';
   position: absolute;
   bottom: -10px;
   left: 50%;
   transform: translateX(-50%);
-  border-left: 7px solid transparent;
-  border-right: 7px solid transparent;
-  border-top: 11px solid var(--color-emas-keris);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 10px solid var(--color-emas-keris);
 }
 
 .food-marker-wrapper.active .food-marker {
@@ -626,13 +708,29 @@
 }
 
 @keyframes pulse-marker {
-  0%, 100% { box-shadow: 0 0 0 4px rgba(245, 196, 0, 0.3); }
-  50% { box-shadow: 0 0 0 10px rgba(245, 196, 0, 0.15); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 4px rgba(245, 196, 0, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 0 10px rgba(245, 196, 0, 0.15);
+  }
 }
 
 @keyframes auto-tour-pulse {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 196, 0, 0.7); }
-  50% { transform: scale(1.15); box-shadow: 0 0 0 12px rgba(245, 196, 0, 0); }
+
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(245, 196, 0, 0.7);
+  }
+
+  50% {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 12px rgba(245, 196, 0, 0);
+  }
 }
 
 .story-panel {
@@ -667,7 +765,7 @@
   left: 0;
   right: 0;
   height: 140px;
-  background: linear-gradient(to top, rgba(26,10,2,0.8), transparent);
+  background: linear-gradient(to top, rgba(26, 10, 2, 0.8), transparent);
 }
 
 .story-panel-city {
@@ -724,7 +822,8 @@
   width: 100%;
   height: 100%;
   border-radius: 99px;
-  background: #F5C400; /* Bright yellow */
+  background: #F5C400;
+  /* Bright yellow */
   border: none;
   font-family: var(--font-dm-sans);
   font-size: 16px;
@@ -831,41 +930,123 @@
 
 /* ── FLYING MASCOT ANIMATION ── */
 @keyframes flyBob {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0);
   }
+
   50% {
-    transform: translateY(-12px); /* Bobbing flight effect */
+    transform: translateY(-12px);
+    /* Bobbing flight effect */
   }
 }
 
 .si-podo-walker {
   transition: transform 0.3s ease;
+  position: relative;
 }
 
 .si-podo-walker.is-walking {
   animation: flyBob 0.6s ease-in-out infinite;
 }
 
+/* Hover animation when standing still */
+@keyframes podoHover {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-10px);
+  }
+}
+
+.si-podo-walker.is-standing .si-podo-img {
+  animation: podoHover 2s infinite ease-in-out alternate;
+}
+
+/* Thought Bubble styling */
+.podo-thought-bubble {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  background-color: #F8F3E6;
+  border: 1px solid #C7A153;
+  border-radius: 16px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-origin: bottom center;
+  z-index: 20;
+  width: max-content;
+  max-width: 200px;
+  text-align: center;
+  font-family: var(--font-dm-sans);
+  color: #3C2A21;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.si-podo-walker.is-standing .podo-thought-bubble {
+  transform: translateX(-50%) scale(1);
+  opacity: 1;
+  transition-delay: 0.3s;
+}
+
+.podo-thought-bubble .bubble-tail-1 {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
+  background-color: #F8F3E6;
+  border: 1px solid #C7A153;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.podo-thought-bubble .bubble-tail-2 {
+  position: absolute;
+  bottom: -18px;
+  left: 45%;
+  width: 6px;
+  height: 6px;
+  background-color: #F8F3E6;
+  border: 1px solid #C7A153;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+/* Food Pin Popup styling (DEPRECATED/REMOVED AS PER FIGMA) */
+.podo-popup-pin {
+  display: none !important;
+}
+
 /* ── PEEKING MASCOT ON CARD ── */
 .si-podo-peeking-card {
   position: absolute;
-  bottom: 100%; /* Sit perfectly on top of the card */
+  bottom: 100%;
+  /* Sit perfectly on top of the card */
   left: 50%;
-  transform: translateX(-50%) translateY(2px); /* Overlap border by 2px to hide crop line */
-  width: 140px;
-  height: 140px;
+  transform: translateX(-50%) translateY(24px);
+  /* Pushed down just enough to overlap card edge */
+  width: 200px;
   z-index: 15;
   pointer-events: none;
-  filter: drop-shadow(0px -4px 12px rgba(0, 0, 0, 0.3)); /* Shadow upwards */
-  /* Remove peekingPulse so he stays firmly anchored to the top edge */
+  filter: drop-shadow(0px -4px 12px rgba(0, 0, 0, 0.3));
+  /* Shadow upwards */
 }
 
 .si-podo-peeking-card img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  object-position: bottom; /* Ensure the image aligns to the bottom of the container */
+  object-position: bottom;
+  /* Ensure the image aligns to the bottom of the container */
 }
 
 /* ── SCREEN SPACE FLYING OVERLAY ── */
@@ -874,14 +1055,16 @@
   top: 0;
   left: 0;
   opacity: 0;
-  z-index: 999; /* Fly in front of everything */
+  z-index: 999;
+  /* Fly in front of everything */
   width: 140px;
   height: 140px;
   pointer-events: none;
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: translate(-50%, -50%); /* Anchor at center */
+  transform: translate(-50%, -50%);
+  /* Anchor at center */
   will-change: transform, opacity;
   filter: drop-shadow(0px 12px 24px rgba(0, 0, 0, 0.4));
 }
@@ -890,24 +1073,114 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+  filter: drop-shadow(0px 12px 24px rgba(0, 0, 0, 0.4));
+}
+
+/* ------ STACKED CARD SHUFFLE ------ */
+.card-stack-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  width: 100%;
+  max-width: 480px;
+  perspective: 1000px;
+}
+
+.web-story-card.theme-dark-jawa,
+.web-story-card.theme-light-indo {
+  grid-area: 1 / 1;
+  position: relative !important;
+  height: auto !important;
+  min-height: 100%;
+  align-self: stretch;
+  transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.web-story-card.theme-dark-jawa {
+  z-index: 2;
+  background-color: #3B1F0C;
+  background-image: none;
+  border: 1px solid rgba(245, 196, 0, 0.2);
+  transform-origin: center right;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+  transform: translate(0, 0) rotate(0deg);
+  filter: brightness(1);
+}
+
+.theme-dark-jawa .javanese-text {
+  font-family: var(--font-noto-javanese);
+  color: #F8F3E6;
+  font-size: 0.95em;
+  line-height: 1.4;
+}
+
+.theme-dark-jawa h2.javanese-text {
+  font-size: 1.6rem;
+}
+
+.theme-dark-jawa .story-subtitle.javanese-text {
+  color: #C8994E;
+}
+
+.web-story-card.theme-light-indo {
+  z-index: 1;
+  transform: translate(16px, 16px) rotate(3deg);
+  filter: brightness(0.8);
+}
+
+.web-story-card.theme-dark-jawa.is-revealed {
+  transform: translate(-20px, 20px) rotate(-3deg);
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 1;
+  filter: brightness(0.8);
+}
+
+.web-story-card.theme-light-indo.is-revealed {
+  transform: translate(0, 0) rotate(0deg);
+  z-index: 2;
+  filter: brightness(1);
+}
+
+.ornament-top-center {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
+  z-index: 5;
+}
+
+.ornament-bottom-right {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 90px;
+  z-index: 0;
+  opacity: 0.9;
+}
+
+.theme-dark-jawa .ornament-bottom-right {
+  filter: invert(1) sepia(1) saturate(5) hue-rotate(350deg) brightness(0.8);
+}
+
+.theme-dark-jawa .ornament-top-center {
+  filter: brightness(1.5) contrast(1.2);
+}
+
+/* Intro Card Ornaments */
+.web-story-card.intro-card {
+  padding-top: 80px;
 }
 
 
-.podo-flying-overlay { position: fixed; z-index: 50; pointer-events: none; width: 120px; height: 120px; top: 0; left: 0; }
-.podo-flying-overlay img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
 
-/* ------ STACKED CARD SHUFFLE ------ */
-.card-stack-container { display: grid; grid-template-columns: 1fr; grid-template-rows: 1fr; width: 100%; max-width: 480px; perspective: 1000px; }
-.web-story-card.theme-dark-jawa, .web-story-card.theme-light-indo { grid-area: 1 / 1; position: relative !important; height: auto !important; min-height: 100%; align-self: stretch; transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
-.web-story-card.theme-dark-jawa { z-index: 2; background-color: #3B1F0C; background-image: none; border: 1px solid rgba(245, 196, 0, 0.2); transform-origin: center right; box-shadow: 0 24px 48px rgba(0,0,0,0.4); transform: translate(0, 0) rotate(0deg); filter: brightness(1); }
-.theme-dark-jawa .javanese-text { font-family: var(--font-noto-javanese); color: #F8F3E6; font-size: 1.2em; line-height: 1.6; }
-.theme-dark-jawa h2.javanese-text { font-size: 2.2rem; }
-.theme-dark-jawa .story-subtitle.javanese-text { color: #C8994E; }
-.web-story-card.theme-light-indo { z-index: 1; transform: translate(16px, 16px) rotate(3deg); filter: brightness(0.8); }
-.web-story-card.theme-dark-jawa.is-revealed { transform: translate(-20px, 20px) rotate(-3deg); opacity: 1; pointer-events: auto; z-index: 1; filter: brightness(0.8); }
-.web-story-card.theme-light-indo.is-revealed { transform: translate(0, 0) rotate(0deg); z-index: 2; filter: brightness(1); }
-.ornament-top-center { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 220px; z-index: 5; }
-.ornament-bottom-right { position: absolute; bottom: 20px; right: 20px; width: 90px; z-index: 0; opacity: 0.9; }
-.theme-dark-jawa .ornament-bottom-right { filter: invert(1) sepia(1) saturate(5) hue-rotate(350deg) brightness(0.8); }
-.theme-dark-jawa .ornament-top-center { filter: brightness(1.5) contrast(1.2); }
-
+.ornament-bottom-center-dekor {
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 160px;
+  z-index: 5;
+  opacity: 0.95;
+}

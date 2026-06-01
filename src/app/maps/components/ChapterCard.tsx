@@ -142,6 +142,20 @@ export default function ChapterCard({
             </>
           )}
 
+          {isFirst && (
+            <>
+              <img src="/motif/dekor_header_atas.webp" alt="" className="ornament-bottom-center-dekor" />
+            </>
+          )}
+
+          {isLast && (
+            <img 
+              src="/kuliner/podo_mam_kerupuk_1.webp" 
+              alt="Si Podo Duduk" 
+              className="podo-epilogue-sitting"
+            />
+          )}
+
           <h2 className="story-title" style={{ whiteSpace: 'pre-line' }}>
             {chapter.title}
           </h2>
