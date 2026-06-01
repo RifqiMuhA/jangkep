@@ -181,12 +181,25 @@
   /* Ensure it doesn't block clicks on the hero */
 }
 
+/* Extend hero background down behind the transparent wayang */
+.transitionWrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 30%; /* Meets at 70% height, behind the opaque wave */
+  left: 0;
+  right: 0;
+  background-color: var(--color-krem-mori, #F2EAD3);
+  z-index: -1;
+  pointer-events: none;
+}
+
 /* Add pattern to the bottom half of the transition to match HistoryTimeline */
 .transitionWrapper::after {
   content: '';
   position: absolute;
-  top: 50%;
-  bottom: 0;
+  top: 70%;
+  bottom: -20px; /* Prevent 1px gaps at bottom */
   left: 0;
   right: 0;
   background-color: #FDFBF6;
@@ -552,6 +565,8 @@
 
 .dekorImage {
   object-fit: contain;
+  width: 100%;
+  height: 100%;
 }
 
 .ingredientsTitle {
@@ -789,6 +804,13 @@
 
   .subtitleWrapper {
     justify-content: center;
+    font-size: 1rem;
+    gap: 8px;
+  }
+
+  .subtitleOrnament .ornamentImg {
+    width: 50px !important;
+    height: auto !important;
   }
 
   .subtitleSeparator {
@@ -968,4 +990,142 @@
   background-color: var(--color-krem-mori, #F2EAD3);
   color: var(--color-coklat-batik, #3B1F0C);
   font-family: var(--font-playfair), serif;
+}
+
+/* 5. NEXT JOURNEY SECTIONS */
+.nextJourney {
+  position: relative;
+  overflow: hidden;
+  padding: 150px 0;
+  background-color: #1a0f05;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lampLeft, .lampRight {
+  position: absolute;
+  top: -10px;
+  width: 70px;
+  height: auto;
+  z-index: 1;
+  opacity: 0.8;
+  animation: swing 4s ease-in-out infinite alternate;
+  transform-origin: top center;
+}
+.lampLeft {
+  left: 3%;
+}
+.lampRight {
+  right: 3%;
+  animation-delay: 1s;
+}
+
+.ornamentLeft, .ornamentRight {
+  position: absolute;
+  bottom: 0;
+  width: 250px;
+  height: auto;
+  z-index: 0;
+  opacity: 0.3; /* Lebih tipis sesuai permintaan */
+  pointer-events: none;
+}
+.ornamentLeft {
+  left: -20px;
+}
+.ornamentRight {
+  right: -20px;
+}
+
+/* Ornamen Lapis 2 (Menengah) */
+.ornamentLeftMid, .ornamentRightMid {
+  position: absolute;
+  bottom: -15px;
+  width: 180px;
+  height: auto;
+  z-index: 0;
+  opacity: 0.2;
+  pointer-events: none;
+}
+.ornamentLeftMid { left: 15%; }
+.ornamentRightMid { right: 15%; }
+
+/* Ornamen Lapis 3 (Kecil dekat tengah) */
+.ornamentLeftInner, .ornamentRightInner {
+  position: absolute;
+  bottom: -10px;
+  width: 120px;
+  height: auto;
+  z-index: 0;
+  opacity: 0.15;
+  pointer-events: none;
+}
+.ornamentLeftInner { left: 30%; }
+.ornamentRightInner { right: 30%; }
+
+.centerMotif {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 450px;
+  height: auto;
+  z-index: 0;
+  opacity: 0.1; /* Sangat transparan agar tidak mengganggu tombol */
+  pointer-events: none;
+}
+
+@keyframes swing {
+  0% { transform: rotate(-3deg); }
+  100% { transform: rotate(3deg); }
+}
+
+@media (max-width: 1024px) {
+  .ornamentLeft, .ornamentRight {
+    width: 200px;
+    opacity: 0.2;
+  }
+  .ornamentLeftMid, .ornamentRightMid {
+    width: 140px;
+  }
+  .ornamentLeftInner, .ornamentRightInner {
+    width: 90px;
+  }
+  .lampLeft, .lampRight {
+    width: 55px;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroLeft {
+    padding: 0 10px;
+  }
+  .subtitleWrapper {
+    font-size: 0.9rem;
+    gap: 5px;
+  }
+  .subtitleOrnament .ornamentImg {
+    width: 40px !important;
+  }
+  .nextJourney {
+    padding: 100px 0;
+  }
+  .ornamentLeft, .ornamentRight {
+    width: 150px;
+    opacity: 0.15;
+  }
+  .ornamentLeftMid, .ornamentRightMid {
+    width: 100px;
+    opacity: 0.1;
+  }
+  .ornamentLeftInner, .ornamentRightInner {
+    width: 60px;
+    opacity: 0.1;
+  }
+  .lampLeft, .lampRight {
+    width: 45px;
+  }
+  .centerMotif {
+    width: 250px;
+  }
 }
