@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, DM_Sans, Noto_Sans_Javanese } from "next/font/google";
 import Navbar from "@/components/Navbar";
+import LenisProvider from "@/components/LenisProvider";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -36,8 +37,10 @@ export default function RootLayout({
   return (
     <html lang="id" className={`${playfair.variable} ${dmSans.variable} ${notoJavanese.variable}`}>
       <body>
-        <Navbar />
-        {children}
+        <LenisProvider>
+          <Navbar />
+          {children}
+        </LenisProvider>
       </body>
     </html>
   );

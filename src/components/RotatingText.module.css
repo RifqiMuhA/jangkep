@@ -1,0 +1,51 @@
+.textRotate {
+  display: inline-flex;
+  position: relative;
+}
+
+.textRotateSrOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.textRotateLines {
+  display: flex;
+  flex-direction: column;
+}
+
+.textRotateWord {
+  display: inline-flex;
+  white-space: nowrap;
+}
+
+.textRotateElement {
+  display: inline-block;
+}
+
+.textRotateSpace {
+  display: inline-block;
+  white-space: pre;
+}
+
+/* Custom styles for the Jangkep implementation */
+.highlightBadge {
+  background-color: var(--color-emas-keris);
+  color: var(--color-putih-santan);
+  padding: 0 12px;
+  border-radius: var(--radius-md, 8px);
+  margin-left: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  font-family: inherit;
+  vertical-align: middle;
+}

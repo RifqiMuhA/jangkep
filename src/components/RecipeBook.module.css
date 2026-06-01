@@ -1,0 +1,233 @@
+.bookContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 0;
+  width: 100%;
+  perspective: 1500px;
+}
+
+/* Base Page Styling */
+.page {
+  width: 100%;
+  height: 100%;
+  background-color: #FDFBF6;
+  background-image: url('/motif/latar_manuskrip.webp');
+  background-size: 100% 100%;
+  box-shadow: inset 0 0 40px rgba(139, 90, 43, 0.2), 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(139, 90, 43, 0.2);
+}
+
+.bookSideDecorLeft {
+  position: absolute;
+  left: -280px; /* Adjust this to push it out from the book */
+  bottom: 0;
+  width: 300px;
+  height: 340px;
+  opacity: 0.9;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.bookSideDecorRight {
+  position: absolute;
+  right: -280px; /* Adjust this to push it out from the book */
+  bottom: 0;
+  width: 300px;
+  height: 340px;
+  opacity: 0.9;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.bookSideDecorImage {
+  object-fit: contain;
+}
+
+/* Hard Cover Styling */
+.cover {
+  background-color: #3B1F0C;
+  background-image: url('/motif/cover_resep.webp');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  color: #3B1F0C;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px;
+  border: 4px solid #8B5A2B;
+  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.5);
+}
+
+.backCover {
+  background-image: url('/motif/cover_resep_back.webp');
+}
+
+.coverTitle {
+  font-family: var(--font-playfair), serif;
+  font-size: 3.5rem;
+  color: #3B1F0C;
+  margin-bottom: 20px;
+}
+
+.javaneseScript {
+  font-size: 2rem;
+  opacity: 0.8;
+  margin-bottom: 30px;
+  font-family: 'Noto Sans Javanese', sans-serif;
+}
+
+.coverSubtitle {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #3B1F0C;
+}
+
+/* Page Content */
+.pageContent {
+  width: 100%;
+  height: 100%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Left Page vs Right Page */
+.leftPage {
+  justify-content: center;
+  align-items: center;
+}
+
+.rightPage {
+  justify-content: center;
+  align-items: center;
+}
+
+/* Ingredient Layout */
+.ingredientContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  text-align: center;
+}
+
+.ingredientImgWrapper {
+  width: 180px;
+  height: 180px;
+  position: relative;
+  background-color: rgba(139, 90, 43, 0.05);
+  border-radius: 50%;
+  padding: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(139, 90, 43, 0.15);
+  border: 1px dashed rgba(139, 90, 43, 0.3);
+}
+
+.ingredientImage {
+  object-fit: contain;
+  width: 80% !important;
+  height: 80% !important;
+  position: relative !important;
+  filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.3));
+}
+
+.ingredientName {
+  font-family: var(--font-playfair), serif;
+  font-size: 2.2rem;
+  color: #3B1F0C;
+  text-transform: capitalize;
+  margin: 0;
+}
+
+.ingredientDescriptionText {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: #3B1F0C;
+  text-align: center;
+  font-style: italic;
+  padding: 0 20px;
+}
+
+.pageNumber {
+  position: absolute;
+  bottom: 20px;
+  font-family: var(--font-playfair), serif;
+  color: #8B5A2B;
+  font-style: italic;
+}
+
+.leftPage .pageNumber {
+  left: 20px;
+}
+
+.rightPage .pageNumber {
+  right: 20px;
+}
+
+@media (max-width: 768px) {
+
+  .leftPage .pageNumber,
+  .rightPage .pageNumber {
+    left: auto;
+    right: 20px;
+  }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .bookContainer {
+    padding: 0;
+    margin-top: -80px; /* Strong upward pull */
+    position: relative;
+    z-index: 10;
+  }
+
+  .bookSideDecorLeft {
+    left: -150px;
+    width: 200px;
+    height: 226px; /* Maintaining 0.88 aspect ratio */
+    opacity: 0.6;
+  }
+
+  .bookSideDecorRight {
+    right: -150px;
+    width: 200px;
+    height: 226px; /* Maintaining 0.88 aspect ratio */
+    opacity: 0.6;
+  }
+
+  .coverTitle {
+    font-size: 2.5rem;
+  }
+
+  .pageContent {
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .ingredientImgWrapper {
+    width: 140px;
+    height: 140px;
+  }
+
+  .ingredientName {
+    font-size: 1.8rem;
+  }
+
+  .ingredientDescriptionText {
+    font-size: 1rem;
+    padding: 0 10px;
+  }
+}
