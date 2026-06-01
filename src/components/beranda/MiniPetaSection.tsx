@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import Map from 'react-map-gl/mapbox';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import { kotaAktif, type KotaAktif } from '@/data/peta';
 import styles from './MiniPetaSection.module.css';
 
@@ -142,80 +144,99 @@ export default function MiniPetaSection() {
 
   return (
     <section className={styles.petaSection} id="peta-kuliner">
-      <div className={styles.petaInner}>
-        {/* Header */}
-        <div className={styles.petaLabel}>PETA KULINER</div>
-        <h2 className={styles.petaHeadline}>Jawa Tengah di Atas Meja</h2>
-        <p className={styles.petaSubline}>Setiap kota punya cerita rasa</p>
+      <div className={styles.mapScene}>
+        
+        {/* Layer 1: Base Mapbox */}
+        <div className={styles.mapboxLayer}>
+          <Map
+            mapboxAccessToken="pk.eyJ1IjoiZ2l0cmF5YTE0MDAiLCJhIjoiY21wcGl6YXR2MDFvMDJyc2VrOTJydHR1NyJ9.C1AZIJYhZ5ILwA6BbWrnWw"
+            initialViewState={{
+              longitude: 110.15,
+              latitude: -7.2,
+              zoom: 7.4
+            }}
+            style={{ width: '100%', height: '100%' }}
+            mapStyle="mapbox://styles/gitraya1400/cmpvaoca6000r01rya7zhesa3"
+            interactive={false}
+            scrollZoom={false}
+            dragPan={false}
+            dragRotate={false}
+            doubleClickZoom={false}
+            touchZoomRotate={false}
+            keyboard={false}
+          />
+        </div>
 
-        {/* Grid */}
-        <div className={styles.petaGrid}>
-          {/* ─── Panel Info (Kiri) ─── */}
-          <div ref={panelRef}>
+        {/* Layer 2: Dark warm overlay */}
+        <div className={styles.mapOverlay} />
+        <div className={styles.smokeLayer} />
+
+        {/* Layer 3 & 4: SVG Layer & Culinary Pins */}
+        <div className={styles.svgLayer} onMouseLeave={handleMapLeave}>
+          <div className={styles.svgContainer} ref={mapWrapperRef}>
+            {/* SVG injected here */}
+          </div>
+          
+          {svgLoaded && kotaAktif.map((kota) => (
+            <button
+              key={kota.id}
+              className={styles.petaPin}
+              style={{ left: `${kota.pin.x}%`, top: `${kota.pin.y}%` }}
+              onClick={() => handlePinClick(kota)}
+              onMouseEnter={() => handlePinEnter(kota)}
+              onMouseLeave={handlePinLeave}
+              aria-label={`${kota.nama} — ${kota.makanan}`}
+              type="button"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className={styles.petaPinImg}
+                src={kota.foto}
+                alt={kota.makanan}
+              />
+            </button>
+          ))}
+        </div>
+
+        {/* Layer 5: Floating UI */}
+        <div className={styles.uiLayer}>
+          
+          {/* Header */}
+          <div className={styles.uiHeader}>
+            <div className={styles.headerAksara}>ꦗꦮꦠꦼꦔꦃ</div>
+            <div className={styles.uiLabel}>PETA KULINER</div>
+            <h2 className={styles.uiTitle}>
+              Jawa Tengah<br />di Atas Meja.
+            </h2>
+            <svg className={styles.uiTitleUnderline} viewBox="0 0 280 15" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5,10 Q140,0 275,8" stroke="#B8860B" strokeWidth="4" fill="none" strokeLinecap="round"/>
+            </svg>
+          </div>
+
+          {/* Panel */}
+          <div ref={panelRef} className={styles.uiPanel}>
             {displayCity ? (
-              <div
-                key={animKeyRef.current}
-                className={`${styles.petaPanel} ${styles.petaPanelActive}`}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  className={styles.petaPanelFoto}
-                  src={displayCity.logo}
-                  alt={`Lambang ${displayCity.nama}`}
-                />
-                <div className={styles.petaPanelBody}>
-                  <div className={styles.petaPanelKota}>{displayCity.nama}</div>
-                  <div className={styles.petaPanelMakanan}>{displayCity.makanan}</div>
-                  <div className={styles.petaPanelDesc}>{displayCity.deskripsi}</div>
+              <div key={animKeyRef.current} className={styles.panelActive}>
+                <div className={styles.panelKota}>{displayCity.nama}</div>
+                <div className={styles.panelMakanan}>{displayCity.makanan}</div>
+                <div className={styles.panelDesc}>{displayCity.deskripsi}</div>
+                
+                <div className={styles.ctaWrap}>
+                  <Link href={`/kuliner`} className={styles.btnSecondaryGold}>
+                    Jelajahi Kuliner →
+                  </Link>
                 </div>
               </div>
             ) : (
-              <div className={`${styles.petaPanel} ${styles.petaPanelEmpty}`}>
-                <div className={styles.petaPanelHintIcon}>🗺️</div>
-                <div className={styles.petaPanelHint}>
+              <div className={styles.panelEmpty}>
+                <div className={styles.panelHintIcon}>🗺️</div>
+                <div className={styles.panelHintText}>
                   Hover atau klik kabupaten untuk melihat kuliner khasnya
                 </div>
               </div>
             )}
           </div>
-
-          {/* ─── Peta SVG (Kanan) ─── */}
-          <div
-            className={styles.petaMapWrapper}
-            ref={mapWrapperRef}
-            onMouseLeave={handleMapLeave}
-          >
-            {/* SVG gets injected here by useEffect */}
-
-            {/* Pin foto makanan — rendered after SVG loads */}
-            {svgLoaded &&
-              kotaAktif.map((kota) => (
-                <button
-                  key={kota.id}
-                  className={styles.petaPin}
-                  style={{ left: `${kota.pin.x}%`, top: `${kota.pin.y}%` }}
-                  onClick={() => handlePinClick(kota)}
-                  onMouseEnter={() => handlePinEnter(kota)}
-                  onMouseLeave={handlePinLeave}
-                  aria-label={`${kota.nama} — ${kota.makanan}`}
-                  type="button"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    className={styles.petaPinImg}
-                    src={kota.foto}
-                    alt={kota.makanan}
-                  />
-                </button>
-              ))}
-          </div>
-        </div>
-
-        {/* CTA */}
-        <div className={styles.petaCtaWrap}>
-          <Link href="/maps" className={styles.btnSecondaryGold}>
-            Jelajahi Peta Lengkap →
-          </Link>
+          
         </div>
       </div>
     </section>

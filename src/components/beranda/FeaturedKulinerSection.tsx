@@ -100,12 +100,17 @@ function KulinerCard({
 export default function FeaturedKulinerSection() {
   return (
     <section className={styles.section}>
-      <h2 className={styles.title}>Kuliner Unggulan Jawa Tengah</h2>
+      <div className={styles.container}>
+        <h2 className={styles.title}>
+          Kuliner <span className={styles.highlight}>Unggulan</span><br />
+          <span className={styles.subtitle}>Jawa Tengah</span>
+        </h2>
 
-      <div className={styles.grid}>
-        {featuredKuliner.map((item, index) => (
-          <KulinerCard key={item.id} item={item} isLarge={index === 0} />
-        ))}
+        <div className={styles.grid}>
+          {featuredKuliner.map((item, index) => (
+            <KulinerCard key={item.id} item={item} isLarge={index === 0} />
+          ))}
+        </div>
       </div>
     </section>
   );

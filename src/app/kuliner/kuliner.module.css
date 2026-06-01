@@ -1,6 +1,9 @@
 .pageBackground {
   min-height: 100vh;
-  background-color: var(--color-krem-mori);
+  background-image: url('/sipodo/bg-kuliner.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
   overflow-x: hidden; /* Mencegah horizontal scroll dari elemen dekorasi yang keluar batas */
 }
 

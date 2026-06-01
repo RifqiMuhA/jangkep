@@ -22,6 +22,7 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Beranda', path: '/' },
     { name: 'Ensiklopedia', path: '/kuliner/katalog' },
+    { name: 'Rasa', path: '/rasa' },
     { name: 'Peta Rasa', path: '/maps' },
     { name: 'Dolan', path: '/games' },
   ];
