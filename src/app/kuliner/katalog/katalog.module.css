@@ -1,9 +1,48 @@
 .pageBackground {
   min-height: 100vh;
   background-color: var(--color-krem-mori, #F2EAD3);
+  background-image: url('/batik/pattern_background.webp');
+  background-repeat: repeat;
+  background-size: 600px;
+  background-blend-mode: multiply;
   color: var(--color-coklat-batik, #3B1F0C);
   font-family: var(--font-inter), sans-serif;
   position: relative;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(59, 31, 12, 0.6);
+  z-index: 20;
+}
+
+.breadcrumbLink {
+  color: rgba(59, 31, 12, 0.8);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease;
+}
+
+.breadcrumbLink:hover {
+  color: var(--color-coklat-batik, #3B1F0C);
+}
+
+.breadcrumbSeparator {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.breadcrumbCurrent {
+  color: var(--color-coklat-batik, #3B1F0C);
+  font-weight: 600;
 }
 
 /* Split Screen Layout */
@@ -18,15 +57,18 @@
 /* Kiri: Command Center */
 .commandCenter {
   position: sticky;
-  top: 80px;
+  top: 40px;
   height: calc(100vh - 80px);
-  padding: 30px 40px 40px; /* Ditambah sedikit agar tidak terlalu mepet dengan header */
+  /* 40px atas, 40px bawah */
+  padding: 30px 40px 40px;
+  /* Ditambah sedikit agar tidak terlalu mepet dengan header */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
-  z-index: 50;
   background-color: var(--color-krem-mori, #F2EAD3);
+  border-radius: 0 40px 40px 0;
+  box-shadow: 15px 0 30px rgba(59, 31, 12, 0.05);
 }
 
 .upperContentWrapper {
@@ -37,7 +79,8 @@
 .stickyMobileWrapper {
   display: flex;
   flex-direction: column;
-  flex-grow: 1; /* Fills remaining space so search section goes to bottom */
+  flex-grow: 1;
+  /* Fills remaining space so search section goes to bottom */
 }
 
 /* Typography & Sentence Filter */
@@ -429,7 +472,8 @@
 .searchSection {
   position: relative;
   width: 100%;
-  margin-top: auto; /* Direset di desktop karena flex-grow sudah mendorongnya ke bawah */
+  margin-top: auto;
+  /* Direset di desktop karena flex-grow sudah mendorongnya ke bawah */
   z-index: 20;
 }
 
@@ -774,18 +818,24 @@
   }
 
   .commandCenter {
-    display: contents; /* Menghilangkan struktur pembungkus asli di mobile */
+    display: contents;
+    /* Menghilangkan struktur pembungkus asli di mobile */
+  }
+
+  .upperContentWrapper {
+    padding: 30px 5% 10px;
+    background-color: var(--color-krem-mori, #F2EAD3);
   }
 
   .sentenceWrapper {
-    padding: 30px 5% 10px;
-    background-color: var(--color-krem-mori, #F2EAD3);
+    padding: 0;
     margin-bottom: 0;
   }
 
   .stickyMobileWrapper {
     position: sticky;
-    top: 60px; /* Lengket persis di bawah header */
+    top: 0;
+    /* Lengket persis di atas layar karena navbar dihapus */
     z-index: 50;
     background-color: var(--color-krem-mori, #F2EAD3);
     padding: 10px 5% 30px;
@@ -800,7 +850,8 @@
   }
 
   .visualFilterContainer {
-    gap: 140px; /* Jarak dibuat sangat lebar khusus di mobile sesuai permintaan */
+    gap: 140px;
+    /* Jarak dibuat sangat lebar khusus di mobile sesuai permintaan */
   }
 
   .sentenceText {
@@ -812,7 +863,8 @@
   }
 
   .searchSection {
-    margin-top: 40px; /* Menggantikan margin auto dengan margin statis */
+    margin-top: 40px;
+    /* Menggantikan margin auto dengan margin statis */
   }
 
   .desktopBr {

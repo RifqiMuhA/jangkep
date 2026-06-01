@@ -143,7 +143,8 @@ export default function HistoryTimeline({ item }: { item: any }) {
                   alt={event.title} 
                   fill 
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  className={styles.eraImage} 
+                  className={styles.eraImage}
+                  priority={index <= 1} /* Menambahkan prioritas loading untuk menghilangkan warning LCP */
                 />
               </div>
               

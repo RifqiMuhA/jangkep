@@ -68,6 +68,23 @@ export default function KulinerIndex() {
             Menjelajahi keanekaragaman <span className={styles.aksaraInline}>ꦏꦸꦭꦶꦤꦼꦂ</span> (kuliner) khas Jawa Tengah bagaikan napak tilas ke masa keemasan kerajaan Nusantara masa lampau. Dari setiap gigitan <span className={styles.aksaraInline}>ꦗꦗꦤ꧀ꦥꦱꦂ</span> (jajan pasar) tradisional yang legit memanjakan lidah, hingga pesona kehangatan kuah kaldu rempah pilihan, tersimpan pusaka rasa yang telah berurat akar melintasi zaman. Setiap resep masakan yang terhidang adalah <span className={styles.aksaraInline}>ꦮꦫꦶꦱꦤ꧀</span> (warisan) luhur, selalu dijaga kemurniannya dan diwariskan dengan cinta dari generasi ke generasi oleh tangan-tangan terampil para sesepuh kita. Mari kita <span className={styles.aksaraInline}>ꦩꦔꦤ꧀</span> (mangan) dan mencecap setiap kisah unik di balik penciptaannya. Temukan teman jalan yang tepat untuk memandumu mengarungi lautan kenikmatan rasa yang begitu otentik, membumi, dan tentu saja tak akan pernah terlupakan di dalam ingatan lidahmu.
           </div>
 
+          <div className={styles.pakarImageWrapper}>
+            {/* Background Decorations */}
+            <Image src="/motif/motif_kiri_buku.webp" alt="" width={400} height={400} className={`${styles.pakarDeco} ${styles.pakarDecoLeft}`} unoptimized />
+            <Image src="/motif/motif_kanan_buku.webp" alt="" width={400} height={400} className={`${styles.pakarDeco} ${styles.pakarDecoRight}`} unoptimized />
+            <Image src="/motif/wayang_2.webp" alt="" width={300} height={400} className={`${styles.pakarWayang} ${styles.pakarWayangLeft}`} unoptimized />
+            <Image src="/motif/wayang_2.webp" alt="" width={300} height={400} className={`${styles.pakarWayang} ${styles.pakarWayangRight}`} unoptimized />
+
+            <Image
+              src="/avatars/pakar.webp"
+              alt="Para Pakar Kuliner Jawa Tengah"
+              width={1600}
+              height={500}
+              className={styles.pakarImage}
+              unoptimized
+            />
+          </div>
+
           <div className={styles.avatarContainer}>
             <div className={styles.avatarGroupWrapper}>
               <div className={styles.highlightLeft} />
@@ -127,9 +144,9 @@ export default function KulinerIndex() {
 
         {/* Explore Button Section */}
         <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-          <ExploreButton 
-            href="/kuliner/katalog" 
-            textDesktop="Monggo, Ngubengi Kuliner Jateng" 
+          <ExploreButton
+            href="/kuliner/katalog"
+            textDesktop="Monggo, Ngubengi Kuliner Jateng"
             textTablet="Ngubengi Kuliner Jateng"
             textMobile="Monggo"
           />
