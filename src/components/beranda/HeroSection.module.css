@@ -1,0 +1,278 @@
+/* ============================
+   HERO SECTION — Jangkep
+   ============================ */
+
+.hero {
+  min-height: 100vh;
+  position: relative;
+  background-color: var(--color-coklat-batik);
+  display: flex;
+  align-items: center;
+}
+
+/* Layer 1: Batik Parang texture */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/batik/batik_parang.webp');
+  background-size: 300px;
+  background-repeat: repeat;
+  opacity: 0.10;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Layer 2: Radial gradient vignette */
+.gradientOverlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 70% 60% at 50% 50%,
+    transparent 0%,
+    rgba(26, 10, 2, 0.55) 60%,
+    rgba(26, 10, 2, 0.85) 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ─── Layer 4: Headline Content ─── */
+.heroContent {
+  position: relative;
+  z-index: 4;
+  padding: 0 48px;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  width: 100%;
+  /* Offset slightly above center */
+  margin-top: -15vh;
+  will-change: transform;
+}
+
+.headlineWrapper {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 0;
+}
+
+/* Line 1: Playfair Display Bold, Krem Mori */
+.line1 {
+  font-family: var(--font-playfair), 'Playfair Display', Georgia, serif;
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 700;
+  color: var(--color-krem-mori);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  display: block;
+}
+
+/* Line 2: Pinyon Script calligraphic font, Kuning Kepodang, larger */
+.line2 {
+  font-family: var(--font-script), 'Pinyon Script', cursive, serif;
+  font-style: normal;
+  font-size: clamp(64px, 9.5vw, 130px);
+  font-weight: 400;
+  color: var(--color-kuning-kepodang);
+  letter-spacing: 0.01em;
+  line-height: 1.0;
+  display: block;
+  margin-top: -12px;
+}
+
+/* Interactive Word */
+.wordToggle {
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+}
+
+/* State normal: "Jangkep" */
+.wordLatin {
+  display: inline-block;
+  transition: opacity 300ms ease, transform 300ms ease;
+  font-family: inherit;
+}
+
+/* State Aksara Jawa */
+.wordJavanese {
+  display: none;
+  font-family: var(--font-noto-javanese), 'Noto Sans Javanese', serif;
+  font-size: 0.75em;
+  color: var(--color-kuning-kepodang);
+  letter-spacing: 0.05em;
+  line-height: 1;
+  vertical-align: middle;
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+
+/* Saat active (diklik) */
+.wordToggle.isJavanese .wordLatin {
+  display: none;
+}
+.wordToggle.isJavanese .wordJavanese {
+  display: inline-block;
+  animation: fadeScaleIn 350ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.wordToggle:not(.isJavanese) .wordLatin {
+  animation: fadeScaleIn 350ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes fadeScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Hint Interaktif — Underline Putus-putus */
+.wordToggle .wordLatin,
+.wordToggle .wordJavanese {
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-decoration-color: rgba(245, 196, 0, 0.45);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
+.wordToggle:hover .wordLatin,
+.wordToggle:hover .wordJavanese {
+  text-decoration-color: rgba(245, 196, 0, 0.9);
+}
+
+/* Char-by-char animation */
+.char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.charLine2 {
+  /* Additional styling applied through parent .line2 */
+}
+
+.charVisible {
+  animation: charReveal 0.6s var(--ease-reveal) forwards;
+}
+
+.space {
+  display: inline-block;
+  width: 0.3em;
+}
+
+@keyframes charReveal {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── Scroll Indicator ─── */
+.scrollIndicator {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: 10;
+}
+
+.scrollLabel {
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--color-krem-tua);
+  text-transform: uppercase;
+}
+
+.scrollArrow {
+  font-size: 16px;
+  color: var(--color-krem-tua);
+  animation: scrollBounce 1.6s ease-in-out infinite;
+}
+
+@keyframes scrollBounce {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(6px);
+    opacity: 0.5;
+  }
+}
+
+/* ─── Transisi Wayang di Footer ─── */
+.heroFooter {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 5;
+  line-height: 0;
+  pointer-events: none;
+  transform: translateY(30%); /* Dinaikkan lagi sesuai permintaan */
+}
+
+.transisiImg {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  filter: drop-shadow(0px 17px 10.5px rgba(26, 10, 2, 1));
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1024px) {
+  .heroContent {
+    padding: 0 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroContent {
+    padding: 0 24px;
+    margin-top: 0;
+  }
+
+  .line1 {
+    font-size: clamp(32px, 8vw, 48px);
+  }
+
+  .line2 {
+    font-size: clamp(38px, 10vw, 60px);
+    margin-top: -4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroContent {
+    padding: 0 20px;
+  }
+
+  .line1 {
+    font-size: 28px;
+  }
+
+  .line2 {
+    font-size: 36px;
+  }
+
+  .scrollIndicator {
+    bottom: 20px;
+  }
+}

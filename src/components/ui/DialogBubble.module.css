@@ -1,0 +1,88 @@
+.bubble {
+  background-color: var(--color-putih-santan);
+  border: 1.5px solid var(--color-emas-keris);
+  border-radius: 16px;
+  padding: 12px 18px;
+  position: relative;
+  box-shadow: var(--shadow-tooltip);
+  max-width: 260px;
+}
+
+.text {
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-coklat-batik);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Triangle pointers */
+.bubble::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+/* Bottom-left: pointer goes down-left (pointing to character below-left) */
+.bottom-left::after {
+  bottom: -10px;
+  left: 24px;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid var(--color-emas-keris);
+}
+
+.bottom-left::before {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 25px;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-top: 9px solid var(--color-putih-santan);
+  z-index: 1;
+}
+
+/* Bottom-right: pointer goes down-right */
+.bottom-right::after {
+  bottom: -10px;
+  right: 24px;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid var(--color-emas-keris);
+}
+
+.bottom-right::before {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  right: 25px;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-top: 9px solid var(--color-putih-santan);
+  z-index: 1;
+}
+
+/* Top-center: pointer goes up */
+.top-center::after {
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid var(--color-emas-keris);
+}
+
+.top-center::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 9px solid var(--color-putih-santan);
+  z-index: 1;
+}

@@ -1,0 +1,207 @@
+.section {
+  padding: var(--spacing-96) var(--spacing-24);
+  background-color: var(--color-krem-mori);
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+.title {
+  font-family: var(--font-playfair), serif;
+  font-size: var(--text-display-sm);
+  font-weight: 700;
+  color: var(--color-coklat-batik);
+  margin-bottom: var(--spacing-48);
+  text-align: center;
+  line-height: var(--leading-heading);
+}
+
+/* ─── Asymmetric Grid ─── */
+.grid {
+  display: grid;
+  grid-template-columns: 55% 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  gap: var(--spacing-24);
+}
+
+/* ─── Card Base ─── */
+.card {
+  position: relative;
+  border-radius: var(--radius-cards);
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid var(--color-krem-tua);
+  transition: transform 0.3s var(--ease-transition),
+              box-shadow 0.3s var(--ease-transition);
+  min-height: 160px;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* Large hero card spans all 3 rows */
+.cardLarge {
+  grid-row: 1 / span 3;
+  min-height: 500px;
+}
+
+/* ─── Image (fill) ─── */
+.cardImage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.cardImage img {
+  object-fit: cover;
+}
+
+/* ─── Gradient Overlay ─── */
+.cardOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(59, 31, 12, 0.85) 0%,
+    rgba(59, 31, 12, 0.2) 50%,
+    transparent 100%
+  );
+  z-index: 1;
+  transition: background var(--duration-micro) var(--ease-transition);
+}
+
+/* ─── Content ─── */
+.cardContent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--spacing-24);
+  z-index: 2;
+}
+
+.cardName {
+  font-family: var(--font-playfair), serif;
+  font-size: var(--text-heading);
+  font-weight: 700;
+  color: var(--color-krem-mori);
+  margin-bottom: var(--spacing-4);
+  line-height: var(--leading-heading);
+}
+
+.cardNameLarge {
+  font-size: var(--text-heading);
+}
+
+.cardCity {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 13px;
+  color: var(--color-krem-tua);
+  margin-bottom: var(--spacing-12);
+}
+
+.cardDescription {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: var(--text-body-sm);
+  color: var(--color-krem-mori);
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s var(--ease-transition),
+              max-height 0.3s var(--ease-transition),
+              margin 0.3s var(--ease-transition);
+  margin-bottom: 0;
+  line-height: var(--leading-body);
+}
+
+.card:hover .cardDescription {
+  opacity: 1;
+  max-height: 100px;
+  margin-bottom: var(--spacing-12);
+}
+
+/* ─── Tags ─── */
+.tags {
+  display: flex;
+  gap: var(--spacing-8);
+  flex-wrap: wrap;
+}
+
+.tag {
+  border-radius: var(--radius-badges);
+  padding: var(--spacing-4) var(--spacing-12);
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-putih-santan);
+  line-height: 1;
+}
+
+.tagPedas {
+  background-color: var(--color-rasa-pedas);
+}
+
+.tagManis {
+  background-color: var(--color-rasa-manis);
+  color: var(--color-coklat-batik);
+}
+
+.tagGurih {
+  background-color: var(--color-rasa-gurih);
+}
+
+.tagSegar {
+  background-color: var(--color-rasa-segar);
+}
+
+.tagLegit {
+  background-color: var(--color-rasa-legit);
+}
+
+/* ─── Small card adjustments ─── */
+.cardSmall .cardName {
+  font-size: var(--text-subheading);
+}
+
+.cardSmall .cardContent {
+  padding: var(--spacing-16) var(--spacing-24);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .title {
+    font-size: var(--text-heading);
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .cardLarge {
+    grid-row: auto;
+    min-height: 300px;
+  }
+
+  .card {
+    min-height: 220px;
+  }
+
+  .section {
+    padding: var(--spacing-64) var(--spacing-16);
+  }
+
+  .cardName {
+    font-size: var(--text-subheading);
+  }
+
+  .cardNameLarge {
+    font-size: var(--text-heading);
+  }
+}

@@ -1,0 +1,232 @@
+/* ============================
+   FOOTER SECTION — Jangkep
+   ============================ */
+
+.footer {
+  background-color: #2A1507; /* Warna cokelat gelap yang match bagian bawah gambar */
+  background-image: url('/sipodo/bg-footer.png');
+  background-size: 100% auto;
+  background-position: top center;
+  background-repeat: no-repeat;
+  padding: 64px 24px 32px;
+  position: relative;
+}
+
+.container {
+  max-width: var(--container-max, 1280px);
+  margin: 0 auto;
+}
+
+/* ══════════════════════════════════
+   ROW 1 — 4-COLUMN GRID
+   ══════════════════════════════════ */
+
+.topGrid {
+  display: grid;
+  grid-template-columns: 30fr 20fr 20fr 30fr;
+  gap: 32px;
+}
+
+/* ── Kolom 1: Brand Identity ── */
+.brandLogo {
+  font-family: var(--font-playfair), 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--color-krem-mori);
+  line-height: 1.2;
+}
+
+.brandAksara {
+  font-family: var(--font-noto-javanese), 'Noto Sans Javanese', serif;
+  font-size: 14px;
+  color: var(--color-emas-keris);
+  opacity: 0.7;
+  margin-top: 4px;
+}
+
+.brandDesc {
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--color-krem-tua);
+  line-height: 1.65;
+  margin-top: 16px;
+  max-width: 200px;
+  margin-bottom: 0;
+}
+
+/* ── Kolom 2 & 3: Navigation columns ── */
+.columnLabel {
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-emas-keris);
+  margin-bottom: 16px;
+}
+
+.footerLink {
+  display: block;
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-krem-tua);
+  text-decoration: none;
+  margin-bottom: 10px;
+  transition: color 200ms ease;
+}
+
+.footerLink:hover {
+  color: var(--color-krem-mori);
+}
+
+/* ── Kolom 4: Ikuti Kami ── */
+.socialRow {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.socialBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid rgba(184, 134, 11, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 200ms ease;
+  color: var(--color-krem-tua);
+  text-decoration: none;
+}
+
+.socialBtn:hover {
+  border-color: var(--color-emas-keris);
+  background: rgba(184, 134, 11, 0.12);
+  color: var(--color-krem-mori);
+}
+
+/* ══════════════════════════════════
+   DIVIDER
+   ══════════════════════════════════ */
+
+.divider {
+  margin: 48px 0 40px;
+  height: 1px;
+  background: rgba(184, 134, 11, 0.2);
+}
+
+/* ══════════════════════════════════
+   ROW 2 — QUOTE CENTER
+   ══════════════════════════════════ */
+
+.quoteCenter {
+  text-align: center;
+}
+
+.quoteAksara {
+  font-family: var(--font-noto-javanese), 'Noto Sans Javanese', serif;
+  font-size: 16px;
+  color: var(--color-emas-keris);
+  opacity: 0.5;
+  letter-spacing: 4px;
+  margin-bottom: 16px;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.quoteFlourish {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 10px;
+  opacity: 0.6;
+  letter-spacing: 0;
+}
+
+.quote {
+  font-family: var(--font-playfair), 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--color-krem-mori);
+  margin: 12px 0 8px;
+  line-height: 1.3;
+}
+
+.quoteTranslation {
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--color-krem-tua);
+  font-style: italic;
+  margin: 0;
+}
+
+/* ══════════════════════════════════
+   BOTTOM BAR
+   ══════════════════════════════════ */
+
+.bottomBar {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(184, 134, 11, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.copyright {
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-krem-tua);
+  opacity: 0.65;
+}
+
+/* ══════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .topGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 24px;
+  }
+
+  .quote {
+    font-size: 20px;
+  }
+
+  .bottomBar {
+    text-align: center;
+  }
+
+  .brandDesc {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 48px 16px 24px;
+  }
+
+  .topGrid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .divider {
+    margin: 36px 0 32px;
+  }
+
+  .quoteAksara {
+    font-size: 14px;
+  }
+}

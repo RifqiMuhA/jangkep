@@ -1,0 +1,228 @@
+/* Navbar.module.css */
+
+/* Core Wrapper */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), padding 0.6s ease;
+  will-change: transform;
+}
+
+/* STATE 1: At Top (Mentok Atas) */
+.atTop {
+  padding-top: 0px;
+}
+
+.atTop .container {
+  max-width: 100%;
+  padding: 16px 60px; /* Kurangi tinggi sticky */
+  background-color: var(--color-krem-mori, #F2EAD3);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  border: 1px solid transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+/* STATE 2: Floating (Turun & Scroll Naik) */
+.floating {
+  padding-top: 24px;
+}
+
+.floating .container {
+  max-width: 720px; /* Lebar menyusut menyesuaikan konten */
+  padding: 8px 12px 8px 32px;
+  background-color: rgba(242, 234, 211, 0.55); /* Lebih transparan / glass */
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 16px 40px rgba(59, 31, 12, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  border-radius: 999px; /* Bentuk Pill */
+}
+
+/* STATE 3: Hidden (Scroll Turun) */
+.hidden {
+  transform: translateY(-150%);
+}
+
+/* ==================
+   Container & Flex
+   ================== */
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); /* Animasi smooth morphing */
+  margin: 0 auto;
+}
+
+/* Logo */
+.logoWrap {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  font-family: var(--font-playfair, 'Playfair Display'), serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-coklat-batik, #3B1F0C);
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+}
+
+.logo:hover {
+  opacity: 0.8;
+}
+
+.logoDot {
+  color: var(--color-kuning-kepodang, #F5C400);
+}
+
+/* Desktop Menu */
+.desktopMenu {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Jarak proporsional antar menu */
+}
+
+.navLink {
+  font-family: var(--font-playfair, 'Playfair Display'), serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-coklat-batik, #3B1F0C);
+  padding: 10px 20px;
+  border-radius: 999px;
+  text-decoration: none;
+  white-space: nowrap; /* Mencegah teks terpotong dua baris */
+  transition: all 0.3s ease;
+}
+
+.navLink:hover {
+  background-color: rgba(59, 31, 12, 0.05);
+}
+
+.navLinkActive {
+  background-color: var(--color-kuning-kepodang, #F5C400) !important;
+  color: var(--color-coklat-batik, #3B1F0C) !important;
+  box-shadow: 0 4px 12px rgba(245, 196, 0, 0.3);
+}
+
+/* Actions (Hamburger) */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* Hamburger */
+.hamburger {
+  display: none; /* Sembunyi di desktop */
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 55;
+}
+
+.hamburgerInner {
+  width: 24px;
+  height: 18px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.bar {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-coklat-batik, #3B1F0C);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+/* Hamburger Open State (Tanda Silang) */
+.hamburgerOpen .bar {
+  background-color: var(--color-krem-mori, #F2EAD3); /* Kontras dengan overlay gelap */
+}
+
+.hamburgerOpen .bar:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+.hamburgerOpen .bar:nth-child(2) {
+  opacity: 0;
+}
+.hamburgerOpen .bar:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* ==================
+   Mobile Overlay (Gelap / Kontras)
+   ================== */
+.mobileOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(59, 31, 12, 0.98); /* Coklat Batik sangat pekat */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 45;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mobileLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  text-align: center;
+}
+
+.mobileLink {
+  font-family: var(--font-playfair, 'Playfair Display'), serif;
+  font-size: 40px;
+  font-weight: 700;
+  color: rgba(242, 234, 211, 0.7); /* Krem Mori redup */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.mobileLink:hover {
+  color: var(--color-krem-mori, #F2EAD3);
+}
+
+.mobileLinkActive {
+  color: var(--color-kuning-kepodang, #F5C400) !important;
+}
+
+/* ==================
+   Responsive
+   ================== */
+@media (max-width: 900px) {
+  .desktopMenu {
+    display: none;
+  }
+  .hamburger {
+    display: block;
+  }
+  .atTop .container {
+    padding: 16px 24px;
+  }
+  .floating .container {
+    max-width: 90%;
+    padding: 8px 16px 8px 24px;
+  }
+}

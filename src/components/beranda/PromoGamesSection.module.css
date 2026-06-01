@@ -1,0 +1,316 @@
+/* ============================
+   PROMO GAMES SECTION (Duolingo x Gourou Style)
+   ============================ */
+
+.heroSection {
+  position: relative;
+  min-height: 100vh;
+  background: var(--color-krem-mori, #F2EAD3);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 0;
+  margin-top: 0;
+}
+
+/* Layer 1: Batik Parang texture */
+.heroSection::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/batik/batik_parang.webp');
+  background-size: 300px;
+  background-repeat: repeat;
+  opacity: 0.10;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Layer 2: Radial Vignette */
+.heroSection::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 40%, rgba(59, 31, 12, 0.05) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ============================
+   LAYER 3 — REMPAH AMBIENT
+   ============================ */
+.rempahAmbient {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.amb {
+  position: absolute;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  will-change: transform, opacity;
+}
+
+.amb img {
+  width: 100%;
+  height: auto;
+}
+
+.amb1 { width: 220px; top: 5%;  left: -40px;  opacity: 0.35; rotate: -15deg; animation: floatA 6s ease-in-out infinite alternate; }
+.amb2 { width: 180px; top: 40%; left: 20px;   opacity: 0.28; rotate: 10deg;  animation: floatB 5s ease-in-out 0.5s infinite alternate; }
+.amb3 { width: 200px; top: 72%; left: -20px;  opacity: 0.32; rotate: -8deg;  animation: floatC 7s ease-in-out 1s infinite alternate; }
+.amb4 { width: 220px; top: 5%;  right: -40px; opacity: 0.35; rotate: 15deg;  animation: floatB 5.5s ease-in-out 0.3s infinite alternate; }
+.amb5 { width: 180px; top: 40%; right: 20px;  opacity: 0.28; rotate: -10deg; animation: floatA 6.5s ease-in-out 0.8s infinite alternate; }
+.amb6 { width: 200px; top: 72%; right: -20px; opacity: 0.32; rotate: 8deg;   animation: floatC 4.8s ease-in-out 1.2s infinite alternate; }
+
+@keyframes floatA {
+  from { transform: translateY(0px) rotate(0deg); }
+  to   { transform: translateY(-18px) rotate(3deg); }
+}
+@keyframes floatB {
+  from { transform: translateY(0px) rotate(0deg); }
+  to   { transform: translateY(-12px) rotate(-4deg); }
+}
+@keyframes floatC {
+  from { transform: translateY(0px) rotate(0deg); }
+  to   { transform: translateY(-22px) rotate(5deg); }
+}
+
+/* ============================
+   LAYER 4 — HERO CONTENT
+   ============================ */
+.heroContent {
+  position: relative;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: -290px; /* Naikkan headline agar komposisinya lebih tinggi */
+}
+
+.heroHeadline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 32px;
+}
+
+.headlineRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.hlTextNormal {
+  font-family: var(--font-playfair, 'Playfair Display'), serif;
+  font-size: 80px;
+  font-weight: 700;
+  color: var(--color-coklat-batik, #3B1F0C);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.hlTextItalic {
+  font-family: var(--font-playfair, 'Playfair Display'), serif;
+  font-size: 84px;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--color-coklat-batik, #3B1F0C);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.hlTextHighlight {
+  font-family: var(--font-playfair, 'Playfair Display'), serif;
+  font-size: 80px;
+  font-weight: 700;
+  color: var(--color-kuning-kepodang, #F5C400);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  position: relative;
+  display: inline-block;
+}
+
+.underlineSvg {
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 14px;
+  overflow: visible;
+}
+
+
+
+/* CTA Button */
+.ctaBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+
+  /* Glassmorphism */
+  background: rgba(59, 31, 12, 0.08);
+  backdrop-filter: blur(16px) saturate(1.5);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+
+  /* Border etnik double-line effect */
+  border: 1.5px solid rgba(184, 134, 11, 0.7);
+  box-shadow:
+    inset 0 0 0 1px rgba(245, 196, 0, 0.15),
+    0 8px 32px rgba(59, 31, 12, 0.18),
+    0 3px 0 rgba(184, 134, 11, 0.5);
+
+  border-radius: 14px;
+  padding: 18px 44px;
+
+  font-family: var(--font-dm-sans, 'DM Sans'), sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-coklat-batik, #3B1F0C);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ctaBtn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 25%,
+    rgba(245, 196, 0, 0.18) 50%,
+    transparent 75%
+  );
+  transform: translateX(-100%);
+  transition: transform 550ms ease;
+}
+
+.ctaBtn:hover::before { transform: translateX(100%); }
+
+.ctaBtn:hover {
+  transform: translateY(-4px);
+  background: rgba(59, 31, 12, 0.13);
+  box-shadow:
+    inset 0 0 0 1px rgba(245, 196, 0, 0.3),
+    0 16px 48px rgba(59, 31, 12, 0.22),
+    0 5px 0 rgba(184, 134, 11, 0.55);
+}
+
+.ctaBtn:active {
+  transform: translateY(2px);
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 134, 11, 0.3),
+    0 2px 8px rgba(59, 31, 12, 0.15),
+    0 1px 0 rgba(184, 134, 11, 0.4);
+}
+
+.ctaOrn {
+  color: var(--color-kuning-kepodang, #F5C400);
+  font-size: 11px;
+  animation: ornPulse 2s ease-in-out infinite alternate;
+}
+
+.ctaArrow {
+  font-size: 18px;
+  transition: transform 200ms ease;
+}
+
+.ctaBtn:hover .ctaArrow { transform: translateX(4px); }
+
+@keyframes ornPulse {
+  from { opacity: 0.5; transform: scale(0.85); }
+  to   { opacity: 1.0; transform: scale(1.15); }
+}
+
+/* ============================
+   LAYER 5 — DEKORASI SVG (Dihapus)
+   ============================ */
+
+/* ── LAYER 6 — SI PODO ── */
+.sipodoWrap {
+  position: absolute;
+  bottom: 52px;       /* Naikkan Si Podo agar lebih dekat ke headline */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation: sipodoBreath 3.5s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+@keyframes sipodoBreath {
+  0%   { transform: translateX(-50%) scaleY(1)    translateY(0);    }
+  40%  { transform: translateX(-50%) scaleY(1.02) translateY(-6px); }
+  60%  { transform: translateX(-50%) scaleY(1.02) translateY(-6px); }
+  100% { transform: translateX(-50%) scaleY(1)    translateY(0);    }
+}
+
+.sipodoImg {
+  width: 460px;
+  height: 540px;
+  object-fit: contain;
+  /* Shadow untuk depth */
+  filter: drop-shadow(0 24px 48px rgba(59, 31, 12, 0.45));
+}
+
+/* ── LAYER 7: GROUND CURVE ── */
+.groundCurve {
+  position: absolute;
+  bottom: 0; 
+  left: 0;
+  width: 100%;
+  z-index: 5;
+  background: linear-gradient(to top, rgba(59, 31, 12, 0.26) 0%, rgba(109, 69, 31, 0.16) 42%, rgba(242, 234, 211, 0) 100%);
+  /* Shadow lebih tebal ke arah atas supaya terasa timbul */
+  filter:
+    drop-shadow(0 -30px 48px rgba(59, 31, 12, 0.36))
+    drop-shadow(0 -8px 14px rgba(59, 31, 12, 0.18));
+}
+
+.groundImg {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: bottom center;
+  opacity: 1;
+}
+
+/* ============================
+   RESPONSIVE
+   ============================ */
+@media (max-width: 960px) {
+  .amb1 { display: none; }
+  .amb4 { display: none; }
+  .decoHatiL { left: 10%; }
+  .decoDiamR { right: 10%; }
+}
+
+@media (max-width: 768px) {
+  .heroContent { margin-top: -120px; }
+  .headlineRow { gap: 8px; flex-wrap: wrap; }
+  .hlTextNormal { font-size: 40px; }
+  .hlTextItalic { font-size: 44px; }
+  .hlTextHighlight { font-size: 40px; }
+  
+  .sipodoImg { width: 300px; height: 360px; }
+  .sipodoWrap { bottom: 34px; }
+  
+  /* Sembunyikan rempah ambient di mobile */
+  .rempahAmbient { display: none; }
+  /* Kurangi dekorasi */
+  .decoBintangL, .decoDiamR, .decoKoinL, .decoKoinR { display: none; }
+}

@@ -1,0 +1,295 @@
+/* ============================
+   PETA KULINER — Light Section
+   ============================ */
+
+.petaSection {
+  background: var(--color-krem-mori); /* #F2EAD3 */
+  position: relative;
+  padding: 96px 0;
+  overflow: hidden;
+}
+
+/* Kawung texture */
+.petaSection::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/batik/batik_kawung.webp');
+  background-repeat: repeat;
+  background-size: 300px;
+  opacity: 0.09;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* === Inner wrapper === */
+.petaInner {
+  position: relative;
+  z-index: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+/* === Header === */
+.petaLabel {
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-emas-keris); /* #B8860B */
+  margin-bottom: 12px;
+}
+
+.petaHeadline {
+  font-family: var(--font-playfair), 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--color-coklat-batik); /* #3B1F0C */
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.petaSubline {
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 16px;
+  color: #6B3A2A;
+  margin-bottom: 48px;
+}
+
+/* === Grid split 35 / 65 === */
+.petaGrid {
+  display: grid;
+  grid-template-columns: 35fr 65fr;
+  gap: 48px;
+  align-items: start;
+  min-height: 480px;
+}
+
+/* ─────────────────────────────
+   PANEL INFO (Kiri)
+   ───────────────────────────── */
+.petaPanel {
+  background: var(--color-putih-santan); /* #FAF7F0 */
+  border: 1px solid #C8B89A;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: rgba(59, 31, 12, 0.08) 0px 4px 24px;
+  transition: all 300ms ease;
+}
+
+/* State default — belum ada yang dipilih */
+.petaPanelEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 32px;
+  text-align: center;
+  min-height: 380px;
+}
+
+.petaPanelHintIcon {
+  font-size: 48px;
+  opacity: 0.4;
+  margin-bottom: 12px;
+}
+
+.petaPanelHint {
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: #C8B89A;
+}
+
+/* State aktif — kota dipilih */
+.petaPanelActive {
+  animation: panelFadeIn 250ms ease both;
+}
+
+.petaPanelFoto {
+  width: 100%;
+  height: 220px;
+  object-fit: contain;
+  display: block;
+  padding: 24px;
+  background: #f5f0e6;
+}
+
+.petaPanelBody {
+  padding: 24px;
+}
+
+.petaPanelKota {
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-emas-keris); /* #B8860B */
+  margin-bottom: 4px;
+}
+
+.petaPanelMakanan {
+  font-family: var(--font-playfair), 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-coklat-batik); /* #3B1F0C */
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.petaPanelDesc {
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: #6B3A2A;
+  line-height: 1.65;
+}
+
+@keyframes panelFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─────────────────────────────
+   PETA SVG (Kanan)
+   ───────────────────────────── */
+.petaMapWrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Injected SVG fills the container */
+.petaMapWrapper :global(svg) {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  display: block;
+}
+
+/* Override all kabupaten paths */
+.petaMapWrapper :global(.kab) {
+  fill: #C8B89A;           /* Krem Tua — non-aktif */
+  stroke: #3B1F0C;
+  stroke-width: 0.8;
+  transition: fill 200ms ease;
+  cursor: default;
+}
+
+/* Kabupaten yang punya data (10 kota aktif) */
+.petaMapWrapper :global(.kab.has-data) {
+  fill: var(--color-emas-keris); /* #B8860B */
+  cursor: pointer;
+}
+
+/* Hover kota aktif */
+.petaMapWrapper :global(.kab.has-data:hover),
+.petaMapWrapper :global(.kab.is-selected) {
+  fill: var(--color-kuning-kepodang); /* #F5C400 */
+}
+
+/* Hover kota non-aktif — subtle saja */
+.petaMapWrapper :global(.kab:not(.has-data):hover) {
+  fill: #D4C4A8;
+}
+
+/* ─────────────────────────────
+   PIN FOTO MAKANAN
+   ───────────────────────────── */
+.petaPin {
+  /* Reset default browser <button> styling */
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+
+  /* Layout */
+  position: absolute;
+  transform: translate(-50%, -100%);
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 200ms ease;
+}
+
+.petaPin:hover {
+  transform: translate(-50%, -100%) scale(1.15);
+}
+
+.petaPinImg {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2.5px solid var(--color-emas-keris); /* #B8860B */
+  object-fit: cover;
+  box-shadow: rgba(59, 31, 12, 0.25) 0px 4px 12px;
+  display: block;
+}
+
+/* Titik di bawah pin */
+.petaPin::after {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  background: var(--color-emas-keris); /* #B8860B */
+  border-radius: 50%;
+  margin: 2px auto 0;
+}
+
+/* ─────────────────────────────
+   CTA
+   ───────────────────────────── */
+.petaCtaWrap {
+  margin-top: 40px;
+  text-align: left;
+}
+
+.btnSecondaryGold {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1.5px solid var(--color-emas-keris); /* #B8860B */
+  color: var(--color-emas-keris);
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 24px;
+  padding: 14px 28px;
+  text-decoration: none;
+  transition: all 200ms ease;
+  cursor: pointer;
+}
+
+.btnSecondaryGold:hover {
+  background: var(--color-emas-keris);
+  color: var(--color-krem-mori); /* #F2EAD3 */
+}
+
+/* === Responsive === */
+@media (max-width: 900px) {
+  .petaGrid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .petaHeadline {
+    font-size: 36px;
+  }
+
+  .petaInner {
+    padding: 0 24px;
+  }
+
+  .petaSection {
+    padding: 64px 0;
+  }
+
+  .petaPanelEmpty {
+    min-height: 200px;
+    padding: 32px 24px;
+  }
+}
