@@ -43,11 +43,8 @@ export default function RempahSection() {
   const canvasRef = useRef<HTMLDivElement>(null);
   const rempahRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const [mode, setMode] = useState<'canvas' | 'encyclopedia'>('canvas');
   const [tooltip, setTooltip] = useState<TooltipState>({ visible: false, x: 0, y: 0, rempah: null });
-  const [expandedId, setExpandedId] = useState<string | null>(null);
   const tooltipTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const hasStartedRef = useRef(false);
 
   useEffect(() => {
     let gsapInst: any;
@@ -65,24 +62,16 @@ export default function RempahSection() {
       ScrollTriggerInst.create({
         trigger: sectionRef.current,
         start: 'top top', 
-        end: '+=5000', // Freeze
-        pin: true,
-        pinSpacing: true,
         onEnter: () => {
+          sectionRef.current?.scrollIntoView({ behavior: 'instant' });
           document.body.style.overflow = 'hidden'; 
-          
-          gsapInst.to('.ambientText', {
-            y: 0,
-            opacity: 1,
-            duration: 1.2,
-            ease: 'power3.out'
-          });
-          
-          if (!hasStartedRef.current) {
-            hasStartedRef.current = true;
-            triggerRempahFall(gsapInst);
-          }
+          triggerRempahFall(gsapInst);
         },
+        onEnterBack: () => {
+          sectionRef.current?.scrollIntoView({ behavior: 'instant' });
+          document.body.style.overflow = 'hidden'; 
+          triggerRempahFall(gsapInst);
+        }
       });
     };
 
@@ -95,20 +84,30 @@ export default function RempahSection() {
   }, []);
 
   const triggerRempahFall = (gsap: any) => {
-    // Animasi jatuh yang sangat smooth dengan GSAP (MENGHINDARI JITTER MATTER.JS)
+    // Tampilkan teks hero
+    gsap.to('.ambientText', {
+      y: 0,
+      opacity: 1,
+      duration: 1.2,
+      ease: 'power3.out'
+    });
+
+    // Sembunyikan tombol sebelum rempah turun
+    gsap.set('.jelajahBtn', { autoAlpha: 0, y: 20 });
+
+    // Animasi jatuh
     rempahRefs.current.forEach((el, i) => {
       if (!el) return;
       const pos = SCATTER_POSITIONS[i % SCATTER_POSITIONS.length];
       
-      // Fall from above screen
       gsap.fromTo(el, 
         { 
-          y: -1500, // Mulai jauh di atas
+          y: -1500,
           xPercent: -50,
           yPercent: -50,
           rotation: pos.rot - 90, 
           scale: pos.scale * 0.8,
-          autoAlpha: 1 // Tampilkan saat animasi mulai
+          autoAlpha: 1
         },
         { 
           y: 0, 
@@ -118,10 +117,9 @@ export default function RempahSection() {
           scale: pos.scale,
           autoAlpha: 1,
           duration: 2.2, 
-          delay: i * 0.1, // Stagger masuk
-          ease: 'bounce.out', // Efek jatuh dan memantul alami
+          delay: i * 0.1,
+          ease: 'bounce.out',
           onComplete: () => {
-            // Tambahkan animasi melayang idle pelan setelah jatuh
             gsap.to(el, {
               y: '-=15',
               xPercent: -50,
@@ -136,38 +134,18 @@ export default function RempahSection() {
         }
       );
     });
-  };
 
-  const unlockAndGoNext = async () => {
-    document.body.style.overflow = '';
-    const ScrollTrigger = (await import('gsap/ScrollTrigger')).default;
-    ScrollTrigger.getAll().forEach((t: any) => {
-      if (t.vars.trigger === sectionRef.current) t.kill();
-    });
-    const nextSection = sectionRef.current?.nextElementSibling;
-    if (nextSection) nextSection.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const unlockAndGoPrev = async () => {
-    document.body.style.overflow = '';
-    const ScrollTrigger = (await import('gsap/ScrollTrigger')).default;
-    ScrollTrigger.getAll().forEach((t: any) => {
-      if (t.vars.trigger === sectionRef.current) t.kill();
-    });
-    const prevSection = sectionRef.current?.previousElementSibling;
-    if (prevSection) prevSection.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const switchToEncyclopedia = () => {
-    setTooltip(p => ({ ...p, visible: false }));
-    setMode('encyclopedia');
+    // Buka kunci scroll dan tampilkan tombol setelah 2.5 detik
+    setTimeout(() => {
+      gsap.to('.jelajahBtn', { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power3.out' });
+      document.body.style.overflow = '';
+    }, 2500);
   };
 
   // ─── Drag Logic Sederhana ───
   const activeDragIdx = useRef<number | null>(null);
   
   const handlePointerDown = (e: React.PointerEvent, index: number) => {
-    if (mode !== 'canvas') return;
     e.stopPropagation();
     activeDragIdx.current = index;
     const el = rempahRefs.current[index];
@@ -176,7 +154,7 @@ export default function RempahSection() {
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
-    if (activeDragIdx.current === null || mode !== 'canvas') return;
+    if (activeDragIdx.current === null) return;
     const el = rempahRefs.current[activeDragIdx.current];
     if (el && canvasRef.current) {
       const wRect = canvasRef.current.getBoundingClientRect();
@@ -224,10 +202,7 @@ export default function RempahSection() {
         {/* ============================
             CANVAS MODE (GSAP Scatter)
             ============================ */}
-        <div 
-          className={styles.canvasMode} 
-          style={{ display: mode === 'canvas' ? 'flex' : 'none' }}
-        >
+        <div className={styles.canvasMode}>
           <div className={styles.canvasHeader}>
             <div className={`${styles.ambientText} ambientText`}>
               "Dari rempah-rempah inilah semua dimulai."
@@ -282,100 +257,16 @@ export default function RempahSection() {
           </div>
 
           <div className={styles.canvasFooter}>
-            <button className={styles.glassBtn} onClick={unlockAndGoPrev}>
-              &uarr; Kembali
+            <button 
+              className={`${styles.glassBtn} jelajahBtn`} 
+              onClick={() => router.push('/rasa')}
+            >
+              Jelajah Rasa &#10022;
             </button>
-            <button className={styles.glassBtn} onClick={switchToEncyclopedia}>
-              Jelajah &#10022;
-            </button>
-          </div>
-        </div>
-
-        {/* ============================
-            ENCYCLOPEDIA MODE
-            ============================ */}
-        <div 
-          className={styles.encyclopediaMode}
-          style={{ display: mode === 'encyclopedia' ? 'block' : 'none' }}
-        >
-          <div className={styles.encyclopediaInner}>
-            
-            <div className={styles.encyclopediaHeader}>
-              <button className={styles.glassBtn} onClick={() => setMode('canvas')}>
-                &larr; Tutup Ensiklopedia
-              </button>
-              <div className={styles.encyclopediaTitleGroup}>
-                <div className={styles.label}>Ensiklopedi</div>
-                <h2 className={styles.encyclopediaTitle}>Rempah Jawa</h2>
-              </div>
-            </div>
-
-            <div className={styles.encyclopediaGrid}>
-              <div className={styles.encyclopediaCol}>
-                {rempahData.slice(0, 10).map((r) => (
-                  <AccordionRow key={r.id} rempah={r} isExpanded={expandedId === r.id} onToggle={() => setExpandedId(expandedId === r.id ? null : r.id)} />
-                ))}
-              </div>
-              <div className={styles.encyclopediaSeparator} />
-              <div className={styles.encyclopediaCol}>
-                {rempahData.slice(10, 20).map((r) => (
-                  <AccordionRow key={r.id} rempah={r} isExpanded={expandedId === r.id} onToggle={() => setExpandedId(expandedId === r.id ? null : r.id)} />
-                ))}
-              </div>
-            </div>
-
-            <div className={styles.encyclopediaFooter}>
-              <p className={styles.pullQuote}>&ldquo;Saka rempah-rempah iki kabeh diwiwiti.&rdquo;</p>
-              <button className={styles.glassBtn} onClick={unlockAndGoNext}>
-                Lanjutkan Perjalanan &darr;
-              </button>
-            </div>
-
           </div>
         </div>
 
       </div>
     </section>
-  );
-}
-
-// ─── Accordion Row ───
-function AccordionRow({ rempah, isExpanded, onToggle }: { rempah: Rempah; isExpanded: boolean; onToggle: () => void }) {
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [height, setHeight] = useState(0);
-
-  useEffect(() => {
-    if (contentRef.current) {
-      setHeight(isExpanded ? contentRef.current.scrollHeight : 0);
-    }
-  }, [isExpanded]);
-
-  return (
-    <div className={styles.accordionRow}>
-      <button className={styles.accordionHeader} onClick={onToggle}>
-        <div className={styles.accordionIcon}>
-          <Image src={rempah.asset} alt="" width={32} height={32} style={{ objectFit: 'contain' }} unoptimized />
-        </div>
-        <div className={styles.accordionTitleGroup}>
-          <span className={styles.accordionName}>{rempah.nama}</span>
-          <span className={styles.accordionJawa}>{rempah.namaJawa}</span>
-        </div>
-        <div className={styles.accordionDashedLine} />
-        <span className={`${styles.accordionChevron} ${isExpanded ? styles.chevronOpen : ''}`}>
-          &#8964;
-        </span>
-      </button>
-
-      <div className={styles.accordionContentWrapper} style={{ height: `${height}px` }}>
-        <div ref={contentRef} className={styles.accordionContent}>
-          <p className={styles.accordionRole}>{rempah.peran}</p>
-          <div className={styles.accordionTags}>
-            {rempah.makanan.split(',').map((tag, i) => (
-              <span key={i} className={styles.foodTag}>{tag.trim()}</span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
   );
 }

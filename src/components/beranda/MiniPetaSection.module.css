@@ -1,295 +1,370 @@
 /* ============================
-   PETA KULINER — Light Section
+   HYBRID MAP SYSTEM (MiniPetaSection)
    ============================ */
 
 .petaSection {
-  background: var(--color-krem-mori); /* #F2EAD3 */
   position: relative;
-  padding: 96px 0;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-hitam-arang, #1A1A1A);
   overflow: hidden;
 }
 
-/* Kawung texture */
-.petaSection::before {
+.mapScene {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── LAYER 1: MAPBOX ── */
+.mapboxLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.45;
+}
+
+/* ── LAYER 2: OVERLAY ── */
+.mapOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(to bottom, rgba(59,31,12,.08), rgba(59,31,12,.18));
+  pointer-events: none;
+}
+.mapOverlay::after {
   content: '';
   position: absolute;
   inset: 0;
   background-image: url('/batik/batik_kawung.webp');
   background-repeat: repeat;
   background-size: 300px;
-  opacity: 0.09;
-  pointer-events: none;
-  z-index: 0;
+  opacity: 0.05;
+}
+/* Vignette effect */
+.mapOverlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, transparent 50%, rgba(30,15,6,0.7) 100%);
 }
 
-/* === Inner wrapper === */
-.petaInner {
+/* ── LAYER 3: SVG & PINS LAYER ── */
+.svgLayer {
   position: relative;
-  z-index: 1;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 48px;
+  top: -60px;
+  left: -20px;
+  z-index: 3;
+  width: 90%;
+  max-width: 1000px; /* Reduced width so it fits perfectly on screen */
+  height: auto;
+  pointer-events: auto; /* Allow interactions */
 }
 
-/* === Header === */
-.petaLabel {
-  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--color-emas-keris); /* #B8860B */
-  margin-bottom: 12px;
-}
-
-.petaHeadline {
-  font-family: var(--font-playfair), 'Playfair Display', serif;
-  font-size: 48px;
-  font-weight: 700;
-  color: var(--color-coklat-batik); /* #3B1F0C */
-  line-height: 1.2;
-  margin-bottom: 8px;
-}
-
-.petaSubline {
-  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
-  font-size: 16px;
-  color: #6B3A2A;
-  margin-bottom: 48px;
-}
-
-/* === Grid split 35 / 65 === */
-.petaGrid {
-  display: grid;
-  grid-template-columns: 35fr 65fr;
-  gap: 48px;
-  align-items: start;
-  min-height: 480px;
-}
-
-/* ─────────────────────────────
-   PANEL INFO (Kiri)
-   ───────────────────────────── */
-.petaPanel {
-  background: var(--color-putih-santan); /* #FAF7F0 */
-  border: 1px solid #C8B89A;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: rgba(59, 31, 12, 0.08) 0px 4px 24px;
-  transition: all 300ms ease;
-}
-
-/* State default — belum ada yang dipilih */
-.petaPanelEmpty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 48px 32px;
-  text-align: center;
-  min-height: 380px;
-}
-
-.petaPanelHintIcon {
-  font-size: 48px;
-  opacity: 0.4;
-  margin-bottom: 12px;
-}
-
-.petaPanelHint {
-  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
-  font-size: 14px;
-  color: #C8B89A;
-}
-
-/* State aktif — kota dipilih */
-.petaPanelActive {
-  animation: panelFadeIn 250ms ease both;
-}
-
-.petaPanelFoto {
+.svgContainer {
   width: 100%;
-  height: 220px;
-  object-fit: contain;
-  display: block;
-  padding: 24px;
-  background: #f5f0e6;
-}
-
-.petaPanelBody {
-  padding: 24px;
-}
-
-.petaPanelKota {
-  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--color-emas-keris); /* #B8860B */
-  margin-bottom: 4px;
-}
-
-.petaPanelMakanan {
-  font-family: var(--font-playfair), 'Playfair Display', serif;
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--color-coklat-batik); /* #3B1F0C */
-  line-height: 1.2;
-  margin-bottom: 12px;
-}
-
-.petaPanelDesc {
-  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
-  font-size: 14px;
-  color: #6B3A2A;
-  line-height: 1.65;
-}
-
-@keyframes panelFadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ─────────────────────────────
-   PETA SVG (Kanan)
-   ───────────────────────────── */
-.petaMapWrapper {
+  height: auto;
   position: relative;
-  width: 100%;
 }
 
-/* Injected SVG fills the container */
-.petaMapWrapper :global(svg) {
+.svgContainer :global(svg) {
   width: 100%;
   height: auto;
   overflow: visible;
   display: block;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
 }
 
-/* Override all kabupaten paths */
-.petaMapWrapper :global(.kab) {
-  fill: #C8B89A;           /* Krem Tua — non-aktif */
-  stroke: #3B1F0C;
-  stroke-width: 0.8;
-  transition: fill 200ms ease;
+.svgContainer :global(.kab) {
+  fill: rgba(184, 134, 11, 0.4); /* Base muted gold */
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 0.5;
+  transition: all 0.3s ease;
   cursor: default;
 }
 
-/* Kabupaten yang punya data (10 kota aktif) */
-.petaMapWrapper :global(.kab.has-data) {
-  fill: var(--color-emas-keris); /* #B8860B */
+.svgContainer :global(.kab.has-data) {
+  fill: #B8860B; /* Emas Keris */
   cursor: pointer;
 }
 
-/* Hover kota aktif */
-.petaMapWrapper :global(.kab.has-data:hover),
-.petaMapWrapper :global(.kab.is-selected) {
-  fill: var(--color-kuning-kepodang); /* #F5C400 */
+.svgContainer :global(.kab.has-data:hover),
+.svgContainer :global(.kab.is-selected) {
+  fill: #F5C400; /* Kuning Kepodang */
+  filter: drop-shadow(0 0 12px rgba(245, 196, 0, 0.35));
 }
 
-/* Hover kota non-aktif — subtle saja */
-.petaMapWrapper :global(.kab:not(.has-data):hover) {
-  fill: #D4C4A8;
+.svgContainer :global(.kab:not(.has-data):hover) {
+  fill: rgba(184, 134, 11, 0.6);
 }
 
-/* ─────────────────────────────
-   PIN FOTO MAKANAN
-   ───────────────────────────── */
+/* ── PINS ── */
 .petaPin {
-  /* Reset default browser <button> styling */
   appearance: none;
-  -webkit-appearance: none;
   background: transparent;
   border: none;
   padding: 0;
   margin: 0;
-  outline: none;
-
-  /* Layout */
   position: absolute;
   transform: translate(-50%, -100%);
   cursor: pointer;
   z-index: 10;
-  transition: transform 200ms ease;
+  pointer-events: auto;
+  animation: floatPin 4s ease-in-out infinite;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes floatPin {
+  0%, 100% { transform: translate(-50%, -100%); }
+  50% { transform: translate(-50%, calc(-100% - 10px)); }
 }
 
 .petaPin:hover {
-  transform: translate(-50%, -100%) scale(1.15);
+  transform: translate(-50%, -100%) scale(1.15) !important;
+  z-index: 15;
 }
 
 .petaPinImg {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  border: 2.5px solid var(--color-emas-keris); /* #B8860B */
+  border: 2.5px solid var(--color-emas-keris);
   object-fit: cover;
-  box-shadow: rgba(59, 31, 12, 0.25) 0px 4px 12px;
-  display: block;
+  box-shadow: 0 4px 15px rgba(245, 196, 0, 0.4);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
-/* Titik di bawah pin */
+.petaPin:hover .petaPinImg {
+  border-color: var(--color-kuning-kepodang);
+  box-shadow: 0 8px 25px rgba(245, 196, 0, 0.6);
+}
+
 .petaPin::after {
   content: '';
   display: block;
   width: 6px;
   height: 6px;
-  background: var(--color-emas-keris); /* #B8860B */
+  background: var(--color-emas-keris);
   border-radius: 50%;
-  margin: 2px auto 0;
+  margin: 4px auto 0;
+  box-shadow: 0 0 10px rgba(245, 196, 0, 0.5);
 }
 
-/* ─────────────────────────────
-   CTA
-   ───────────────────────────── */
-.petaCtaWrap {
-  margin-top: 40px;
+/* ── LAYER 5: UI LAYER ── */
+.uiLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none; /* Let clicks pass to map */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 60px 80px;
+}
+
+/* HEADER REDESIGN */
+.uiHeader {
+  pointer-events: auto;
+  text-align: left;
+  position: relative;
+}
+
+.headerAksara {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  font-family: var(--font-noto-javanese), serif;
+  font-size: 80px;
+  color: rgba(245, 196, 0, 0.05);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.uiLabel {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: var(--color-kuning-kepodang);
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.uiTitle {
+  font-family: var(--font-playfair), serif;
+  font-size: 64px;
+  font-weight: 700;
+  color: var(--color-krem-mori);
+  line-height: 1.1;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+.uiTitleUnderline {
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+  width: 280px;
+  height: auto;
+}
+
+/* FLOATING PANEL */
+.uiPanel {
+  align-self: flex-end;
+  pointer-events: auto;
+  width: 400px;
+  background: rgba(59, 31, 12, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(184, 134, 11, 0.4);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  color: var(--color-krem-mori);
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.panelEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 150px;
+  opacity: 0.8;
+}
+
+.panelHintIcon {
+  font-size: 40px;
+  margin-bottom: 16px;
+  animation: floatIcon 3s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.panelHintText {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 16px;
+  color: rgba(242, 234, 211, 0.7);
+}
+
+.panelActive {
+  animation: panelSlideUp 0.4s ease forwards;
+}
+
+.panelKota {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-emas-keris);
+  margin-bottom: 8px;
+}
+
+.panelMakanan {
+  font-family: var(--font-playfair), serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-kuning-kepodang);
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+.panelDesc {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 15px;
+  color: rgba(242, 234, 211, 0.9);
+  line-height: 1.6;
+}
+
+@keyframes panelSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ctaWrap {
+  pointer-events: auto;
+  margin-top: 24px;
   text-align: left;
 }
 
 .btnSecondaryGold {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+  display: inline-block;
+  padding: 12px 24px;
   background: transparent;
-  border: 1.5px solid var(--color-emas-keris); /* #B8860B */
+  border: 1px solid var(--color-emas-keris);
+  border-radius: 999px;
   color: var(--color-emas-keris);
-  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-family: var(--font-dm-sans), sans-serif;
   font-size: 14px;
   font-weight: 700;
-  border-radius: 24px;
-  padding: 14px 28px;
+  transition: all 0.3s ease;
   text-decoration: none;
-  transition: all 200ms ease;
-  cursor: pointer;
 }
 
 .btnSecondaryGold:hover {
   background: var(--color-emas-keris);
-  color: var(--color-krem-mori); /* #F2EAD3 */
+  color: var(--color-hitam-arang);
 }
 
-/* === Responsive === */
-@media (max-width: 900px) {
-  .petaGrid {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
+/* ── ATMOSPHERIC EFFECTS ── */
+.smokeLayer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40%;
+  background: linear-gradient(to top, rgba(0,0,0,0.4), transparent);
+  pointer-events: none;
+  z-index: 2;
+  filter: blur(20px);
+}
 
-  .petaHeadline {
-    font-size: 36px;
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .uiLayer {
+    padding: 40px;
   }
+  .uiTitle { font-size: 48px; }
+  .uiPanel { width: 350px; }
+}
 
-  .petaInner {
-    padding: 0 24px;
+@media (max-width: 768px) {
+  .mapScene {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
   }
-
-  .petaSection {
-    padding: 64px 0;
+  .svgLayer {
+    margin-top: 120px;
+    width: 100%;
   }
-
-  .petaPanelEmpty {
-    min-height: 200px;
-    padding: 32px 24px;
+  .uiLayer {
+    position: relative;
+    padding: 24px;
+    height: auto;
   }
+  .uiHeader { margin-bottom: 40px; }
+  .uiPanel {
+    width: 100%;
+    margin-top: 40px;
+    align-self: center;
+  }
+  .mapboxLayer {
+    position: fixed; /* Keep map background fixed on mobile scroll */
+  }
+  .mapOverlay { position: fixed; }
 }
