@@ -19,14 +19,13 @@ export function MapLegend() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         {/* Pin Kuliner */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{
-            width: '16px',
-            height: '16px',
-            borderRadius: '50%',
-            backgroundColor: 'white',
-            border: '2.5px solid var(--color-emas-keris)',
-            flexShrink: 0,
-          }} />
+          <svg viewBox="0 0 24 24" width="16" height="16" style={{ transform: 'rotate(45deg)', flexShrink: 0 }}>
+            <ellipse cx="12" cy="7" rx="3.5" ry="5.5" fill="#3B1F0C" stroke="#B8860B" strokeWidth="1.5" />
+            <ellipse cx="12" cy="17" rx="3.5" ry="5.5" fill="#3B1F0C" stroke="#B8860B" stroke-width="1.5" />
+            <ellipse cx="7" cy="12" rx="5.5" ry="3.5" fill="#3B1F0C" stroke="#B8860B" stroke-width="1.5" />
+            <ellipse cx="17" cy="12" rx="5.5" ry="3.5" fill="#3B1F0C" stroke="#B8860B" stroke-width="1.5" />
+            <circle cx="12" cy="12" r="2.5" fill="#F5C400" stroke="#3B1F0C" strokeWidth="0.8" />
+          </svg>
           <span style={{ fontFamily: 'var(--font-dm-sans)', fontSize: '12px', color: 'var(--color-coklat-batik)' }}>
             Pin Kuliner
           </span>

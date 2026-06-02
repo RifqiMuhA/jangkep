@@ -1,7 +1,10 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import SplitText from './SplitText';
+import TextType from './TextType';
+import VariableProximity from './VariableProximity';
 
 interface IngredientItem {
   emoji: string;
@@ -33,6 +36,7 @@ export default function CulinaryHero({ onStart }: { onStart?: () => void }) {
   const [mounted, setMounted] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [cookingSteam, setCookingSteam] = useState<{ id: number; emoji: string; x: number; y: number }[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -66,203 +70,161 @@ export default function CulinaryHero({ onStart }: { onStart?: () => void }) {
   const exitPath = "path('M 250 220 C 400 250, 420 150, 550 150')";
 
   return (
-    <section className="relative w-full min-h-[85vh] lg:min-h-[90vh] flex flex-col lg:flex-row items-center justify-between gap-12 px-6 md:px-16 py-12 md:py-20 overflow-hidden bg-gradient-to-br from-[#0F0803] via-[#1A0C05] to-[#0A0502] border-b border-[#DAA520]/15 pointer-events-auto">
+    <section className="relative w-full flex flex-col items-center justify-start overflow-hidden bg-[#F2EAD3] text-[#3B1F0C] pointer-events-auto min-h-screen pt-20">
       
       {/* GLOBAL KEYFRAMES */}
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes slide-path-entrance {
-          0% {
-            offset-distance: 0%;
-            opacity: 0;
-            transform: scale(0.4) rotate(0deg);
-          }
-          15% {
-            opacity: 1;
-            transform: scale(1) rotate(45deg);
-          }
-          85% {
-            opacity: 1;
-            transform: scale(1) rotate(315deg);
-          }
-          100% {
-            offset-distance: 100%;
-            opacity: 0;
-            transform: scale(0.3) rotate(360deg);
-          }
+          0% { offset-distance: 0%; opacity: 0; transform: scale(0.4) rotate(0deg); }
+          15% { opacity: 1; transform: scale(1) rotate(45deg); }
+          85% { opacity: 1; transform: scale(1) rotate(315deg); }
+          100% { offset-distance: 100%; opacity: 0; transform: scale(0.3) rotate(360deg); }
         }
-
         @keyframes slide-path-exit {
-          0% {
-            offset-distance: 0%;
-            opacity: 0;
-            transform: scale(0.3) rotate(0deg);
-          }
-          15% {
-            opacity: 1;
-            transform: scale(1) rotate(45deg);
-          }
-          85% {
-            opacity: 1;
-            transform: scale(1) rotate(315deg);
-          }
-          100% {
-            offset-distance: 100%;
-            opacity: 0;
-            transform: scale(0.4) rotate(360deg);
-          }
+          0% { offset-distance: 0%; opacity: 0; transform: scale(0.3) rotate(0deg); }
+          15% { opacity: 1; transform: scale(1) rotate(45deg); }
+          85% { opacity: 1; transform: scale(1) rotate(315deg); }
+          100% { offset-distance: 100%; opacity: 0; transform: scale(0.4) rotate(360deg); }
         }
-
         @keyframes mascot-float-cook {
-          0%, 100% {
-            transform: translateY(0) scale(1) rotate(0deg);
-          }
-          25% {
-            transform: translateY(-8px) scale(1.04) rotate(-4deg);
-          }
-          50% {
-            transform: translateY(2px) scale(0.96) rotate(3deg);
-          }
-          75% {
-            transform: translateY(-4px) scale(1.01) rotate(-1deg);
-          }
+          0%, 100% { transform: translateY(0) scale(1) rotate(0deg); }
+          25% { transform: translateY(-8px) scale(1.04) rotate(-4deg); }
+          50% { transform: translateY(2px) scale(0.96) rotate(3deg); }
+          75% { transform: translateY(-4px) scale(1.01) rotate(-1deg); }
         }
-
-        @keyframes ambient-glow {
-          0%, 100% {
-            opacity: 0.2;
-            transform: scale(0.95) translate(-50%, -50%);
-          }
-          50% {
-            opacity: 0.45;
-            transform: scale(1.1) translate(-50%, -50%);
-          }
-        }
-
         @keyframes floating-steam {
-          0% {
-            transform: translate(0, 0) scale(0.5);
-            opacity: 0;
-          }
-          20% {
-            opacity: 0.8;
-          }
-          100% {
-            transform: translate(var(--steam-x), var(--steam-y)) scale(1.4);
-            opacity: 0;
-          }
+          0% { transform: translate(0, 0) scale(0.5); opacity: 0; }
+          20% { opacity: 0.8; }
+          100% { transform: translate(var(--steam-x), var(--steam-y)) scale(1.4); opacity: 0; }
+        }
+        @keyframes wayang-play {
+          0% { transform: rotate(-3deg) translateY(0px); }
+          25% { transform: rotate(4deg) translateY(-8px); }
+          50% { transform: rotate(-2deg) translateY(3px); }
+          75% { transform: rotate(6deg) translateY(-5px); }
+          100% { transform: rotate(-3deg) translateY(0px); }
         }
       `}} />
 
-      {/* Decorative ambient background glows */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full bg-[#DAA520] opacity-[0.08] blur-[110px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[450px] h-[450px] rounded-full bg-[#DAA520] opacity-[0.06] blur-[130px] pointer-events-none" />
+      {/* BACKGROUND TEXTURES & IMAGES */}
+      {/* Light noise/batik pattern overlay */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.15] z-0 bg-[url('/batik/pattern_background.webp')] bg-cover bg-center mix-blend-multiply" />
+      
+      {/* Gradient fade to seamlessly blend bottom section */}
+      <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-[#F2EAD3] to-transparent pointer-events-none z-10" />
 
-      {/* Left Column - Copywriting & Visual Hierarchy (45% Width) */}
-      <div className="w-full lg:w-[45%] flex flex-col items-start text-left z-10 space-y-6 md:space-y-8 pointer-events-auto">
-        
-        {/* Elegant Badge */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md shadow-[0_4px_12px_rgba(218,165,32,0.1)]">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#DAA520] animate-pulse" />
-          <span className="text-xs uppercase tracking-widest font-bold text-[#DAA520] select-none" style={{ color: '#DAA520' }}>
-            Peta Kuliner Interaktif
-          </span>
-        </div>
-
-        {/* Crisp Bold Typography */}
-        <div className="space-y-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight select-none" style={{ color: '#ffffff' }}>
-            Eksplorasi Rasa,<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#DAA520] via-[#FFD700] to-[#DAA520]">
-              Menelusuri Tradisi
-            </span>
-          </h1>
-          <p className="text-gray-300 text-base md:text-lg font-light leading-relaxed max-w-xl" style={{ color: '#d1d5db' }}>
-            Menyajikan khazanah kuliner legendaris Jawa Tengah dalam representasi visual kartografi yang dinamis. 
-            Temukan asal-usul sejarah, detail komposisi bahan autentik, serta warisan tradisi budaya yang lestari di setiap cita rasa hidangan.
-          </p>
-        </div>
-
-        {/* Premium CTA Buttons */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto pt-2">
-          <button
-            onClick={onStart}
-            className="group relative flex items-center justify-center gap-3 bg-gradient-to-r from-[#DAA520] to-[#B8860B] hover:from-[#FFD700] hover:to-[#DAA520] text-black font-bold px-8 py-4 rounded-xl shadow-[0_0_20px_rgba(218,165,32,0.25)] hover:shadow-[0_0_30px_rgba(218,165,32,0.5)] transition-all duration-300 transform hover:-translate-y-0.5 pointer-events-auto"
-            style={{ color: '#000000', backgroundColor: '#DAA520' }}
-          >
-            <span>Mulai Petualangan</span>
-            <svg 
-              className="w-5 h-5 transition-transform duration-300 transform group-hover:translate-x-1 bg-transparent fill-none stroke-current" 
-              style={{ background: 'transparent', display: 'inline-block' }}
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </button>
-          
-          <button
-            className="flex items-center justify-center border border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10 text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300 backdrop-blur-md pointer-events-auto"
-            style={{ color: '#ffffff' }}
-          >
-            Pelajari Resep
-          </button>
-        </div>
+      {/* Wayang Decoration (Left side, moving like playing wayang) */}
+      <div className="absolute left-[-20px] md:left-8 top-1/4 opacity-80 pointer-events-none z-10" style={{ transformOrigin: 'bottom center', animation: 'wayang-play 8s infinite ease-in-out' }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/motif/wayang_2.webp" alt="Wayang" className="w-[180px] md:w-[280px] lg:w-[350px] object-contain drop-shadow-2xl opacity-75" />
       </div>
 
-      {/* Right Column - Conveyor Belt Cooking Mechanism (55% Width) */}
-      <div className="w-full lg:w-[55%] flex items-center justify-center relative h-[400px] md:h-[460px] z-10 p-4">
+      {/* Compass Decoration (Top Right) */}
+      <div className="absolute right-4 md:right-12 top-12 md:top-20 opacity-90 pointer-events-none z-10">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/bg mapz/kompas.webp" alt="Kompas" className="w-[120px] md:w-[180px] object-contain drop-shadow-xl opacity-80" />
+      </div>
+
+      {/* TOP SECTION: Hero Copywriting */}
+      <div ref={containerRef} className="relative z-20 flex flex-col items-center justify-center text-center px-6 pt-16 md:pt-24 pb-8 w-full max-w-5xl mx-auto">
         
-        {/* Premium Translucent Card Canvas (spatial depth layer) */}
-        <div className="absolute inset-0 rounded-3xl bg-white/[0.01] border border-white/5 shadow-[inset_0_0_30px_rgba(255,255,255,0.02),0_15px_35px_rgba(0,0,0,0.5)] backdrop-blur-[4px] pointer-events-none z-0" />
-
-        {/* Soft edge fade-in masks */}
-        <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-[#0F0803] via-[#0F0803]/40 to-transparent pointer-events-none z-20 rounded-l-3xl" />
-        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-[#0A0502] via-[#0A0502]/40 to-transparent pointer-events-none z-20 rounded-r-3xl" />
-
-        {/* Ambient Glow behind the mascot cooking station */}
-        <div 
-          className="absolute left-1/2 top-[55%] -translate-x-1/2 -translate-y-1/2 w-[220px] h-[220px] rounded-full bg-[#DAA520] blur-[80px] pointer-events-none z-0" 
-          style={{ animation: reducedMotion ? 'none' : 'ambient-glow 3.5s infinite ease-in-out' }}
+        {/* Javanese Script Top (Jelajahi Rasa Jawa Tengah) */}
+        <TextType 
+          text="ꦗꦼꦭꦗꦲꦶ ꦫꦱ ꦗꦮ ꦠꦼꦔꦃ"
+          typingSpeed={80}
+          showCursor={false}
+          loop={false}
+          className="font-['Noto_Sans_Javanese'] text-3xl md:text-5xl text-[#B8860B] mb-2 opacity-80 font-bold"
         />
+
+        {/* Main Title with SplitText and VariableProximity */}
+        <div className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight text-[#3B1F0C] my-4 font-playfair drop-shadow-sm flex flex-col items-center gap-2">
+          <SplitText
+            text="Jelajahi Rasa Jawa Tengah,"
+            className="block mb-2"
+            delay={30}
+            duration={1.2}
+            ease="power3.out"
+            from={{ opacity: 0, y: 30 }}
+            to={{ opacity: 1, y: 0 }}
+          />
+          <VariableProximity
+            label="Dari Cerita Jadi Peta Hidup"
+            className="block text-[#DAA520] drop-shadow-md cursor-default"
+            fromFontVariationSettings="'wght' 400, 'opsz' 9"
+            toFontVariationSettings="'wght' 900, 'opsz' 40"
+            containerRef={containerRef}
+            radius={120}
+            falloff="gaussian"
+          />
+        </div>
+
+        {/* Javanese Script Bottom (Dari Cerita Jadi Peta Hidup) */}
+        <TextType 
+          text="ꦢꦫꦶ ꦕꦼꦫꦶꦠ ꦗꦢꦶ ꦥꦼꦠ ꦲꦶꦢꦸꦥ꧀"
+          typingSpeed={80}
+          initialDelay={1500}
+          showCursor={false}
+          loop={false}
+          className="font-['Noto_Sans_Javanese'] text-2xl md:text-4xl text-[#B8860B] mt-2 mb-8 opacity-80 font-bold"
+        />
+
+        {/* Subtitle Description */}
+        <div className="max-w-3xl mx-auto px-4 md:px-0">
+          <SplitText
+            text="Lebih dari sekadar peta geografis, ini adalah jendela menuju kekayaan rasa Nusantara. Temukan kisah bersejarah di balik legitnya hidangan pesisir hingga gurihnya kuliner pedalaman dalam satu penjelajahan yang menggugah selera."
+            className="text-sm md:text-lg lg:text-xl font-dm-sans text-[#4A3A31] leading-relaxed"
+            delay={10}
+            duration={0.8}
+            ease="power2.out"
+            splitType="words"
+            from={{ opacity: 0, y: 15 }}
+            to={{ opacity: 1, y: 0 }}
+          />
+        </div>
+
+      </div>
+
+      {/* BOTTOM SECTION: Si Podo Cooking Conveyor */}
+      <div className="relative w-full max-w-5xl mx-auto flex items-center justify-center h-[350px] md:h-[400px] z-20 mt-8 mb-16">
+        
+        {/* Ambient Glow behind the mascot cooking station */}
+        <div className="absolute left-1/2 top-[60%] -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] rounded-full bg-[#DAA520] blur-[100px] opacity-40 pointer-events-none z-0" />
 
         {/* SVG Conveyor Lines */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 500 350" fill="none">
-          {/* Entrance Rail path */}
           <path
             d="M -50 150 C 80 150, 100 250, 250 220"
             stroke="url(#gold-gradient-1)"
             strokeWidth="3.5"
             strokeDasharray="8 6"
-            className="opacity-60"
+            className="opacity-70"
           />
-          {/* Exit Rail path */}
           <path
             d="M 250 220 C 400 250, 420 150, 550 150"
             stroke="url(#gold-gradient-2)"
             strokeWidth="3.5"
             strokeDasharray="8 6"
-            className="opacity-60"
+            className="opacity-70"
           />
-
           <defs>
             <linearGradient id="gold-gradient-1" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#DAA520" stopOpacity="0" />
-              <stop offset="100%" stopColor="#DAA520" stopOpacity="0.9" />
+              <stop offset="0%" stopColor="#8C6A48" stopOpacity="0" />
+              <stop offset="100%" stopColor="#8C6A48" stopOpacity="0.8" />
             </linearGradient>
             <linearGradient id="gold-gradient-2" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#DAA520" stopOpacity="0.9" />
-              <stop offset="100%" stopColor="#DAA520" stopOpacity="0" />
+              <stop offset="0%" stopColor="#8C6A48" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#8C6A48" stopOpacity="0" />
             </linearGradient>
           </defs>
         </svg>
 
-        {/* INGREDIENTS SLIDING STREAM (Left Entrance) */}
+        {/* INGREDIENTS SLIDING STREAM */}
         <div className="absolute inset-0 pointer-events-none z-10" style={{ transform: 'scale(0.92)' }}>
           {!reducedMotion && INGREDIENTS.map((item, i) => (
             <div
               key={`ingredient-${i}`}
-              className="absolute w-14 h-14"
+              className="absolute w-12 h-12 md:w-14 md:h-14"
               style={{
                 offsetPath: entrancePath,
                 animation: 'slide-path-entrance 8s infinite linear',
@@ -270,18 +232,16 @@ export default function CulinaryHero({ onStart }: { onStart?: () => void }) {
                 willChange: 'transform',
               }}
             >
-              {/* Premium Glassmorphism Bubble with Emoji */}
-              <div className={`w-full h-full rounded-full flex items-center justify-center text-3xl backdrop-blur-md bg-gradient-to-br ${item.color} border border-white/20 shadow-[0_6px_16px_rgba(0,0,0,0.5),0_0_20px_rgba(218,165,32,0.15)]`}>
+              <div className={`w-full h-full rounded-full flex items-center justify-center text-2xl md:text-3xl backdrop-blur-md bg-[#F5F2EB]/80 border border-[#8C6A48]/30 shadow-md`}>
                 <span className="transform hover:scale-125 transition-transform duration-300 select-none">{item.emoji}</span>
               </div>
             </div>
           ))}
         </div>
 
-        {/* THE MASCOT - PODO COOKING STATION (Center) */}
+        {/* THE MASCOT - PODO COOKING STATION */}
         <div className="absolute left-[50%] top-[62.8%] -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center justify-center">
           
-          {/* Steam/Heat rising particles */}
           <AnimatePresence>
             {!reducedMotion && cookingSteam.map((steam) => (
               <span
@@ -299,39 +259,32 @@ export default function CulinaryHero({ onStart }: { onStart?: () => void }) {
             ))}
           </AnimatePresence>
 
-          {/* Styled Chef Mascot Badge using gorgeous CSS styling */}
           <div 
-            className="w-24 h-24 md:w-28 md:h-28 rounded-2xl flex flex-col items-center justify-center border-2 border-[#DAA520] shadow-[0_0_35px_rgba(218,165,32,0.4)] relative overflow-hidden backdrop-blur-xl bg-[#130904]/90"
+            className="w-24 h-24 md:w-28 md:h-28 rounded-2xl flex flex-col items-center justify-center border-2 border-[#DAA520] shadow-[0_10px_30px_rgba(218,165,32,0.3)] relative overflow-hidden backdrop-blur-xl bg-[#F5F2EB]/90"
             style={{ 
               animation: reducedMotion ? 'none' : 'mascot-float-cook 3s infinite ease-in-out',
               willChange: 'transform' 
             }}
           >
-            {/* Mascot glow inner line */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#DAA520]/25 to-transparent pointer-events-none" />
-
-            {/* Glowing inner fire indicator */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#DAA520]/15 to-transparent pointer-events-none" />
             <div className="absolute bottom-1 w-12 h-1 bg-[#DAA520] rounded-full blur-[2px] animate-pulse" />
-
-            {/* Mascot Emblem Emoji */}
-            <span className="text-4xl md:text-5xl z-10 filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.7)]">👹</span>
-            <span className="text-[10px] md:text-xs tracking-wider uppercase font-bold text-[#DAA520] mt-1 select-none z-10" style={{ color: '#DAA520' }}>
+            <span className="text-4xl md:text-5xl z-10 filter drop-shadow-md">👹</span>
+            <span className="text-[10px] md:text-xs tracking-wider uppercase font-bold text-[#8C6A48] mt-1 select-none z-10">
               Si Podo
             </span>
           </div>
 
-          {/* Little active tag */}
-          <div className="px-2.5 py-0.5 mt-2 rounded bg-[#DAA520]/20 border border-[#DAA520]/45 text-[9px] uppercase tracking-wider font-extrabold text-[#DAA520] animate-pulse select-none" style={{ color: '#DAA520' }}>
+          <div className="px-3 py-1 mt-3 rounded-full bg-[#F5F2EB] border border-[#DAA520] text-[10px] uppercase tracking-wider font-extrabold text-[#DAA520] animate-pulse shadow-sm select-none">
             Memasak...
           </div>
         </div>
 
-        {/* FINISHED DISHES SLIDING STREAM (Right Exit) */}
+        {/* FINISHED DISHES SLIDING STREAM */}
         <div className="absolute inset-0 pointer-events-none z-10" style={{ transform: 'scale(0.92)' }}>
           {!reducedMotion && FINISHED_DISHES.map((item, i) => (
             <div
               key={`dish-${i}`}
-              className="absolute w-16 h-16"
+              className="absolute w-14 h-14 md:w-16 md:h-16"
               style={{
                 offsetPath: exitPath,
                 animation: 'slide-path-exit 8s infinite linear',
@@ -339,13 +292,9 @@ export default function CulinaryHero({ onStart }: { onStart?: () => void }) {
                 willChange: 'transform',
               }}
             >
-              {/* Premium Glassmorphism Circular Plate */}
-              <div className={`w-full h-full rounded-full flex flex-col items-center justify-center backdrop-blur-md bg-gradient-to-br ${item.color} border border-[#DAA520]/40 shadow-[0_8px_24px_rgba(0,0,0,0.6),0_0_25px_rgba(218,165,32,0.2)] relative`}>
-                {/* Plate inner border */}
-                <div className="absolute inset-1.5 rounded-full border border-white/5 pointer-events-none" />
-                
-                {/* Food Emoji */}
-                <span className="text-3xl z-10 transform hover:scale-125 transition-transform duration-300 drop-shadow-[0_2px_5px_rgba(0,0,0,0.5)] select-none">{item.emoji}</span>
+              <div className={`w-full h-full rounded-full flex flex-col items-center justify-center backdrop-blur-md bg-[#F5F2EB]/90 border border-[#DAA520]/60 shadow-lg relative`}>
+                <div className="absolute inset-1.5 rounded-full border border-[#8C6A48]/10 pointer-events-none" />
+                <span className="text-3xl z-10 transform hover:scale-125 transition-transform duration-300 drop-shadow-md select-none">{item.emoji}</span>
               </div>
             </div>
           ))}

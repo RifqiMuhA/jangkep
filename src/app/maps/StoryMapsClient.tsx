@@ -111,7 +111,7 @@ const scrollChapters: Chapter[] = [
     javaneseSubtitle: 'ꦤꦱꦶꦭꦶꦮꦼꦠ꧀ • ꦠꦼꦁꦏ꧀ꦭꦺꦁ • ꦧꦏ꧀ꦱꦺꦴ',
     description: 'Di jantung budaya Jawa, kuliner Solo memancarkan keanggunan keraton. Ditambah kehangatan kaldu Bakso Wonogiri yang saling melengkapi dalam satu karesidenan.',
     javaneseDescription: 'ꦲꦶꦁ ꦥꦸꦱꦼꦂ ꦧꦸꦢꦪ ꦗꦮ꧈ ꦏꦸꦭꦶꦤꦺꦂ ꦱꦺꦴꦭꦺꦴ ꦤ꧀ꦢꦸꦮꦺꦤꦶ ꦏꦼꦲꦒꦸꦔꦤ꧀ ꦏꦿꦠꦺꦴꦤ꧀꧈ ꦢꦶꦠꦩ꧀ꦧꦃ ꦏꦭ꧀ꦢꦸ ꦧꦏ꧀ꦱꦺꦴ ꦮꦺꦴꦤꦺꦴꦒꦶꦫꦶ ꦏꦁ ꦔꦁꦒꦼꦠꦏꦺ ꦲꦶꦁ ꦱꦮꦶꦗꦶꦤꦶꦁ ꦏꦫꦺꦱꦶꦢꦺꦤꦤ꧀꧈',
-    location: { center: [110.88, -7.62], zoom: 10.8, pitch: 55, bearing: -40 },
+    location: { center: [110.82, -7.56], zoom: 12.5, pitch: 55, bearing: -20 },
     alignment: 'left',
   },
   {
@@ -192,6 +192,16 @@ const chapterOriginMap: Record<string, string[]> = {
   pemalang: ['Pemalang']
 };
 
+const chapterMascotMap: Record<string, string> = {
+  semarang: '/kuliner/mascot_kuliner_11.webp', // Lumpia
+  solo_raya: '/kuliner/mascot_kuliner_2.webp', // Nasi Liwet Solo
+  pantura_timur: '/kuliner/mascot_kuliner_6.webp', // Soto Kudus
+  kedu_raya: '/kuliner/mascot_kuliner_7.webp', // Getuk Lindri
+  banyumas_raya: '/kuliner/mascot_kuliner_5.webp', // Tempe Mendoan
+  blora: '/kuliner/mascot_kuliner_3.webp', // Sate Blora
+  pemalang: '/kuliner/mascot_kuliner_13.webp', // Nasi Grombyang
+};
+
 const CHAPTER_GALLERIES: Record<string, any[]> = {};
 for (const [chapterId, origins] of Object.entries(chapterOriginMap)) {
   CHAPTER_GALLERIES[chapterId] = kulinerData
@@ -217,10 +227,13 @@ export default function StoryMapsClient() {
   const chapterRefs = useRef<(HTMLDivElement | null)[]>([]);
   const curtainRef = useRef<HTMLDivElement>(null);
   const firstMapTriggerRef = useRef<HTMLDivElement>(null);
+  const isJumpingRef = useRef<boolean>(false);
+  const activeChapterRef = useRef<number>(-1);
 
   /* ── Story mode vs Explore mode ── */
   const [mode, setMode] = useState<'story' | 'explore'>('story');
   const [activeChapter, setActiveChapter] = useState(-1); // -1 means bridging intro
+  const [isInMapSection, setIsInMapSection] = useState(false); // true only when past bridging sections
   const [activeFoodItems, setActiveFoodItems] = useState<Record<string, any>>({});
 
   /* ── Si Podo Mascot States & Effects ── */
@@ -277,10 +290,16 @@ export default function StoryMapsClient() {
     }
   }, [activeChapter]);
 
+  // Keep activeChapterRef in sync
+  useEffect(() => {
+    activeChapterRef.current = activeChapter;
+  }, [activeChapter]);
+
   // Update thought bubble and pin data when chapter or food selection changes
   useEffect(() => {
     if (!mascotMarkerRef.current) return;
-    const walker = mascotMarkerRef.current.getElement().querySelector('.si-podo-walker') as HTMLDivElement;
+    const container = mascotMarkerRef.current.getElement();
+    const walker = container.querySelector('.si-podo-walker') as HTMLDivElement;
     if (!walker) return;
 
     if (activeChapter >= 1 && activeChapter < scrollChapters.length - 1) {
@@ -293,6 +312,14 @@ export default function StoryMapsClient() {
       if (foodItem) {
         if (bubbleText) bubbleText.textContent = `"${foodItem.title} enak tenan!"`;
         if (pinImg) pinImg.src = foodItem.url;
+      }
+
+      const mascotUrl = chapterMascotMap[chapter.id] || '/kuliner/mascot_kuliner_1.webp';
+      container.dataset.mascotUrl = mascotUrl;
+
+      if (walker.classList.contains('is-standing')) {
+        const img = walker.querySelector('.si-podo-img') as HTMLImageElement;
+        if (img) img.src = mascotUrl;
       }
     }
   }, [activeChapter, activeFoodItems]);
@@ -326,6 +353,7 @@ export default function StoryMapsClient() {
             id: `${food.id}-rand-${i}`,
             longitude: centerLng + Math.cos(angle) * dist,
             latitude: centerLat + Math.sin(angle) * dist,
+            image: `/kuliner/mascot_ngintip_${(i % 4) + 1}.webp`
           });
         }
         return randomized;
@@ -432,6 +460,60 @@ export default function StoryMapsClient() {
         console.log('setLights not supported on this style, skipping.');
       }
 
+      // ── ANIMATED BATIK PATTERN ──
+      const batikImg = new Image();
+      batikImg.src = '/batik/batik_parang.webp';
+      batikImg.onload = () => {
+        const size = 128; // better quality
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        
+        ctx.drawImage(batikImg, 0, 0, size, size);
+        if (!map.hasImage('batik-pattern')) {
+          map.addImage('batik-pattern', ctx.getImageData(0, 0, size, size));
+          // Apply the pattern to the line layer once loaded by recreating it
+          if (map.getLayer('region-highlight-line')) {
+            map.removeLayer('region-highlight-line');
+            map.addLayer({
+              id: 'region-highlight-line',
+              type: 'line',
+              source: 'region-highlight-source',
+              paint: {
+                'line-pattern': 'batik-pattern',
+                'line-width': 12,
+                'line-opacity': 1,
+                'line-opacity-transition': { duration: 1000 }
+              }
+            });
+          }
+        }
+        
+        let offset = 0;
+        let lastTime = 0;
+        const animatePattern = (time: number) => {
+          if (!mapRef.current) return;
+          if (time - lastTime > 30) {
+            lastTime = time;
+            if (map.hasImage('batik-pattern')) {
+              offset = (offset + 1) % size; // Move 1px per frame
+              ctx.clearRect(0, 0, size, size);
+              
+              // Draw translated to create infinite horizontal scroll effect
+              ctx.drawImage(batikImg, offset, 0, size, size);
+              ctx.drawImage(batikImg, offset - size, 0, size, size);
+              
+              map.updateImage('batik-pattern', ctx.getImageData(0, 0, size, size));
+              map.triggerRepaint(); // force redraw
+            }
+          }
+          requestAnimationFrame(animatePattern);
+        };
+        requestAnimationFrame(animatePattern);
+      };
+
       // ── ADD MASCOT MARKER (EMOJI / IMG) ──
       const mascotContainer = document.createElement('div');
       mascotContainer.className = 'si-podo-container-map';
@@ -497,13 +579,41 @@ export default function StoryMapsClient() {
               frame = (frame % 3) + 1;
               img.src = `/kuliner/sejarah/terbang_${frame}.webp`;
             } else if (walker.classList.contains('is-standing')) {
-              img.src = '/kuliner/mascot_kuliner_1.webp';
+              img.src = mascotContainer.dataset.mascotUrl || '/kuliner/mascot_kuliner_1.webp';
             } else {
               img.src = '/kuliner/sejarah/terbang_1.webp';
             }
           }
         }
       }, 200);
+
+      // Register map events for manual jumping sync
+      map.on('move', () => {
+        if (isJumpingRef.current && mascotMarkerRef.current) {
+          mascotMarkerRef.current.setLngLat(map.getCenter());
+        }
+      });
+
+      map.on('moveend', () => {
+        if (isJumpingRef.current) {
+          isJumpingRef.current = false;
+          const walker = mascotMarkerRef.current?.getElement().querySelector('.si-podo-walker');
+          if (walker) {
+            walker.classList.remove('is-walking');
+            walker.classList.add('is-standing');
+            
+            const activeIdx = activeChapterRef.current;
+            if (activeIdx >= 0 && activeIdx < scrollChapters.length) {
+              const activeId = scrollChapters[activeIdx]?.id;
+              if (activeId) {
+                const mascotUrl = chapterMascotMap[activeId] || '/kuliner/mascot_kuliner_1.webp';
+                const img = walker.querySelector('.si-podo-img') as HTMLImageElement;
+                if (img) img.src = mascotUrl;
+              }
+            }
+          }
+        }
+      });
 
       // ── WORLD DIMMING LAYER (Hides the bright green base map) ──
       map.addSource('world-dim-source', {
@@ -544,19 +654,63 @@ export default function StoryMapsClient() {
         source: 'region-highlight-source',
         paint: {
           'fill-color': '#F5C400',
-          'fill-opacity': 0.15,
+          'fill-opacity': 0.05, // very subtle fill
           'fill-opacity-transition': { duration: 1000 }
         }
       });
 
+      // Outer glow for the bold line (very wide, soft ambient glow)
+      map.addLayer({
+        id: 'region-highlight-glow-outer',
+        type: 'line',
+        source: 'region-highlight-source',
+        paint: {
+          'line-color': '#F5C400',
+          'line-width': 32,
+          'line-opacity': 0.45,
+          'line-blur': 24,
+          'line-opacity-transition': { duration: 1000 }
+        }
+      });
+
+      // Inner glow (medium width, vibrant neon glow)
+      map.addLayer({
+        id: 'region-highlight-glow-inner',
+        type: 'line',
+        source: 'region-highlight-source',
+        paint: {
+          'line-color': '#FFA500', // Neon orange-gold accent
+          'line-width': 16,
+          'line-opacity': 0.8,
+          'line-blur': 8,
+          'line-opacity-transition': { duration: 1000 }
+        }
+      });
+
+      // Main accent border line
       map.addLayer({
         id: 'region-highlight-line',
         type: 'line',
         source: 'region-highlight-source',
         paint: {
           'line-color': '#F5C400',
+          'line-width': 8,
+          'line-opacity': 0.9,
+          'line-blur': 1,
+          'line-opacity-transition': { duration: 1000 }
+        }
+      });
+
+      // Ultra-bright core (high-intensity white filament light source)
+      map.addLayer({
+        id: 'region-highlight-line-core',
+        type: 'line',
+        source: 'region-highlight-source',
+        paint: {
+          'line-color': '#FFFFFF',
           'line-width': 3,
-          'line-opacity': 0.8,
+          'line-opacity': 0.95,
+          'line-blur': 0,
           'line-opacity-transition': { duration: 1000 }
         }
       });
@@ -622,19 +776,95 @@ export default function StoryMapsClient() {
     // 1. (Hero zoom removed, hero will scroll up normally)
 
     // 1b. Horizontal Scroll Sections
+    const horizontalWrapper = document.querySelector('.horizontal-scroll-wrapper');
     const horizontalContainer = document.querySelector('.horizontal-scroll-container');
     const horizontalPanels = gsap.utils.toArray('.horizontal-panel');
-    if (horizontalContainer && horizontalPanels.length > 0) {
+    if (horizontalWrapper && horizontalContainer && horizontalPanels.length > 0) {
       ScrollTrigger.create({
-        trigger: horizontalContainer,
+        trigger: horizontalWrapper,
         start: 'top top',
         end: `+=${100 * horizontalPanels.length}%`,
         pin: true,
-        animation: gsap.to(horizontalPanels, {
-          xPercent: -100 * (horizontalPanels.length - 1),
+        animation: gsap.to(horizontalContainer, {
+          x: () => -(horizontalContainer.scrollWidth - window.innerWidth),
           ease: 'none'
         }),
-        scrub: 1
+        scrub: 1,
+        invalidateOnRefresh: true // recalculates width if window resizes
+      });
+
+      // Spice Route entrance — triggered via horizontal scroll progress
+      // IntersectionObserver doesn't work inside GSAP pinned containers (CSS transform, not scroll)
+      // So we hook into the scroll trigger's progress instead.
+      let spiceTriggered = false;
+      const spiceTl = gsap.timeline({ paused: true });
+
+      const setupSpiceTimeline = () => {
+        const spicePoints = Array.from(document.querySelectorAll<HTMLElement>('.spice-point-animated'));
+        const spiceDots   = Array.from(document.querySelectorAll<HTMLElement>('.spice-dot-animated'));
+        const spiceLine   = document.querySelector('.spice-line-animated');
+
+        if (spicePoints.length === 0 || !spiceLine) return null;
+
+        spiceTl.clear();
+        
+        // The total animation duration for the line
+        const totalDuration = 2;
+        
+        // 1. Animate the line growing from left to right
+        spiceTl.to(spiceLine, { scaleX: 1, duration: totalDuration, ease: "none" }, 0);
+        
+        // 2. Activate points as the line reaches them
+        // Point 1 is at the start (0%)
+        spiceTl.call(() => {
+          spicePoints[0]?.classList.add('is-visible');
+          spiceDots[0]?.classList.add('is-active');
+        }, [], 0);
+
+        // Point 2 is at the middle (50%)
+        spiceTl.call(() => {
+          spicePoints[1]?.classList.add('is-visible');
+          spiceDots[1]?.classList.add('is-active');
+        }, [], totalDuration * 0.5);
+
+        // Point 3 is at the end (100%)
+        spiceTl.call(() => {
+          spicePoints[2]?.classList.add('is-visible');
+          spiceDots[2]?.classList.add('is-active');
+        }, [], totalDuration);
+
+        return spiceTl;
+      };
+
+      const fireSpiceAnimations = () => {
+        if (spiceTriggered) return;
+        spiceTriggered = true;
+        const tl = setupSpiceTimeline();
+        if (tl) tl.play(0);
+      };
+
+      const resetSpiceAnimations = () => {
+        if (!spiceTriggered) return;
+        spiceTriggered = false;
+        spiceTl.pause(0);
+        gsap.set('.spice-line-animated', { scaleX: 0 });
+        document.querySelectorAll('.spice-point-animated').forEach(el => el.classList.remove('is-visible'));
+        document.querySelectorAll('.spice-dot-animated').forEach(el => el.classList.remove('is-active'));
+      };
+
+      // With 3 panels (0-based), panel-3 (index 2) starts at progress ~0.66
+      // We fire when progress > 0.62 (entering the last panel)
+      ScrollTrigger.create({
+        trigger: horizontalWrapper,
+        start: 'top top',
+        end: `+=${100 * horizontalPanels.length}%`,
+        onUpdate: (self) => {
+          if (self.progress > 0.62) {
+            fireSpiceAnimations();
+          } else {
+            resetSpiceAnimations();
+          }
+        }
       });
     }
 
@@ -656,7 +886,9 @@ export default function StoryMapsClient() {
       const activeTrigger = ScrollTrigger.create({
         trigger: firstMapTriggerRef.current,
         start: 'top center',
+        onEnter: () => setIsInMapSection(true),
         onEnterBack: () => setActiveChapter(-1),
+        onLeaveBack: () => setIsInMapSection(false),
       });
       triggers.push(activeTrigger);
     }
@@ -675,146 +907,156 @@ export default function StoryMapsClient() {
       });
     });
 
-    // 2b. Screen Flying Mascot Overlay (Si Podo flies from Intro to Semarang)
+    // 2b. Make Mascot Marker Visible when past intro
     const introRef = chapterRefs.current[0];
     if (introRef && mascotMarkerRef.current) {
-      const flightTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: introRef,
-          start: 'bottom bottom', // Trigger precisely when the Intro section finishes and its card starts scrolling up
-          toggleActions: 'play none none none', // Play once
-          onEnter: () => {
-            const el = mascotMarkerRef.current?.getElement();
-            if (el) {
-              el.style.display = 'flex';
-              el.style.opacity = '1';
-            }
+      ScrollTrigger.create({
+        trigger: introRef,
+        start: 'bottom center', // Show when intro is halfway scrolled up
+        onEnter: () => {
+          const el = mascotMarkerRef.current?.getElement();
+          if (el) {
+            el.style.display = 'flex';
+            gsap.to(el, { opacity: 1, duration: 0.5 });
+          }
+        },
+        onLeaveBack: () => {
+          const el = mascotMarkerRef.current?.getElement();
+          if (el) {
+            gsap.to(el, { opacity: 0, duration: 0.5, onComplete: () => el.style.display = 'none' });
           }
         }
       });
-
-      const walkerEl = mascotMarkerRef.current?.getElement()?.querySelector('.si-podo-walker');
-      
-      if (walkerEl) {
-        flightTl.fromTo(walkerEl,
-          { 
-            x: '100vw', // Start offscreen right
-            y: '-80vh', // Start high up relative to its final map position
-            scale: 0.5, 
-            rotation: 20, 
-          },
-          {
-            duration: 2.5,
-            ease: 'power2.inOut',
-            keyframes: [
-              // Membesar menyapa kita
-              { x: '45vw', y: '-40vh', scale: 2.5, rotation: -10, duration: 0.7 },
-              // Melingkar seperti burung
-              { x: '35vw', y: '-25vh', scale: 1.8, rotation: -45, duration: 0.5 },
-              { x: '55vw', y: '-20vh', scale: 1.2, rotation: -80, duration: 0.5 },
-              // Dive down to Semarang (its natural pinned position is 0, 0)
-              { x: 0, y: 0, scale: 1, rotation: 0, duration: 0.8 }
-            ]
-          }
-        );
-      }
     }
 
-    // 3. Map flyTo triggers for each chapter
+    // 3. Map & Mascot Scrubbed Transitions
     chapterRefs.current.forEach((ref, index) => {
       if (!ref) return;
 
-      const trigger = ScrollTrigger.create({
+      // A. State & Pin Triggers (Discrete changes for highlights and pins)
+      const stateTrigger = ScrollTrigger.create({
         trigger: ref,
-        start: 'top 60%',
-        end: 'bottom 60%',
+        start: 'top 55%',
+        end: 'bottom 55%',
         onEnter: () => {
-          setActiveChapter(index);
-          const chapter = scrollChapters[index];
-          mapRef.current?.flyTo({
-            center: chapter.location.center,
-            zoom: chapter.location.zoom,
-            pitch: chapter.location.pitch,
-            bearing: chapter.location.bearing,
-            duration: 3500, // Slower flyTo camera for smoother look
-            curve: 0.9,
-            essential: true,
+          if (isJumpingRef.current) return;
+          gsap.to('.food-marker-wrapper', {
+            scale: 0,
+            duration: 0.2,
+            onComplete: () => {
+              setActiveChapter(index);
+              
+              // Only flyTo for the very first chapter (intro), others use scrub
+              if (index === 0) {
+                const chapter = scrollChapters[index];
+                mapRef.current?.flyTo({
+                  center: chapter.location.center,
+                  zoom: chapter.location.zoom,
+                  pitch: chapter.location.pitch,
+                  bearing: chapter.location.bearing,
+                  duration: 2000,
+                  essential: true,
+                });
+              }
+
+              gsap.fromTo('.food-marker-wrapper', 
+                { scale: 0 }, 
+                { scale: 1, duration: 0.5, stagger: 0.1, ease: 'back.out(1.5)', delay: 0.3 }
+              );
+            }
           });
         },
         onEnterBack: () => {
-          setActiveChapter(index);
-          const chapter = scrollChapters[index];
-          mapRef.current?.flyTo({
-            center: chapter.location.center,
-            zoom: chapter.location.zoom,
-            pitch: chapter.location.pitch,
-            bearing: chapter.location.bearing,
-            duration: 3500,
-            curve: 0.9,
-            essential: true,
+          if (isJumpingRef.current) return;
+          gsap.to('.food-marker-wrapper', {
+            scale: 0,
+            duration: 0.2,
+            onComplete: () => {
+              setActiveChapter(index);
+              
+              if (index === 0) {
+                const chapter = scrollChapters[index];
+                mapRef.current?.flyTo({
+                  center: chapter.location.center,
+                  zoom: chapter.location.zoom,
+                  pitch: chapter.location.pitch,
+                  bearing: chapter.location.bearing,
+                  duration: 2000,
+                  essential: true,
+                });
+              }
+
+              gsap.fromTo('.food-marker-wrapper', 
+                { scale: 0 }, 
+                { scale: 1, duration: 0.5, stagger: 0.1, ease: 'back.out(1.5)', delay: 0.3 }
+              );
+            }
           });
         },
         toggleClass: { targets: ref, className: 'is-active' }
       });
-      triggers.push(trigger);
-    });
+      triggers.push(stateTrigger);
 
-    // 4. Mascot continuous walking scrubbed to scroll transitions
-    chapterRefs.current.forEach((ref, index) => {
-      if (!ref || index === 0) return;
+      // B. Camera & Mascot Scrub (Continuous changes synchronized with scroll!)
+      if (index > 0) {
+        const prevLoc = scrollChapters[index - 1].location;
+        const curLoc = scrollChapters[index].location;
+        
+        const camState = {
+           lng: prevLoc.center[0],
+           lat: prevLoc.center[1],
+           zoom: prevLoc.zoom,
+           pitch: prevLoc.pitch,
+           bearing: prevLoc.bearing
+        };
 
-      const prevChapter = scrollChapters[index - 1];
-      const currentChapter = scrollChapters[index];
-      const startCenter = prevChapter.location.center;
-      const endCenter = currentChapter.location.center;
+        const scrubTrigger = ScrollTrigger.create({
+          trigger: ref,
+          start: 'top bottom', // Start bridging when the new card starts appearing at the bottom
+          end: 'top center',   // Finish bridging exactly when card is centered in focus
+          scrub: 1.5,          // 1.5s inertia for cinematic smoothness but close tracking
+          onUpdate: (self) => {
+             if (isJumpingRef.current) return;
+             const walker = mascotMarkerRef.current?.getElement().querySelector('.si-podo-walker');
+             if (walker) {
+               const isGoingForward = self.direction > 0;
+               const isGoingLeft = curLoc.center[0] < prevLoc.center[0];
+               const goingLeftNow = isGoingForward ? isGoingLeft : !isGoingLeft;
+               const img = walker.querySelector('.si-podo-img') as HTMLImageElement;
+               if (img) img.style.transform = goingLeftNow ? 'scaleX(-1)' : 'scaleX(1)';
 
-      // Animate an object representing lng/lat
-      const pos = { lng: startCenter[0], lat: startCenter[1] };
-
-      const trigger = ScrollTrigger.create({
-        trigger: ref,
-        start: 'top bottom', // Start walking when card begins to enter the screen
-        end: 'top center',   // Stop walking when card is focused
-        scrub: 4,          // much slower, beautiful glide with soft inertia (terbang smooth)
-        onUpdate: (self) => {
-          if (mascotMarkerRef.current) {
-            // Flip the mascot inside the walker container based on direction
-            const isGoingForward = self.direction > 0;
-            const isGoingLeft = endCenter[0] < startCenter[0];
-            const goingLeftNow = isGoingForward ? isGoingLeft : !isGoingLeft;
-            
-            const walker = mascotMarkerRef.current.getElement().querySelector('.si-podo-walker') as HTMLDivElement;
-            if (walker) {
-              const img = walker.querySelector('.si-podo-img') as HTMLImageElement;
-              if (img) {
-                img.style.transform = goingLeftNow ? 'scaleX(-1)' : 'scaleX(1)';
-              }
-            }
-          }
-        },
-        animation: gsap.to(pos, {
-          lng: endCenter[0],
-          lat: endCenter[1],
-          ease: 'none',
-          onUpdate: function () {
-            if (mascotMarkerRef.current) {
-              mascotMarkerRef.current.setLngLat([pos.lng, pos.lat]);
-              const walker = mascotMarkerRef.current.getElement().querySelector('.si-podo-walker');
-              if (walker) {
-                const progress = this.progress();
-                if (progress > 0.95 || progress < 0.05) {
-                  walker.classList.remove('is-walking');
-                  walker.classList.add('is-standing');
-                } else {
-                  walker.classList.add('is-walking');
-                  walker.classList.remove('is-standing');
+               if (self.progress > 0.05 && self.progress < 0.95) {
+                 walker.classList.add('is-walking');
+                 walker.classList.remove('is-standing');
+               } else {
+                 walker.classList.remove('is-walking');
+                 walker.classList.add('is-standing');
+               }
+             }
+          },
+          animation: gsap.to(camState, {
+             lng: curLoc.center[0],
+             lat: curLoc.center[1],
+             zoom: curLoc.zoom,
+             pitch: curLoc.pitch,
+             bearing: curLoc.bearing,
+             ease: 'power1.inOut',
+             onUpdate: () => {
+                if (isJumpingRef.current) return;
+                mapRef.current?.jumpTo({
+                  center: [camState.lng, camState.lat],
+                  zoom: camState.zoom,
+                  pitch: camState.pitch,
+                  bearing: camState.bearing
+                });
+                if (mascotMarkerRef.current) {
+                  mascotMarkerRef.current.setLngLat([camState.lng, camState.lat]);
                 }
-              }
-            }
-          }
-        })
-      });
-      triggers.push(trigger);
+             }
+          })
+        });
+        triggers.push(scrubTrigger);
+      }
     });
 
     return () => {
@@ -849,7 +1091,7 @@ export default function StoryMapsClient() {
   // Map chapter IDs to GeoJSON file(s) and optional feature name filter
   const chapterBoundaryMap: Record<string, { files: string[]; filterNames?: string[] }> = {
     semarang: { files: ['semarang'], filterNames: ['Kota Semarang', 'Semarang'] },
-    solo_raya: { files: ['solo_wonogiri'] },
+    solo_raya: { files: ['solo_wonogiri'], filterNames: ['Kota Surakarta'] },
     pantura_timur: { files: ['semarang', 'kudus_jepara', 'pati_blora'], filterNames: ['Demak', 'Kudus', 'Jepara', 'Pati'] },
     kedu_raya: { files: ['wonosobo_magelang'] },
     banyumas_raya: { files: ['banyumas'] },
@@ -946,6 +1188,9 @@ export default function StoryMapsClient() {
         // Hide dim layer
         const dimSource = map.getSource('world-dim-source') as mapboxgl.GeoJSONSource;
         if (dimSource) dimSource.setData({ type: 'FeatureCollection', features: [] });
+        const hlSource = map.getSource('region-highlight-source') as mapboxgl.GeoJSONSource;
+        if (hlSource) hlSource.setData({ type: 'FeatureCollection', features: [] });
+
         try {
           if (map.getLayer('world-dim-layer')) {
             map.setPaintProperty('world-dim-layer', 'fill-opacity', 0);
@@ -965,12 +1210,18 @@ export default function StoryMapsClient() {
           if (dimSource) {
             dimSource.setData({ type: 'FeatureCollection', features: [maskFeature] });
           }
+          const hlSource = map.getSource('region-highlight-source') as mapboxgl.GeoJSONSource;
+          if (hlSource) {
+            hlSource.setData(boundaryData);
+          }
         } else {
           // Fallback: use old circular approach if boundary not found
           const radiusKm = chapter.id === 'solo' ? 10 : 8;
           const geojsons = getHighlightGeoJSON(chapter.location.center, radiusKm);
           const dimSource = map.getSource('world-dim-source') as mapboxgl.GeoJSONSource;
           if (dimSource) dimSource.setData({ type: 'FeatureCollection', features: [geojsons.maskPolygon] });
+          const hlSource = map.getSource('region-highlight-source') as mapboxgl.GeoJSONSource;
+          if (hlSource) hlSource.setData({ type: 'FeatureCollection', features: [] });
         }
 
         // Dimming contrast (0.7 is a good balance between dark and visible)
@@ -987,6 +1238,8 @@ export default function StoryMapsClient() {
       // Clear dim
       const dimSource = map.getSource('world-dim-source') as mapboxgl.GeoJSONSource;
       if (dimSource) dimSource.setData({ type: 'FeatureCollection', features: [] });
+      const hlSource = map.getSource('region-highlight-source') as mapboxgl.GeoJSONSource;
+      if (hlSource) hlSource.setData({ type: 'FeatureCollection', features: [] });
       try {
         if (map.getLayer('world-dim-layer')) {
           map.setPaintProperty('world-dim-layer', 'fill-opacity', 0);
@@ -1001,17 +1254,33 @@ export default function StoryMapsClient() {
     if (!mapRef.current || !isMapLoaded) return;
     markersRef.current.forEach((m) => m.remove());
     markersRef.current.clear();
-    markersRef.current.clear();
 
-    const cityGroups = filteredFoods.reduce((acc, food) => {
-      if (!acc[food.city]) acc[food.city] = [];
-      acc[food.city].push(food);
+    // 1. Determine which foods to render based on mode
+    let foodsToRender = filteredFoods;
+    if (mode === 'story') {
+      if (activeChapter > 0 && activeChapter < scrollChapters.length - 1) {
+        // Only show foods from the active chapter by filtering the full food objects
+        const chapId = scrollChapters[activeChapter].id;
+        const validIds = (CHAPTER_GALLERIES[chapId] || []).map(g => g.id);
+        foodsToRender = filteredFoods.filter(f => validIds.includes(f.id));
+      } else {
+        foodsToRender = []; // Hide pins in intro or epilogue
+      }
+    }
+
+    const cityGroups = foodsToRender.reduce((acc, food) => {
+      // Don't cluster in story mode, treat each pin individually
+      const key = mode === 'story' ? food.id : food.city;
+      if (!acc[key]) acc[key] = [];
+      acc[key].push(food);
       return acc;
     }, {} as Record<string, Food[]>);
 
+    const markerElements: HTMLElement[] = [];
+
     Object.entries(cityGroups).forEach(([city, foods]) => {
       const first = foods[0];
-      if (foods.length > 1) {
+      if (foods.length > 1 && mode !== 'story') {
         const el = document.createElement('div');
         el.className = 'cluster-marker-wrapper';
         el.innerHTML = `<div class="cluster-marker">${foods.length}</div>`;
@@ -1026,7 +1295,8 @@ export default function StoryMapsClient() {
         let isActive = false;
         if (mode === 'explore') {
           isActive = selectedFood?.id === food.id;
-        } else if (mode === 'story' && activeChapter >= 1 && activeChapter < scrollChapters.length - 1) {
+        } else if (mode === 'story') {
+          // In story mode, the side gallery handles active item, but we can highlight the one selected
           const chapId = scrollChapters[activeChapter].id;
           const activeId = activeFoodItems[chapId]?.id || CHAPTER_GALLERIES[chapId]?.[0]?.id;
           isActive = activeId === food.id;
@@ -1036,24 +1306,49 @@ export default function StoryMapsClient() {
         const el = document.createElement('div');
         el.className = `food-marker-wrapper ${isActive ? 'active' : ''} ${isTour ? 'auto-tour' : ''}`;
         
-        // In story mode, show images for all randomized pins to match Figma design
-        if ((isActive || mode === 'story') && food.image) {
-          el.innerHTML = `
-            <div class="food-marker active-marker">
-              <img src="${food.image}" alt="${food.name}" />
-            </div>
-          `;
+        // In story mode, show images for all pins, make them unclickable
+        if (mode === 'story') {
+          el.style.pointerEvents = 'none'; // Unclickable
+          if (food.image) {
+            el.innerHTML = `
+              <div class="food-marker active-marker">
+                <img src="${food.image}" alt="${food.name}" style="pointer-events: none;" />
+              </div>
+            `;
+          }
         } else {
-          el.innerHTML = `<div class="food-marker inactive-dot"></div>`;
+          // Explore mode
+          if (isActive && food.image) {
+            el.innerHTML = `
+              <div class="food-marker active-marker">
+                <img src="${food.image}" alt="${food.name}" />
+              </div>
+            `;
+          } else {
+            el.innerHTML = `<div class="food-marker inactive-dot"></div>`;
+          }
+          el.addEventListener('click', () => handleMarkerClick(food));
         }
         
-        el.addEventListener('click', () => handleMarkerClick(food));
         const marker = new mapboxgl.Marker({ element: el, anchor: 'bottom' })
           .setLngLat([food.longitude, food.latitude])
           .addTo(mapRef.current!);
         markersRef.current.set(food.id, marker);
+        
+        if (mode === 'story') {
+          markerElements.push(el);
+        }
       }
     });
+
+    // Pop-up animation for story mode markers when chapter changes
+    if (mode === 'story' && markerElements.length > 0) {
+      gsap.fromTo(markerElements, 
+        { scale: 0, y: 50, opacity: 0 }, 
+        { scale: 1, y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'back.out(1.5)', delay: 0.3 }
+      );
+    }
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filteredFoods, selectedFood, currentAutoTourFood, isMapLoaded, mode, activeChapter, activeFoodItems]);
 
@@ -1069,9 +1364,13 @@ export default function StoryMapsClient() {
         curve: 1.2,
         essential: true,
       });
+      
+      // Auto-open story panel
+      setSelectedFood(cur);
+
       autoTourTimerRef.current = setTimeout(() => {
         setAutoTourIndex((p) => (p + 1) % filteredFoods.length);
-      }, 8000);
+      }, 6000);
       return () => { if (autoTourTimerRef.current) clearTimeout(autoTourTimerRef.current); };
     }
   }, [isAutoTourActive, isAutoTourPaused, autoTourIndex, filteredFoods]);
@@ -1131,12 +1430,41 @@ export default function StoryMapsClient() {
   const handleScrollToChapter = useCallback((index: number) => {
     const el = chapterRefs.current[index];
     if (el) {
+      if (activeChapter !== index && mapRef.current) {
+        isJumpingRef.current = true;
+        
+        const targetLoc = scrollChapters[index].location;
+        const currentLng = mapRef.current.getCenter().lng;
+        
+        const walker = mascotMarkerRef.current?.getElement().querySelector('.si-podo-walker');
+        if (walker) {
+          walker.classList.add('is-walking');
+          walker.classList.remove('is-standing');
+          
+          const isGoingLeft = targetLoc.center[0] < currentLng;
+          const img = walker.querySelector('.si-podo-img') as HTMLImageElement;
+          if (img) img.style.transform = isGoingLeft ? 'scaleX(-1)' : 'scaleX(1)';
+        }
+
+        // Set the active chapter immediately so boundaries and thought bubble start loading
+        setActiveChapter(index);
+
+        mapRef.current.flyTo({
+          center: targetLoc.center,
+          zoom: targetLoc.zoom,
+          pitch: targetLoc.pitch,
+          bearing: targetLoc.bearing,
+          duration: 1500,
+          essential: true
+        });
+      }
+
       window.scrollTo({
         top: el.offsetTop,
         behavior: 'smooth'
       });
     }
-  }, []);
+  }, [activeChapter]);
 
   // ═══════════ RENDER ═══════════
   return (
@@ -1196,20 +1524,129 @@ export default function StoryMapsClient() {
             <JangkepHero />
 
             {/* HORIZONTAL SCROLL SECTIONS */}
-            <div className="horizontal-scroll-container">
-              <div className="horizontal-panel panel-1">
-                <div className="bridging-content bridge-text-anim-1">
-                  <h2 className="bridging-quote">&quot;Setiap daerah memiliki rasanya sendiri.&quot;</h2>
+            <div className="horizontal-scroll-wrapper">
+              {/* Corner Ornaments that stay fixed on screen during horizontal scroll */}
+              <img src="/motif/motif_button_kiri.webp" alt="Ornament Left" className="corner-ornament top-left" />
+              <img src="/motif/motif_button_kanan.webp" alt="Ornament Right" className="corner-ornament top-right" />
+
+              <div className="horizontal-scroll-container">
+                {/* Panel 1: Combined Intro Texts */}
+                <div className="horizontal-panel panel-1">
+                  <div className="bridging-content bridge-text-anim-1">
+                    <h2 className="bridging-quote">&quot;Setiap daerah memiliki rasanya sendiri. Dan setiap rasa menyimpan sejarahnya sendiri.&quot;</h2>
+                    <div className="bridging-divider"></div>
+                    <p className="bridging-desc">
+                      Lebih dari sekadar direktori makanan, ini adalah perjalanan menyusuri jejak rempah, akulturasi budaya, dan tradisi keraton yang membentuk identitas kita.
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="horizontal-panel panel-2">
-                <div className="bridging-content bridge-text-anim-2">
-                  <h2 className="bridging-quote">&quot;Dan setiap rasa menyimpan sejarahnya sendiri.&quot;</h2>
-                  <div className="bridging-divider"></div>
-                  <p className="bridging-desc">
-                    Lebih dari sekadar direktori makanan, ini adalah perjalanan menyusuri jejak rempah, akulturasi budaya, dan tradisi keraton yang membentuk identitas kita.
-                  </p>
+
+                {/* Panel 2: Topography Biomes (formerly Panel 3) */}
+                <div className="horizontal-panel panel-2">
+                  <div className="bridging-content" style={{ width: '100%', maxWidth: '1400px', position: 'relative' }}>
+                    <h2 className="bridging-quote" style={{ fontSize: '36px', marginBottom: '60px', position: 'relative', zIndex: 10 }}>Bentang Alam & Lahirnya Rasa</h2>
+                    <div className="biome-container">
+                      {/* Card 1: Pesisir */}
+                      <div className="biome-card">
+                        <div className="biome-card-inner">
+                          <div className="biome-card-front">
+                            <div className="biome-motif biome-motif-left-top"><img src="/motif/motif_bunga_card.webp" alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /></div>
+                            <div className="biome-motif biome-motif-left-bottom"><img src="/motif/motif_bunga_card.webp" alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /></div>
+                            <div className="biome-motif biome-motif-left-center"><img src="/motif/motif_bunga_card.webp" alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /></div>
+                            <div className="biome-motif biome-motif-right-top"><img src="/motif/motif_bunga_card.webp" alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /></div>
+                            <div className="biome-motif biome-motif-right-bottom"><img src="/motif/motif_bunga_card.webp" alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /></div>
+                            <h3 className="biome-title">Pesisir & Pantai</h3>
+                            <div className="bridging-divider" style={{ margin: '0 auto', background: 'linear-gradient(90deg, transparent, var(--color-coklat-batik), transparent)' }}></div>
+                            <p className="biome-desc">Lahir dari udara panas dan hasil tangkapan laut. Mengandalkan terasi, garam, dan rempah berani untuk menghasilkan rasa gurih dan pedas yang menantang.</p>
+                          </div>
+                          <div className="biome-card-back">
+                            <video autoPlay loop muted playsInline className="biome-video" src="/bg mapz/pesisir.webm" />
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Card 2: Dataran Rendah */}
+                      <div className="biome-card">
+                        <div className="biome-card-inner">
+                          <div className="biome-card-front">
+                            <div className="biome-motif biome-motif-left-top"><img src="/motif/motif_bunga_card.webp" alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /></div>
+                            <div className="biome-motif biome-motif-left-bottom"><img src="/motif/motif_bunga_card.webp" alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /></div>
+                            <div className="biome-motif biome-motif-left-center"><img src="/motif/motif_bunga_card.webp" alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /></div>
+                            <div className="biome-motif biome-motif-right-top"><img src="/motif/motif_bunga_card.webp" alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /></div>
+                            <div className="biome-motif biome-motif-right-bottom"><img src="/motif/motif_bunga_card.webp" alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /></div>
+                            <h3 className="biome-title">Dataran Rendah</h3>
+                            <div className="bridging-divider" style={{ margin: '0 auto', background: 'linear-gradient(90deg, transparent, var(--color-coklat-batik), transparent)' }}></div>
+                            <p className="biome-desc">Didominasi oleh hasil tani padi dan kelapa. Mengandalkan gula jawa dan santan kental yang melahirkan rasa manis legit, melambangkan kelembutan karakter.</p>
+                          </div>
+                          <div className="biome-card-back">
+                            <video autoPlay loop muted playsInline className="biome-video" src="/bg mapz/dataranrendah.webm" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Card 3: Pegunungan */}
+                      <div className="biome-card">
+                        <div className="biome-card-inner">
+                          <div className="biome-card-front">
+                            <div className="biome-motif biome-motif-left-top"><img src="/motif/motif_bunga_card.webp" alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /></div>
+                            <div className="biome-motif biome-motif-left-bottom"><img src="/motif/motif_bunga_card.webp" alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /></div>
+                            <div className="biome-motif biome-motif-left-center"><img src="/motif/motif_bunga_card.webp" alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /></div>
+                            <div className="biome-motif biome-motif-right-top"><img src="/motif/motif_bunga_card.webp" alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /></div>
+                            <div className="biome-motif biome-motif-right-bottom"><img src="/motif/motif_bunga_card.webp" alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /></div>
+                            <h3 className="biome-title">Pegunungan</h3>
+                            <div className="bridging-divider" style={{ margin: '0 auto', background: 'linear-gradient(90deg, transparent, var(--color-coklat-batik), transparent)' }}></div>
+                            <p className="biome-desc">Cuaca dingin menuntut kehangatan konstan. Melahirkan tradisi hidangan berkuah kaldu panas dengan racikan rempah lada dan jahe yang kuat.</p>
+                          </div>
+                          <div className="biome-card-back">
+                            <video autoPlay loop muted playsInline className="biome-video" src="/bg mapz/pegunungan.webm" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+
+                {/* Panel 3: Spice Route Parallax */}
+                <div className="horizontal-panel panel-3">
+                  <div className="bridging-content" style={{ width: '100%', maxWidth: '1100px' }}>
+                    <h2 className="bridging-quote" style={{ fontSize: '36px', marginBottom: '100px', position: 'relative', zIndex: 2 }}>Jejak Akulturasi Rempah</h2>
+                    <div className="spice-route-container">
+                      <div className="spice-line-bg"></div>
+                      <div className="spice-line spice-line-animated"></div>
+
+                      {/* Point 1: Pelabuhan */}
+                      <div className="spice-point spice-point-animated">
+                        <div className="spice-image-wrapper">
+                          <img src="/bg mapz/pelabuhan.webp" alt="Pelabuhan" className="spice-image" style={{ transform: "scale(1.15) translateY(15px)" }} />
+                        </div>
+                        <div className="spice-dot spice-dot-animated"></div>
+                        <h3 className="spice-title">Pelabuhan</h3>
+                        <p className="spice-desc">Pedagang Tiongkok dan Arab bersandar di utara membawa mie, kecap, dan daging kambing.</p>
+                      </div>
+
+                      {/* Point 2: Keraton */}
+                      <div className="spice-point spice-point-animated">
+                        <div className="spice-image-wrapper">
+                          <img src="/bg mapz/keraton.webp" alt="Keraton" className="spice-image" style={{ transform: "scale(1.15) translateY(70px)" }} />
+                        </div>
+                        <div className="spice-dot spice-dot-animated"></div>
+                        <h3 className="spice-title">Keraton</h3>
+                        <p className="spice-desc">Bumbu pendatang diracik dan disempurnakan dengan filosofi serta teknik masak tingkat tinggi.</p>
+                      </div>
+
+                      {/* Point 3: Rakyat */}
+                      <div className="spice-point spice-point-animated">
+                        <div className="spice-image-wrapper">
+                          <img src="/bg mapz/rakyat.webp" alt="Rakyat" className="spice-image" />
+                        </div>
+                        <div className="spice-dot spice-dot-animated"></div>
+                        <h3 className="spice-title">Rakyat</h3>
+                        <p className="spice-desc">Resep menyebar ke pelosok jalanan, menjadi jajanan pasar dan hidangan yang kita petakan hari ini.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
 
@@ -1225,7 +1662,7 @@ export default function StoryMapsClient() {
                 <div
                   key={chapter.id}
                   ref={(el) => { chapterRefs.current[index] = el; }}
-                  className={`chapter-section ${isLast ? 'last-chapter-section' : ''}`}
+                  className={`chapter-section ${isLast ? 'last-chapter-section' : ''} ${isFirst ? 'first-chapter-section' : ''}`}
                 >
                   <ChapterCard 
                     chapter={chapter}
@@ -1244,16 +1681,16 @@ export default function StoryMapsClient() {
                         };
                       });
                     }}
-                    onExploreStart={enterExploreMode}
+                    onExploreStart={() => window.location.href = '/maps/explore'}
                   />
                 </div>
               );
             })}
           </div>
 
-          {/* Progress Nav (Only show when past intro) */}
+          {/* Progress Nav (Only show when in map section) */}
           <AnimatePresence>
-            {activeChapter >= 0 && (
+            {isInMapSection && activeChapter >= 0 && (
               <motion.div
                 className="story-progress-nav"
                 initial={{ opacity: 0, x: 20 }}

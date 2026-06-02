@@ -11,103 +11,181 @@
   font-family: var(--font-dm-sans), sans-serif;
   color: #3B1F0C;
   z-index: 10;
+  padding-top: 150px;
 }
 
-/* Batik Kawung Background */
+/* Light noise/batik pattern overlay */
 .jangkep-hero::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("/batik/pattern_background.webp");
-  background-repeat: repeat;
-  background-size: 200px;
-  opacity: 0.5;
   pointer-events: none;
-  z-index: 1;
+  opacity: 0.12;
+  z-index: 0;
+  background-image: url("/batik/pattern_background.webp");
+  background-size: cover;
+  background-position: center;
+  mix-blend-mode: multiply;
 }
 
 /* Soft radial golden glow */
 .jangkep-hero::after {
   content: "";
   position: absolute;
-  top: 50%;
+  top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 80vw;
   height: 80vw;
   max-width: 1000px;
   max-height: 1000px;
-  background: radial-gradient(circle, rgba(245, 196, 0, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(218, 165, 32, 0.25) 0%, transparent 70%);
   z-index: 1;
   pointer-events: none;
 }
 
-/* Navbar Pill */
-.hero-nav-pill {
-  position: relative;
-  z-index: 2;
-  margin-top: 40px;
-  display: flex;
-  align-items: center;
-  background: #FFF;
-  padding: 8px 16px;
-  border-radius: 40px;
-  box-shadow: 0 4px 20px rgba(59, 31, 12, 0.08);
-  font-size: 14px;
-  font-weight: 600;
-  color: #3B1F0C;
-  gap: 12px;
+/* Wayang Ornament Left */
+.wayang-ornament {
+  position: absolute;
+  left: 10px;
+  top: 15%;
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 10;
 }
 
-.nav-logo-circle {
-  width: 24px;
-  height: 24px;
-  background: #1A1A1A;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #F5C400;
-  font-size: 12px;
+.wayang-img {
+  width: 180px;
+  max-width: 25vw;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 25px rgba(59, 31, 12, 0.15));
 }
 
-.nav-separator {
-  width: 4px;
-  height: 4px;
-  background: #B8860B;
-  border-radius: 50%;
+@keyframes wayang-play {
+  0% { transform: rotate(-3deg) translateY(0px); }
+  25% { transform: rotate(4deg) translateY(-6px); }
+  50% { transform: rotate(-2deg) translateY(2px); }
+  75% { transform: rotate(5deg) translateY(-4px); }
+  100% { transform: rotate(-3deg) translateY(0px); }
 }
 
-/* Hero Text Content */
-.hero-content {
+/* Compass Ornament Right */
+.compass-ornament {
+  position: absolute;
+  right: 24px;
+  top: 8%;
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.compass-img {
+  width: 120px;
+  max-width: 20vw;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 20px rgba(59, 31, 12, 0.2));
+}
+
+/* New Hero Content Layout */
+.hero-content-new {
   position: relative;
   z-index: 2;
   text-align: center;
-  margin-top: 60px;
-  max-width: 800px;
-  padding: 0 20px;
+  max-width: 950px;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.hero-eyebrow {
-  font-size: 14px;
+.javanese-script-top {
+  font-family: var(--font-noto-javanese), serif;
+  font-size: 32px;
   font-weight: 700;
-  letter-spacing: 2px;
   color: #B8860B;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
+  opacity: 0.85;
 }
 
-.hero-headline {
+.hero-headline-new {
+  font-family: var(--font-playfair), serif;
   font-size: 64px;
+  font-weight: 800;
+  line-height: 1.15;
+  color: #3B1F0C;
+  margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.headline-latin-top {
+  display: block;
+}
+
+.headline-latin-bottom {
+  display: block;
+  color: #DAA520;
+  text-shadow: 0 2px 4px rgba(218, 165, 32, 0.1);
+  cursor: default;
+}
+
+.javanese-script-bottom {
+  font-family: var(--font-noto-javanese), serif;
+  font-size: 24px;
   font-weight: 700;
-  line-height: 1.1;
-  color: #1A1A1A;
-  margin: 0;
-  letter-spacing: -1.5px;
+  color: #B8860B;
+  margin-top: 8px;
+  margin-bottom: 24px;
+  opacity: 0.85;
+}
+
+.hero-description-new {
+  max-width: 800px;
+  margin-top: 10px;
+}
+
+.description-text {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #4A3A31;
+  line-height: 1.7;
+}
+
+/* Hide elements visually but keep them readable by screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
 @media (max-width: 768px) {
-  .hero-headline {
-    font-size: 42px;
+  .hero-headline-new {
+    font-size: 40px;
+  }
+  .javanese-script-top {
+    font-size: 24px;
+  }
+  .javanese-script-bottom {
+    font-size: 18px;
+  }
+  .description-text {
+    font-size: 15px;
+  }
+  .wayang-img {
+    width: 120px;
+  }
+  .compass-img {
+    width: 80px;
   }
 }
 
@@ -117,7 +195,7 @@
   z-index: 2;
   width: 100vw;
   flex: 1;
-  margin-top: -60px; /* Moved further up */
+  margin-top: -140px;
   min-height: 500px;
   overflow: hidden;
 }
@@ -150,6 +228,8 @@
   stroke-width: 44;
   stroke-linecap: round;
   filter: drop-shadow(0 4px 12px rgba(59, 31, 12, 0.15));
+  stroke-dasharray: 3000;
+  stroke-dashoffset: 3000;
 }
 
 .path-bg-pattern {
@@ -158,6 +238,8 @@
   stroke-width: 44;
   stroke-linecap: round;
   opacity: 0.4;
+  stroke-dasharray: 3000;
+  stroke-dashoffset: 3000;
 }
 
 .path-text {
@@ -166,6 +248,7 @@
   font-weight: 500;
   fill: #B8860B;
   letter-spacing: 2px;
+  opacity: 0;
 }
 
 /* Marquee text animations */
@@ -191,6 +274,7 @@
   align-items: center;
   justify-content: center;
   box-shadow: none;
+  opacity: 0;
   offset-path: path("M -50 350 C 200 350, 300 50, 450 200 C 550 300, 450 550, 300 450 C 200 350, 350 150, 550 250 C 700 350, 800 500, 960 330");
   animation: ingredient-travel 12s linear infinite;
 }
@@ -227,18 +311,29 @@
   position: absolute;
   top: 0;
   left: 0;
-  background: #FFF;
-  padding: 8px 16px 8px 8px; /* Slightly less padding on the left to hug the image */
+  background: transparent;
+  padding: 8px 16px 8px 8px;
   border-radius: 30px;
   font-weight: 600;
-  color: #3B1F0C;
-  box-shadow: 0 4px 15px rgba(59, 31, 12, 0.1);
+  color: #F5C400;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   gap: 10px;
   white-space: nowrap;
+  overflow: hidden;
+  opacity: 0;
   offset-path: path("M 960 330 C 980 370, 1000 450, 1100 450 C 1250 450, 1300 200, 1500 150 C 1700 100, 1800 350, 1970 350");
   animation: food-result-travel 8s linear infinite;
+}
+
+.food-chip::before {
+  content: "";
+  position: absolute;
+  inset: 0; 
+  background-image: url("/batik/pattern_background.webp");
+  background-size: 100px;
+  z-index: -1;
 }
 
 .chip-img {
@@ -285,7 +380,7 @@
 .mascot-area {
   position: absolute;
   top: 330px;
-  left: 960px; /* Exact center of the 1920x600 stage */
+  left: 960px;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
@@ -302,7 +397,7 @@
 
 .steam-container {
   position: absolute;
-  top: 130px; /* Position right above the wok which is in the bottom of the image */
+  top: 130px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
