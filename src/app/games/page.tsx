@@ -73,15 +73,15 @@ export default function GamesPage() {
     <main className={styles.portalBackground}>
       {/* Hero Section */}
       <section className={styles.heroSection}>
-        <h1 className={styles.heroTitle}>Dolan & Sinau</h1>
-        <div className={styles.heroOrnament}>
-          <img src="/motif/dekor_header_bawah.webp" alt="" className={styles.ornamentImage} />
+        <div className={styles.heroContent}>
+          <h1 className={styles.heroTitle}>Dolan & Sinau</h1>
+          <div className={styles.heroOrnament}>
+            <img src="/motif/dekor_header_bawah.webp" alt="" className={styles.ornamentImage} />
+          </div>
+          <p className={styles.heroSubtitle}>
+            Uji wawasanmu tentang kekayaan kuliner Jawa Tengah! Dolan (<span className={styles.javaneseText}>ꦢꦺꦴꦭꦤ꧀</span>) bersama Si Podo dan raih skor tertinggi di berbagai tantangan seru.
+          </p>
         </div>
-        <p className={styles.heroSubtitle}>
-          Uji wawasanmu tentang kekayaan kuliner Jawa Tengah! Bermain<br className={styles.desktopOnlyBreak} />
-          bersama Si Podo dan raih skor tertinggi di berbagai tantangan<br className={styles.desktopOnlyBreak} />
-          seru.
-        </p>
       </section>
 
       {/* Games Section */}
@@ -93,35 +93,35 @@ export default function GamesPage() {
 
         {/* Texture Overlay */}
         <div className={styles.textureOverlay} />
-        
 
-      {/* Games Etalase */}
-      <section className={styles.gamesGrid}>
-        {GAMES_DATA.map((game) => (
-          <div key={game.id} className={styles.gameCard}>
-            <div className={styles.cardHeaderRibbon}>
-              <Image src={game.headerImage} alt={game.tag} fill className={styles.ribbonImage} unoptimized />
-            </div>
 
-            <div className={styles.cardMascotWrapper}>
-              <Image src="/games/card/card_tengah.webp" alt="Background" fill className={styles.cardCenterBg} unoptimized />
-              <Image 
-                src={game.mascot} 
-                alt={game.title} 
-                width={220} 
-                height={220} 
-                className={`${styles.cardMascot} ${styles[`mascot_${game.id}`]}`}
-                unoptimized
-              />
+        {/* Games Etalase */}
+        <section className={styles.gamesGrid}>
+          {GAMES_DATA.map((game) => (
+            <div key={game.id} className={styles.gameCard}>
+              <div className={styles.cardHeaderRibbon}>
+                <Image src={game.headerImage} alt={game.tag} fill className={styles.ribbonImage} unoptimized />
+              </div>
+
+              <div className={styles.cardMascotWrapper}>
+                <Image src="/games/card/card_tengah.webp" alt="Background" fill className={styles.cardCenterBg} unoptimized />
+                <Image
+                  src={game.mascot}
+                  alt={game.title}
+                  width={220}
+                  height={220}
+                  className={`${styles.cardMascot} ${styles[`mascot_${game.id}`]}`}
+                  unoptimized
+                />
+              </div>
+
+              <div className={styles.cardContent}>
+                <h2 className={styles.cardTitle}>{game.title}</h2>
+                <p className={styles.cardDesc}>{game.desc}</p>
+                <button className={styles.cardCta} onClick={() => openModal(game)}>Cara Bermain</button>
+              </div>
             </div>
-            
-            <div className={styles.cardContent}>
-              <h2 className={styles.cardTitle}>{game.title}</h2>
-              <p className={styles.cardDesc}>{game.desc}</p>
-              <button className={styles.cardCta} onClick={() => openModal(game)}>Cara Bermain</button>
-            </div>
-          </div>
-        ))}
+          ))}
         </section>
       </section>
 
@@ -131,50 +131,50 @@ export default function GamesPage() {
           <button className={styles.closeButton} onClick={closeModal} aria-label="Tutup">
             <X size={20} strokeWidth={3} />
           </button>
-          
+
           <div className={styles.modalScrollArea}>
             <div className={styles.modalHeader}>
               <h3 className={styles.modalTitle}>{selectedGame?.title}</h3>
             </div>
-          
-          <div className={styles.modalBody}>
-            <div className={styles.modalLeft}>
-              <div className={styles.caraBermainBadge}>
-                <Image src="/games/modal/motif_highlight_kiri.webp" alt="Ornament Kiri" width={40} height={20} className={styles.highlightOrnament} unoptimized />
-                <span>Cara Bermain</span>
-                <Image src="/games/modal/motif_highlight_kanan.webp" alt="Ornament Kanan" width={40} height={20} className={styles.highlightOrnament} unoptimized />
+
+            <div className={styles.modalBody}>
+              <div className={styles.modalLeft}>
+                <div className={styles.caraBermainBadge}>
+                  <Image src="/games/modal/motif_highlight_kiri.webp" alt="Ornament Kiri" width={40} height={20} className={styles.highlightOrnament} unoptimized />
+                  <span>Cara Bermain</span>
+                  <Image src="/games/modal/motif_highlight_kanan.webp" alt="Ornament Kanan" width={40} height={20} className={styles.highlightOrnament} unoptimized />
+                </div>
+                <ul className={styles.modalList}>
+                  {selectedGame?.rules.map((rule, idx) => (
+                    <li key={idx}>
+                      <div className={styles.ruleIconWrapper}>
+                        <Image src="/games/modal/bulat.webp" alt="Icon bg" fill className={styles.ruleIconBg} unoptimized />
+                        <div className={styles.ruleIconFront}>{rule.icon}</div>
+                      </div>
+                      <span>
+                        {rule.text.includes('menyala!') || rule.text.includes('detik') ? (
+                          <span dangerouslySetInnerHTML={{ __html: rule.text.replace('60 detik.', '<span style="color:var(--color-rasa-segar); font-weight:700;">60 detik.</span>').replace('15 detik', '<span style="color:var(--color-rasa-segar); font-weight:700;">15 detik</span>').replace('peta menyala!', '<span style="color:var(--color-rasa-segar); font-weight:700;">peta menyala!</span>') }} />
+                        ) : (
+                          rule.text
+                        )}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <ul className={styles.modalList}>
-                {selectedGame?.rules.map((rule, idx) => (
-                  <li key={idx}>
-                    <div className={styles.ruleIconWrapper}>
-                      <Image src="/games/modal/bulat.webp" alt="Icon bg" fill className={styles.ruleIconBg} unoptimized />
-                      <div className={styles.ruleIconFront}>{rule.icon}</div>
-                    </div>
-                    <span>
-                      {rule.text.includes('menyala!') || rule.text.includes('detik') ? (
-                        <span dangerouslySetInnerHTML={{__html: rule.text.replace('60 detik.', '<span style="color:var(--color-rasa-segar); font-weight:700;">60 detik.</span>').replace('15 detik', '<span style="color:var(--color-rasa-segar); font-weight:700;">15 detik</span>').replace('peta menyala!', '<span style="color:var(--color-rasa-segar); font-weight:700;">peta menyala!</span>')}} />
-                      ) : (
-                        rule.text
-                      )}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className={styles.modalRight}>
-              <div className={styles.modalMascotWrapper}>
-                <Image 
-                  src={selectedGame?.mascot || ''} 
-                  alt="Mascot" 
-                  fill 
-                  className={styles.modalMascot} 
-                  unoptimized 
-                />
+              <div className={styles.modalRight}>
+                <div className={styles.modalMascotWrapper}>
+                  <Image
+                    src={selectedGame?.mascot || ''}
+                    alt="Mascot"
+                    fill
+                    className={styles.modalMascot}
+                    unoptimized
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          
+
             <div className={styles.modalAction}>
               <Link href={`/games/${selectedGame?.id}`} className={styles.playButton} onClick={closeModal}>
                 Mulai Main!

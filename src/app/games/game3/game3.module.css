@@ -14,6 +14,13 @@
   padding: var(--spacing-48) var(--spacing-24);
   overflow-y: auto;
   overflow-x: hidden;
+  /* Hide scrollbar */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.pageBackground::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
 }
 
 .gameContainer {
@@ -61,55 +68,146 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+  padding: 0 var(--spacing-24);
+  margin-bottom: var(--spacing-16);
+}
+
+.headerLine {
+  position: absolute;
+  left: 210px;
+  right: 130px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+.progressTrack {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: rgba(184, 134, 11, 0.3); /* Transparent gold */
+  z-index: 1;
+}
+
+.progressDots {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+.progressDot {
+  width: 10px;
+  height: 10px;
   background-color: var(--color-putih-santan);
-  padding: var(--spacing-16) var(--spacing-24);
-  border-radius: var(--radius-cards);
   border: 2px solid var(--color-emas-keris);
-  box-shadow: var(--shadow-card);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.progressDotActive {
+  background-color: var(--color-emas-keris);
+  box-shadow: 0 0 6px rgba(184, 134, 11, 0.6);
+}
+
+.progressDotCurrent {
+  transform: scale(1.6);
+  border-color: var(--color-putih-santan);
+  box-shadow: 0 0 10px rgba(184, 134, 11, 0.9);
 }
 
 .progress {
   font-family: var(--font-dm-sans);
   font-weight: 700;
-  color: var(--color-coklat-batik);
-  font-size: 18px;
+  color: var(--color-putih-santan);
+  font-size: 16px;
+  background-image: url('/games/game3/button.webp');
+  background-size: 100% 100%;
+  padding: 12px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  min-width: 180px;
 }
 
 .timer {
-  font-family: var(--font-playfair);
-  font-size: 24px;
-  color: var(--color-rasa-pedas);
-  font-weight: 800;
+  width: 90px;
+  height: 90px;
+  background-image: url('/games/game3/bulat.webp');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  color: var(--color-putih-santan);
+  font-family: var(--font-playfair);
+  z-index: 2;
+  padding-top: 8px;
+}
+.timerNumber {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+}
+.timerText {
+  font-size: 12px;
+  font-family: var(--font-dm-sans);
 }
 
 /* IMAGE CARD */
 .imageCard {
-  background-color: var(--color-putih-santan);
-  padding: var(--spacing-16);
-  border-radius: var(--radius-cards);
-  border: 2px solid var(--color-emas-keris);
-  box-shadow: var(--shadow-card);
+  background-image: url('/games/game3/frame_background.webp');
+  background-size: 100% 100%;
+  background-color: transparent;
+  padding: 30px;
+  border: none;
+  box-shadow: none;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 300px;
-  aspect-ratio: 1 / 1;
+  height: 100%;
+  min-height: 300px;
   margin: 0 auto;
-  overflow: hidden;
 }
 
-@media (min-width: 900px) {
-  .imageCard {
-    max-width: none;
-    aspect-ratio: auto;
-    height: 100%;
-    margin: 0;
-  }
+/* RIGHT CONTENT CARD */
+.rightColumnCard {
+  background-image: url('/games/game3/frame_background.webp');
+  background-size: 100% 100%;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  animation: slideUp 0.3s ease-out forwards;
+}
+
+.instructionTitle {
+  font-family: var(--font-playfair);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-coklat-batik);
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.decorativeLine {
+  width: 100%;
+  height: 15px;
+  background-image: url('/motif/dekor_header_bawah.webp');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-bottom: 24px;
 }
 
 .imageWrapper {
@@ -204,49 +302,47 @@
 
 /* OPTIONS GRID */
 .optionsGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-direction: column;
   gap: var(--spacing-16);
-  flex: 1; /* Allow it to grow if needed */
+  flex: 1; 
 }
 
 .optionButton {
-  background-color: var(--color-putih-santan);
-  border: 2px solid var(--color-emas-keris);
-  border-radius: var(--radius-buttons);
-  padding: var(--spacing-32) var(--spacing-24) var(--spacing-16);
+  background-color: #FDF9EE;
+  border: 1px solid var(--color-emas-keris);
+  border-radius: 8px;
+  padding: 12px 24px 12px 64px;
   font-family: var(--font-dm-sans);
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-coklat-batik);
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: var(--shadow-card);
   display: flex;
   align-items: center;
-  justify-content: center;
-  min-height: 80px;
+  justify-content: flex-start;
+  min-height: 60px;
   position: relative;
-  overflow: visible;
 }
 
 .optionLetter {
   position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 36px;
-  height: 36px;
-  background-color: var(--color-coklat-batik);
-  border: 2px solid var(--color-emas-keris);
-  border-radius: 50%;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background-image: url('/games/game3/bulat.webp');
+  background-size: 100% 100%;
+  background-color: transparent;
+  border: none;
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: var(--font-playfair);
-  font-size: 20px;
-  color: var(--color-krem-mori);
-  transition: all 0.2s ease;
+  font-size: 18px;
+  color: var(--color-putih-santan);
 }
 
 .optionText {
@@ -279,64 +375,94 @@
 
 /* INLINE FEEDBACK */
 .feedbackInline {
-  background-color: var(--color-putih-santan);
-  border: 2px solid var(--color-emas-keris);
-  border-radius: var(--radius-cards);
-  padding: var(--spacing-16);
-  margin-top: 40px;
   display: flex;
   flex-direction: column;
-  box-shadow: var(--shadow-card);
-  animation: slideUp 0.3s ease-out forwards;
+  align-items: center;
+  text-align: center;
 }
 
 .feedbackHeader {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--spacing-16);
-  margin-bottom: var(--spacing-12);
+  margin-bottom: var(--spacing-16);
 }
 
 .mascotReaction {
-  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: var(--spacing-8);
 }
 
 .feedbackTitle {
   font-family: var(--font-playfair);
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 800;
   margin: 0;
 }
 
-.funFactBox {
-  background-color: var(--color-krem-mori);
-  padding: var(--spacing-12);
-  border-radius: 8px;
-  border-left: 4px solid var(--color-kuning-kepodang);
-  margin-bottom: var(--spacing-16);
-  font-family: var(--font-dm-sans);
-  font-size: 14px;
-  color: var(--color-coklat-batik);
-  line-height: 1.4;
+.correctAnswerBadge {
+  background-image: url('/games/game3/frame_jawabangyangbenar.webp');
+  background-size: 100% 100%;
+  background-color: transparent;
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 1745 / 526;
+  color: var(--color-krem-mori);
+  font-size: 22px;
+  font-weight: 800;
+  font-family: var(--font-playfair);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 4%; /* Push text down less to move it up slightly */
+  margin-bottom: 24px;
+  border: none;
+  box-sizing: border-box;
 }
 
-.nextButton {
-  background-color: var(--color-kuning-kepodang);
-  color: var(--color-coklat-batik);
-  font-family: var(--font-dm-sans);
+.funFactContainer {
+  width: 100%;
+  text-align: left;
+  margin-bottom: var(--spacing-24);
+}
+
+.funFactTitle {
+  font-family: var(--font-playfair);
+  font-size: 20px;
   font-weight: 700;
-  padding: 10px 24px;
-  border-radius: 24px;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  transition: transform 0.2s;
-  box-shadow: var(--shadow-button-accent);
+  color: var(--color-rasa-pedas);
+  margin: 0 0 8px 0;
+}
+
+.funFactBox {
+  background-color: #E8DBB8;
+  padding: var(--spacing-16);
+  border-radius: 8px;
+  font-family: var(--font-dm-sans);
+  font-size: 15px;
+  color: var(--color-coklat-batik);
+  line-height: 1.5;
   width: 100%;
 }
 
+.nextButton {
+  background-image: url('/games/game3/button.webp');
+  background-size: 100% 100%;
+  color: var(--color-putih-santan);
+  font-family: var(--font-dm-sans);
+  font-weight: 700;
+  padding: 14px 40px;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  transition: filter 0.2s;
+  background-color: transparent;
+}
+
 .nextButton:hover {
-  transform: scale(1.02);
+  filter: brightness(1.1);
 }
 
 .finishContainer {
@@ -347,21 +473,22 @@
 }
 
 .finishButton {
+  background-image: url('/games/game3/button_selesai.webp');
+  background-size: 100% 100%;
   background-color: transparent;
-  color: var(--color-emas-keris);
-  border: 2px solid var(--color-emas-keris);
-  padding: 8px 24px;
+  color: var(--color-putih-santan);
+  border: none;
+  padding: 14px 40px;
   font-family: var(--font-dm-sans);
   font-weight: 700;
-  font-size: 14px;
-  border-radius: 24px;
+  font-size: 16px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: filter 0.2s;
+  min-width: 180px;
 }
 
 .finishButton:hover {
-  background-color: var(--color-emas-keris);
-  color: var(--color-putih-santan);
+  filter: brightness(1.1);
 }
 
 /* OVERLAYS */
@@ -388,10 +515,11 @@
 }
 
 .resultCard {
-  background-color: var(--color-putih-santan);
-  border: 3px solid var(--color-emas-keris);
-  border-radius: var(--radius-cards);
-  padding: var(--spacing-32);
+  background-image: url('/games/game3/frame_background.webp');
+  background-size: 100% 100%;
+  background-color: transparent;
+  border: none;
+  padding: 60px 40px 40px;
   max-width: 500px;
   width: 100%;
   text-align: center;
@@ -427,37 +555,6 @@
 .correctText { color: var(--color-rasa-segar); }
 .wrongText { color: var(--color-rasa-pedas); }
 
-.funFactBox {
-  background-color: var(--color-krem-mori);
-  padding: var(--spacing-16);
-  border-radius: 8px;
-  border-left: 4px solid var(--color-kuning-kepodang);
-  margin-bottom: var(--spacing-24);
-  font-family: var(--font-dm-sans);
-  font-size: 16px;
-  color: var(--color-coklat-batik);
-  line-height: 1.5;
-  text-align: left;
-}
-
-.nextButton {
-  background-color: var(--color-kuning-kepodang);
-  color: var(--color-coklat-batik);
-  font-family: var(--font-dm-sans);
-  font-weight: 700;
-  padding: 12px 32px;
-  border-radius: 24px;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-  transition: transform 0.2s;
-  box-shadow: var(--shadow-button-accent);
-}
-
-.nextButton:hover {
-  transform: scale(1.05);
-}
-
 /* RESULTS PAGE SPECIFIC */
 .resultBadge {
   font-family: var(--font-playfair);
@@ -467,16 +564,17 @@
 }
 
 .resultScore {
-  font-family: var(--font-dm-sans);
-  font-size: 24px;
-  font-weight: 500;
+  font-family: var(--font-playfair);
+  font-size: 26px;
+  font-weight: 700;
   color: var(--color-coklat-batik);
   margin-bottom: var(--spacing-16);
 }
 
 .subText {
-  font-family: var(--font-dm-sans);
-  font-size: 16px;
+  font-family: var(--font-playfair);
+  font-size: 18px;
+  font-style: italic;
   font-weight: 400;
   color: var(--color-coklat-batik);
   line-height: 1.6;
@@ -491,12 +589,180 @@
 }
 
 .secondaryBtn {
+  background-image: none;
   background-color: transparent;
   border: 2px solid var(--color-emas-keris);
-  color: var(--color-emas-keris);
+  border-radius: 24px;
+  color: var(--color-coklat-batik);
 }
 
 .secondaryBtn:hover {
   background-color: var(--color-emas-keris);
   color: var(--color-putih-santan);
+}
+
+/* MOBILE OPTIMIZATIONS */
+@media (max-width: 899px) {
+  .pageBackground {
+    padding: 16px 12px 70px 12px; /* Extra bottom padding for fixed button */
+    height: auto;
+    min-height: 100dvh;
+    overflow-y: auto; /* Allow scrolling if content is too tall */
+    justify-content: flex-start;
+  }
+  .gameContainer {
+    gap: 16px;
+    max-height: none;
+    height: auto;
+  }
+  .header {
+    margin-bottom: 8px;
+    padding: 0;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .progress {
+    min-width: unset;
+    padding: 8px 16px;
+    font-size: 12px;
+    white-space: nowrap;
+    position: static;
+  }
+  .headerLine {
+    position: relative;
+    left: unset;
+    right: unset;
+    top: unset;
+    transform: none;
+    flex: 1;
+    min-width: 50px;
+  }
+  .progressDot {
+    width: 6px;
+    height: 6px;
+  }
+  .progressDotCurrent {
+    transform: scale(1.4);
+  }
+  .timer {
+    width: 60px;
+    height: 60px;
+    padding-top: 4px;
+    position: static;
+  }
+  .timerNumber {
+    font-size: 20px;
+  }
+  .timerText {
+    font-size: 10px;
+  }
+  .splitContainer {
+    gap: 16px;
+    flex: none;
+    overflow: visible; 
+  }
+  .leftColumn {
+    flex: none;
+  }
+  .imageCard {
+    background-image: none; /* Remove ornate frame on mobile */
+    background-color: transparent;
+    padding: 0;
+    min-height: unset;
+    width: 75%; /* Make it much larger */
+    max-width: 320px;
+    height: auto;
+    aspect-ratio: 1 / 1; /* Keep it perfectly square */
+    margin: 0 auto;
+    border: 4px solid var(--color-emas-keris);
+    border-radius: 16px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+  }
+  .rightColumn {
+    flex: none;
+    overflow-y: visible;
+    gap: 12px;
+  }
+  .rightColumnCard {
+    padding: 16px 12px;
+    background-size: 100% 100%; 
+    justify-content: center;
+  }
+  .instructionTitle {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+  .decorativeLine {
+    margin-bottom: 12px;
+    height: 12px;
+  }
+  .optionsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .optionButton {
+    padding: 8px 8px 8px 38px;
+    font-size: 13px;
+    min-height: 52px;
+  }
+  .optionLetter {
+    width: 28px;
+    height: 28px;
+    left: 6px;
+    font-size: 14px;
+  }
+  
+  /* Inline feedback adjustments */
+  .mascotReaction {
+    width: 80px;
+    height: 80px;
+    margin-top: -45px;
+  }
+  .feedbackTitle {
+    font-size: 20px;
+    margin-bottom: 4px;
+  }
+  .correctAnswerBadge {
+    max-width: 200px;
+    font-size: 15px;
+    padding: 7% 12px 3% 12px;
+    margin-bottom: 8px;
+    min-height: 50px;
+  }
+  .funFactTitle {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  .funFactContainer {
+    padding: 0 20px;
+  }
+  .funFactBox {
+    padding: 10px;
+    font-size: 12px;
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+  .nextButton, .finishButton {
+    padding: 8px 16px;
+    font-size: 14px;
+    min-width: 140px;
+  }
+  .hideOnMobile {
+    display: none;
+  }
+  .resultCard {
+    width: 90%;
+    padding: 40px 24px 24px;
+  }
+  .finishContainer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px;
+    background: linear-gradient(to top, rgba(253, 249, 238, 1) 40%, rgba(253, 249, 238, 0));
+    z-index: 100;
+  }
 }
