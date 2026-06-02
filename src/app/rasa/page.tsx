@@ -33,24 +33,7 @@ const getFlavorTags = (peran: string): string[] => {
   return tags;
 };
 
-const QUOTES = [
-  {
-    indo: "Rempah adalah bahasa tersembunyi masakan Jawa.",
-    jawa: "ꦉꦩ꧀ꦥꦃꦩꦶꦤꦁꦏꦧꦱꦱꦶꦤꦤ꧀ꦢꦶꦩꦱꦏꦤ꧀ꦗꦮ"
-  },
-  {
-    indo: "Keseimbangan rasa mencerminkan keselarasan hidup.",
-    jawa: "ꦏꦱꦼꦆꦩ꧀ꦧꦔꦤ꧀ꦫꦱꦔ꧀ꦒꦩ꧀ꦧꦫꦏꦺꦏꦱꦼꦭꦫꦱꦤ꧀ꦲꦸꦫꦶꦥ꧀"
-  },
-  {
-    indo: "Setiap bumbu membawa cerita dari kelahirannya.",
-    jawa: "ꦱꦧꦼꦤ꧀ꦧꦸꦩ꧀ꦧꦸꦔ꧀ꦒꦮꦕꦫꦶꦠꦱꦏꦧꦸꦩꦶꦤꦺ"
-  },
-  {
-    indo: "Dimasak dengan sabar, menumbuhkan kasih sayang.",
-    jawa: "ꦢꦶꦩꦱꦏ꧀ꦏꦤ꧀ꦛꦶꦱꦧꦂꦤꦸꦮꦸꦲꦏꦺꦠꦿꦺꦱ꧀ꦤ"
-  }
-];
+
 
 const FOOD_ICONS = [
   <svg key="bowl" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><path d="M4 10h16a1 1 0 0 1 1 1v1a7 7 0 0 1-7 7h-4a7 7 0 0 1-7-7v-1a1 1 0 0 1 1-1Z"/><path d="M12 4v3"/></svg>,
@@ -84,9 +67,7 @@ const AKSARA_DICT: Record<string, string> = {
   'kayu-secang': 'ꦱꦼꦕꦁ'
 };
 
-const getGridClass = (index: number) => {
-  return styles.cardUniform;
-};
+
 
 export default function RasaPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -184,47 +165,49 @@ export default function RasaPage() {
           const bgIndex = index % 4;
 
           return (
-            <React.Fragment key={r.id}>
-              <div 
-                className={`${styles.card} ${getGridClass(index)}`}
-                style={cardStyle}
-                data-bg={bgIndex}
-                onClick={() => isVisible && setSelectedRempah(r)}
-              >
-                <div className={styles.cardTextBlock}>
-                  <span className={styles.cardJawa}>{r.namaJawa}</span>
-                  <h3 className={styles.cardTitle}>{r.nama}</h3>
+            <div 
+              key={r.id}
+              className={styles.card}
+              style={cardStyle}
+              onClick={() => isVisible && setSelectedRempah(r)}
+            >
+              {/* Overlay texture/glow subtle */}
+              <div className={styles.cardOverlay}></div>
+
+              {/* Decorative Aksara overlay */}
+              <div className={styles.cardAksaraOverlay}>{AKSARA_DICT[r.id]}</div>
+
+              <div className={styles.cardTopLeft}>
+                <div className={styles.cardHeaderTop}>
+                  <span className={styles.cardIndex}>{String(index + 1).padStart(2, '0')}</span>
                 </div>
-                <div className={styles.cardImageBlock}>
-                  <Image 
-                    src={r.asset} 
-                    alt={r.nama} 
-                    fill
-                    className={styles.cardImage}
-                    unoptimized
-                  />
+                <h3 className={styles.cardTitle}>{r.nama}</h3>
+                <span className={styles.cardJawaScientific}>{r.namaJawa}</span>
+              </div>
+              
+              <div className={styles.cardBottomLeft}>
+                <p className={styles.cardDesc}>{r.peran.split('.')[0] + '.'}</p>
+                <div className={styles.cardTags}>
+                  {getFlavorTags(r.peran).slice(0, 3).map(tag => (
+                    <span key={tag} className={styles.cardTag}>{tag}</span>
+                  ))}
                 </div>
               </div>
 
-              {/* Text Only Card inserted after every 8th item */}
-              {(index + 1) % 8 === 0 && (() => {
-                const quoteIndex = Math.floor(index / 8) % QUOTES.length;
-                const quote = QUOTES[quoteIndex];
-                return (
-                  <div 
-                    className={`${styles.card} ${styles.textOnlyCard}`}
-                    style={{
-                      opacity: (searchQuery || activeFilter) ? 0 : 1,
-                      transform: (searchQuery || activeFilter) ? 'scale(0.9) translateY(16px)' : 'scale(1) translateY(0)',
-                      pointerEvents: (searchQuery || activeFilter) ? 'none' : 'auto',
-                    }}
-                  >
-                    <div className={styles.quoteIndo}>{quote.indo}</div>
-                    <div className={styles.quoteJawa}>{quote.jawa}</div>
-                  </div>
-                );
-              })()}
-            </React.Fragment>
+              <div className={styles.cardImageBlock}>
+                <Image 
+                  src={r.asset} 
+                  alt={r.nama} 
+                  fill
+                  className={styles.cardImage}
+                  unoptimized
+                />
+              </div>
+              
+              <div className={styles.cardActionIcon}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </div>
+            </div>
           );
         })}
       </div>
@@ -300,7 +283,17 @@ export default function RasaPage() {
                     {AKSARA_DICT[selectedRempah.id] || selectedRempah.namaJawa}
                   </div>
                 </div>
+              </div>
 
+              {/* Cultural Ornament Watermark (Ditaruh di luar modalRight agar tidak kena overflow scroll) */}
+              <div className={styles.modalCornerOrnament}>
+                <Image
+                  src="/motif/decorative-modal-rasa.webp"
+                  alt=""
+                  fill
+                  className={styles.modalCornerImage}
+                  unoptimized
+                />
               </div>
             </>
           )}

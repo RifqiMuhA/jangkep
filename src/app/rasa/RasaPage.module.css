@@ -80,10 +80,27 @@
 .hero {
   position: relative;
   z-index: 10;
-  padding: 160px 24px 60px;
+  padding: 80px 24px 32px;
   text-align: center;
   max-width: 900px;
   margin: 0 auto;
+}
+
+.quoteAmbient {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: max-content;
+  text-align: center;
+  font-family: var(--font-playfair), serif;
+  font-size: 8vw;
+  font-weight: 700;
+  opacity: 0.03;
+  color: var(--color-coklat-batik, #3B1F0C);
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 0;
 }
 
 .titleJawa {
@@ -188,8 +205,8 @@
   position: relative;
   z-index: 10;
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 32px;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 18px;
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 40px 120px;
@@ -202,107 +219,164 @@
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid rgba(59, 31, 12, 0.08);
+  background: linear-gradient(135deg, #FAF7F0 0%, #F2EAD3 100%);
+  aspect-ratio: 1.7 / 1;
+  display: block;
   box-shadow: rgba(59, 31, 12, 0.08) 0px 4px 24px 0px;
   transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease, opacity 0.35s ease;
-  display: flex;
 }
 
 .card:hover {
-  transform: translateY(-6px) !important;
-  box-shadow: rgba(59, 31, 12, 0.18) 0px 8px 32px 0px;
+  transform: translateY(-8px) !important;
+  box-shadow: rgba(59, 31, 12, 0.18) 0px 12px 32px 0px;
 }
 
-.cardUniform { grid-column: span 4; flex-direction: column; min-height: 440px; }
+/* Overlays */
+.cardOverlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(255,255,255,0.4) 0%, transparent 60%);
+  pointer-events: none;
+}
+.cardAksaraOverlay {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-family: var(--font-noto-javanese, "Noto Sans Javanese"), serif;
+  font-size: 60px;
+  color: var(--color-coklat-batik, #3B1F0C);
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 0;
+}
 
-/* Text Block Zona Atas */
-.cardTextBlock {
-  flex: 0 0 auto;
-  padding: 28px;
+/* Top Left */
+.cardTopLeft {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 2;
   display: flex;
   flex-direction: column;
 }
-
-/* Background & Text Colors Based on Data Attribute */
-.card[data-bg="0"], .card[data-bg="2"] { background-color: var(--color-coklat-batik, #3B1F0C); }
-.card[data-bg="0"] .cardTextBlock h3, .card[data-bg="2"] .cardTextBlock h3 { color: var(--color-krem-mori, #F2EAD3); }
-.card[data-bg="0"] .cardTextBlock span, .card[data-bg="2"] .cardTextBlock span { color: var(--color-krem-mori, #F2EAD3); }
-
-.card[data-bg="1"] { background-color: var(--color-kuning-kepodang, #F5C400); }
-.card[data-bg="1"] .cardTextBlock h3 { color: var(--color-coklat-batik, #3B1F0C); }
-.card[data-bg="1"] .cardTextBlock span { color: var(--color-coklat-batik, #3B1F0C); }
-
-.card[data-bg="3"] { background-color: var(--color-putih-santan, #FAF7F0); }
-.card[data-bg="3"] .cardTextBlock h3 { color: var(--color-coklat-batik, #3B1F0C); }
-.card[data-bg="3"] .cardTextBlock span { color: var(--color-coklat-batik, #3B1F0C); }
-
-.cardJawa {
-  font-family: var(--font-noto-javanese, "Noto Sans Javanese"), serif;
-  font-size: 14px;
-  opacity: 0.6;
-  letter-spacing: 0.05em;
+.cardHeaderTop {
   margin-bottom: 4px;
 }
-
+.cardIndex {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-coklat-batik, #3B1F0C);
+  opacity: 0.6;
+}
 .cardTitle {
   font-family: var(--font-playfair), serif;
-  font-size: 36px;
+  font-size: 26px;
   font-weight: 700;
   line-height: 1.1;
+  color: var(--color-coklat-batik, #3B1F0C);
+}
+.cardJawaScientific {
+  font-family: var(--font-playfair), serif;
+  font-size: 15px;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--color-coklat-batik, #3B1F0C);
+  opacity: 0.85;
+  margin-top: 4px;
 }
 
-/* Image Block Zona Bawah */
-.cardImageBlock {
-  flex: 1;
-  min-height: 240px;
-  position: relative;
+/* Bottom Left */
+.cardBottomLeft {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  z-index: 2;
+  width: 48%; /* Dibatasi agar tidak tabrakan dengan gambar */
+}
+.cardTags {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.cardTag {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border: 1px solid rgba(59, 31, 12, 0.15);
+  border-radius: 99px;
+  color: var(--color-coklat-batik, #3B1F0C);
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+}
+.cardDesc {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--color-coklat-batik, #3B1F0C);
+  opacity: 0.7;
 }
 
-.card[data-bg="0"] .cardImageBlock, .card[data-bg="2"] .cardImageBlock { background-color: var(--color-krem-mori, #F2EAD3); }
-.card[data-bg="1"] .cardImageBlock { background-color: var(--color-coklat-batik, #3B1F0C); }
-.card[data-bg="3"] .cardImageBlock { background-color: var(--color-kuning-kepodang, #F5C400); }
+/* Right Object Image */
+.cardImageBlock {
+  position: absolute;
+  right: -5%;
+  bottom: -5%;
+  width: 58%; /* Disesuaikan agar tidak terlalu ke kiri */
+  height: 90%; /* Ditingkatkan agar objek bisa lebih bebas */
+  z-index: 1;
+}
+
+/* Menambahkan efek Glow (Cahaya) di belakang objek */
+.cardImageBlock::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(circle, rgba(255,255,255,0.7) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: -1;
+  pointer-events: none;
+}
 
 .cardImage {
   object-fit: contain;
-  padding: 32px;
-  filter: drop-shadow(0 16px 24px rgba(59, 31, 12, 0.2));
-  transition: transform 0.4s ease;
+  object-position: bottom right; /* Menyeragamkan posisi objek ke kanan bawah */
+  filter: drop-shadow(0 18px 30px rgba(59,31,12,.18)) drop-shadow(0 0 15px rgba(245, 196, 0, 0.6));
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: scale(1.08);
 }
 
-/* Editorial Text Only Card */
-.textOnlyCard {
-  grid-column: span 4 !important;
-  background-color: var(--color-putih-santan, #FAF7F0);
-  color: var(--color-coklat-batik, #3B1F0C);
-  padding: 40px 32px;
+.card:hover .cardImage {
+  transform: scale(1.14) rotate(-2deg);
+}
+
+/* Action Icon */
+.cardActionIcon {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-emas-keris, #B8860B);
+  color: #fff;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
-  min-height: 440px;
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  opacity: 0;
+  transform: scale(0.8) translate(-10px, 10px);
+  transition: all 0.3s ease;
 }
-
-.quoteIndo {
-  font-family: var(--font-dm-sans), sans-serif;
-  font-weight: 800;
-  font-size: 24px;
-  line-height: 1.2;
-  text-transform: uppercase;
-  text-align: left;
-  letter-spacing: -0.02em;
-}
-
-.quoteJawa {
-  font-family: var(--font-noto-javanese, "Noto Sans Javanese"), serif;
-  font-size: 32px;
-  line-height: 1.4;
-  text-align: right;
-  margin-top: auto;
-  opacity: 0.8;
-  color: var(--color-coklat-batik, #3B1F0C);
+.card:hover .cardActionIcon {
+  opacity: 1;
+  transform: scale(1) translate(0, 0);
 }
 
 
@@ -587,6 +661,22 @@
   letter-spacing: 0.05em;
 }
 
+/* Modal Cultural Ornament Watermark */
+.modalCornerOrnament {
+  position: absolute;
+  right: -30px;
+  bottom: -40px;
+  width: 520px;
+  height: 520px;
+  opacity: 0.16;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.modalCornerImage {
+  object-fit: contain;
+}
+
 
 /* Responsive */
 @media (max-width: 1024px) {
@@ -602,6 +692,7 @@
 @media (max-width: 640px) {
   .grid { grid-template-columns: 1fr; padding: 0 24px 80px; }
   .title { font-size: 48px; }
+  .titleJawa { font-size: 48px; }
   .hero { padding: 120px 24px 40px; }
   .modalRight { padding: 24px; }
   .modalTitle { font-size: 40px; }

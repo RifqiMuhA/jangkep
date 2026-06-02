@@ -69,7 +69,6 @@
   color: var(--color-kuning-kepodang, #F5C400);
   text-shadow: 0 4px 12px rgba(0,0,0,0.3);
   opacity: 0;
-  transform: translateY(20px);
 }
 
 .canvasFooter {
@@ -92,6 +91,7 @@
   height: 100%;
   overflow: visible;
   touch-action: none;
+  transform: translateZ(0); /* Force single GPU layer untuk container */
 }
 
 /* ── Rempah Items ── */
@@ -100,10 +100,11 @@
   top: 0;
   left: 0;
   transform-origin: center center;
-  will-change: transform;
   cursor: grab;
   touch-action: none;
   z-index: 15;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .rempahItem:active {
@@ -117,7 +118,6 @@
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
-  filter: drop-shadow(0 12px 24px rgba(0,0,0,0.4));
 }
 
 /* ── Tooltip ── */
