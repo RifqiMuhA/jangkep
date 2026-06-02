@@ -61,29 +61,47 @@ export default function RempahSection() {
 
       ScrollTriggerInst.create({
         trigger: sectionRef.current,
-        start: 'top top', 
-        onEnter: () => {
-          sectionRef.current?.scrollIntoView({ behavior: 'instant' });
-          document.body.style.overflow = 'hidden'; 
-          triggerRempahFall(gsapInst);
-        },
-        onEnterBack: () => {
-          sectionRef.current?.scrollIntoView({ behavior: 'instant' });
-          document.body.style.overflow = 'hidden'; 
-          triggerRempahFall(gsapInst);
-        }
+        start: 'top 80%', 
+        onEnter: () => triggerRempahFall(gsapInst),
+        onEnterBack: () => triggerRempahFall(gsapInst)
       });
     };
 
     init();
 
     return () => {
-      document.body.style.overflow = '';
       if (ScrollTriggerInst) ScrollTriggerInst.getAll().forEach((t: any) => t.kill());
     };
   }, []);
 
   const triggerRempahFall = (gsap: any) => {
+    // Kill semua animasi lama dulu
+    rempahRefs.current.forEach((el) => {
+      if (el) gsap.killTweensOf(el);
+    });
+    gsap.killTweensOf('.ambientText');
+    gsap.killTweensOf('.jelajahBtn');
+
+    // Reset posisi semua rempah ke state awal
+    rempahRefs.current.forEach((el, i) => {
+      if (!el) return;
+      const pos = SCATTER_POSITIONS[i % SCATTER_POSITIONS.length];
+      gsap.set(el, {
+        left: `${pos.left}%`,
+        top: `${pos.top}%`,
+        y: -window.innerHeight * 1.3,
+        xPercent: -50,
+        yPercent: -50,
+        rotation: pos.rot - 60,
+        scale: pos.scale * 0.85,
+        autoAlpha: 0,
+      });
+    });
+
+    // Reset button dan teks
+    gsap.set('.jelajahBtn', { autoAlpha: 0, y: 24 });
+    gsap.set('.ambientText', { opacity: 0, y: 20 });
+
     // Tampilkan teks hero
     gsap.to('.ambientText', {
       y: 0,
@@ -92,54 +110,56 @@ export default function RempahSection() {
       ease: 'power3.out'
     });
 
-    // Sembunyikan tombol sebelum rempah turun
-    gsap.set('.jelajahBtn', { autoAlpha: 0, y: 20 });
-
     // Animasi jatuh
     rempahRefs.current.forEach((el, i) => {
       if (!el) return;
       const pos = SCATTER_POSITIONS[i % SCATTER_POSITIONS.length];
       
-      gsap.fromTo(el, 
-        { 
-          y: -1500,
-          xPercent: -50,
-          yPercent: -50,
-          rotation: pos.rot - 90, 
-          scale: pos.scale * 0.8,
-          autoAlpha: 1
-        },
-        { 
-          y: 0, 
-          xPercent: -50,
-          yPercent: -50,
-          rotation: pos.rot,
-          scale: pos.scale,
-          autoAlpha: 1,
-          duration: 2.2, 
-          delay: i * 0.1,
-          ease: 'bounce.out',
-          onComplete: () => {
-            gsap.to(el, {
-              y: '-=15',
-              xPercent: -50,
-              yPercent: -50,
-              rotation: pos.rot + (Math.random() > 0.5 ? 4 : -4),
-              duration: 3 + Math.random() * 2,
-              ease: 'sine.inOut',
-              yoyo: true,
-              repeat: -1
-            });
-          }
-        }
-      );
+      gsap.to(el, {
+        y: 0,
+        xPercent: -50,
+        yPercent: -50,
+        rotation: pos.rot,
+        scale: pos.scale,
+        autoAlpha: 1,
+        duration: 1.1 + (i % 3) * 0.1,
+        delay: i * 0.055,
+        ease: 'power4.out',
+      });
     });
 
-    // Buka kunci scroll dan tampilkan tombol setelah 2.5 detik
+    // Setelah forEach animasi jatuh selesai, buat floating timeline
+    const lastDelay = (rempahRefs.current.length - 1) * 0.055 + 1.3;
+
     setTimeout(() => {
-      gsap.to('.jelajahBtn', { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power3.out' });
-      document.body.style.overflow = '';
-    }, 2500);
+      rempahRefs.current.forEach((el, i) => {
+        if (!el) return;
+        const pos = SCATTER_POSITIONS[i % SCATTER_POSITIONS.length];
+        const floatDir = i % 2 === 0 ? 1 : -1;
+
+        gsap.to(el, {
+          y: `+=${10 + (i % 3) * 5}`,
+          rotation: pos.rot + (floatDir * 3),
+          xPercent: -50,
+          yPercent: -50,
+          duration: 2.5 + (i % 4) * 0.7,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1,
+        });
+      });
+    }, lastDelay * 1000);
+
+    const lastItemLandingTime = ((rempahRefs.current.length - 1) * 0.055 + 1.3) * 1000;
+
+    setTimeout(() => {
+      gsap.to('.jelajahBtn', { 
+        autoAlpha: 1, 
+        y: 0, 
+        duration: 0.7, 
+        ease: 'power3.out' 
+      });
+    }, lastItemLandingTime + 200);
   };
 
   // ─── Drag Logic Sederhana ───
@@ -223,9 +243,6 @@ export default function RempahSection() {
                     // Tetapkan posisi % agar responsive
                     left: `${pos.left}%`,
                     top: `${pos.top}%`,
-                    transform: `translate(-50%, -50%) scale(${pos.scale}) rotate(${pos.rot}deg)`,
-                    opacity: 0, // Sembunyikan awalnya sebelum jatuh
-                    visibility: 'hidden',
                   }}
                   onPointerDown={(e) => handlePointerDown(e, i)}
                   onPointerUp={(e) => handlePointerUp(e, i, r)}

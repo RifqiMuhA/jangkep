@@ -47,7 +47,15 @@ export default function SipodoIntroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [activeIdx, setActiveIdx] = useState(0);
+  const [windowWidth, setWindowWidth] = useState(1200);
   const touchStartX = useRef(0);
+
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   /* ── Scroll Reveal ── */
   useEffect(() => {
@@ -98,18 +106,22 @@ export default function SipodoIntroSection() {
     [next, prev],
   );
 
-  /* ── Slide position helper ── */
   const getSlideStyle = (idx: number) => {
     let offset = idx - activeIdx;
-    // Wrap around for circular feel
     if (offset > 2) offset -= slides.length;
     if (offset < -2) offset += slides.length;
 
     const absOffset = Math.abs(offset);
-    const scale = offset === 0 ? 1 : absOffset === 1 ? 0.75 : 0.55;
+    const scale = offset === 0 ? 1.05 : absOffset === 1 ? 0.75 : 0.55;
     const opacity = offset === 0 ? 1 : absOffset === 1 ? 0.7 : 0.4;
     const blur = absOffset >= 2 ? 'blur(1.5px)' : 'none';
-    const translateX = offset * 260;
+    
+    let baseTranslate = 260;
+    if (windowWidth <= 1024) baseTranslate = 230;
+    if (windowWidth <= 768) baseTranslate = 170;
+    if (windowWidth <= 480) baseTranslate = 140;
+    
+    const translateX = offset * baseTranslate;
     const zIndex = 10 - absOffset;
 
     return {
@@ -117,7 +129,8 @@ export default function SipodoIntroSection() {
       opacity,
       filter: blur,
       zIndex,
-      pointerEvents: (offset === 0 ? 'auto' : 'none') as React.CSSProperties['pointerEvents'],
+      pointerEvents: (absOffset <= 1 ? 'auto' : 'none') as React.CSSProperties['pointerEvents'],
+      cursor: absOffset === 1 ? 'pointer' : 'default',
     };
   };
 
@@ -152,11 +165,11 @@ export default function SipodoIntroSection() {
       >
         {/* Arrow Left */}
         <button
-          className={`${styles.arrowBtn} ${styles.arrowLeft}`}
+          className={`${styles.navBtn} ${styles.navLeft}`}
           onClick={prev}
           aria-label="Slide sebelumnya"
         >
-          ‹
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
         </button>
 
         {/* Slides */}
@@ -169,6 +182,9 @@ export default function SipodoIntroSection() {
                 className={`${styles.slide} ${isActive ? styles.slideActive : ''}`}
                 style={getSlideStyle(idx)}
                 aria-hidden={!isActive}
+                onClick={() => {
+                  if (idx !== activeIdx) goTo(idx);
+                }}
               >
                 <Image
                     src={slide.img}
@@ -189,14 +205,13 @@ export default function SipodoIntroSection() {
 
         {/* Arrow Right */}
         <button
-          className={`${styles.arrowBtn} ${styles.arrowRight}`}
+          className={`${styles.navBtn} ${styles.navRight}`}
           onClick={next}
           aria-label="Slide berikutnya"
         >
-          ›
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
         </button>
       </div>
-
       {/* ── Dot Indicator ── */}
       <div className={`${styles.dots} ${styles.revealItem} ${styles.revealDelay3}`}>
         {slides.map((slide, idx) => (
