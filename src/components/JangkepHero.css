@@ -1,0 +1,454 @@
+/* JangkepHero.css */
+.jangkep-hero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #F2EAD3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  font-family: var(--font-dm-sans), sans-serif;
+  color: #3B1F0C;
+  z-index: 10;
+  padding-top: 150px;
+}
+
+/* Light noise/batik pattern overlay */
+.jangkep-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.12;
+  z-index: 0;
+  background-image: url("/batik/pattern_background.webp");
+  background-size: cover;
+  background-position: center;
+  mix-blend-mode: multiply;
+}
+
+/* Soft radial golden glow */
+.jangkep-hero::after {
+  content: "";
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80vw;
+  height: 80vw;
+  max-width: 1000px;
+  max-height: 1000px;
+  background: radial-gradient(circle, rgba(218, 165, 32, 0.25) 0%, transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Wayang Ornament Left */
+.wayang-ornament {
+  position: absolute;
+  left: 10px;
+  top: 15%;
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.wayang-img {
+  width: 180px;
+  max-width: 25vw;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 25px rgba(59, 31, 12, 0.15));
+}
+
+@keyframes wayang-play {
+  0% { transform: rotate(-3deg) translateY(0px); }
+  25% { transform: rotate(4deg) translateY(-6px); }
+  50% { transform: rotate(-2deg) translateY(2px); }
+  75% { transform: rotate(5deg) translateY(-4px); }
+  100% { transform: rotate(-3deg) translateY(0px); }
+}
+
+/* Compass Ornament Right */
+.compass-ornament {
+  position: absolute;
+  right: 24px;
+  top: 8%;
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.compass-img {
+  width: 120px;
+  max-width: 20vw;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 20px rgba(59, 31, 12, 0.2));
+}
+
+/* New Hero Content Layout */
+.hero-content-new {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 950px;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.javanese-script-top {
+  font-family: var(--font-noto-javanese), serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #B8860B;
+  margin-bottom: 8px;
+  opacity: 0.85;
+}
+
+.hero-headline-new {
+  font-family: var(--font-playfair), serif;
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 1.15;
+  color: #3B1F0C;
+  margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.headline-latin-top {
+  display: block;
+}
+
+.headline-latin-bottom {
+  display: block;
+  color: #DAA520;
+  text-shadow: 0 2px 4px rgba(218, 165, 32, 0.1);
+  cursor: default;
+}
+
+.javanese-script-bottom {
+  font-family: var(--font-noto-javanese), serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #B8860B;
+  margin-top: 8px;
+  margin-bottom: 24px;
+  opacity: 0.85;
+}
+
+.hero-description-new {
+  max-width: 800px;
+  margin-top: 10px;
+}
+
+.description-text {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #4A3A31;
+  line-height: 1.7;
+}
+
+/* Hide elements visually but keep them readable by screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+@media (max-width: 768px) {
+  .hero-headline-new {
+    font-size: 40px;
+  }
+  .javanese-script-top {
+    font-size: 24px;
+  }
+  .javanese-script-bottom {
+    font-size: 18px;
+  }
+  .description-text {
+    font-size: 15px;
+  }
+  .wayang-img {
+    width: 120px;
+  }
+  .compass-img {
+    width: 80px;
+  }
+}
+
+/* SVG Cooking Stage */
+.hero-cooking-stage {
+  position: relative;
+  z-index: 2;
+  width: 100vw;
+  flex: 1;
+  margin-top: -140px;
+  min-height: 500px;
+  overflow: hidden;
+}
+
+.cooking-stage-inner {
+  position: absolute;
+  width: 1920px;
+  height: 600px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.cooking-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.path-stroke {
+  fill: none;
+  stroke: var(--color-emas-keris, #B8860B);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 8;
+  opacity: 0.3;
+}
+
+.path-bg-solid {
+  fill: none;
+  stroke: #FFFFFF;
+  stroke-width: 44;
+  stroke-linecap: round;
+  filter: drop-shadow(0 4px 12px rgba(59, 31, 12, 0.15));
+  stroke-dasharray: 3000;
+  stroke-dashoffset: 3000;
+}
+
+.path-bg-pattern {
+  fill: none;
+  stroke: url(#batik-path-bg);
+  stroke-width: 44;
+  stroke-linecap: round;
+  opacity: 0.4;
+  stroke-dasharray: 3000;
+  stroke-dashoffset: 3000;
+}
+
+.path-text {
+  font-family: var(--font-playfair), serif;
+  font-size: 16px;
+  font-weight: 500;
+  fill: #B8860B;
+  letter-spacing: 2px;
+  opacity: 0;
+}
+
+/* Marquee text animations */
+.text-animate {
+  animation: move-text 30s linear infinite;
+}
+
+@keyframes move-text {
+  0% { startOffset: 0%; }
+  100% { startOffset: 100%; }
+}
+
+/* Ingredients */
+.ingredient-chip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: transparent;
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+  opacity: 0;
+  offset-path: path("M -50 350 C 200 350, 300 50, 450 200 C 550 300, 450 550, 300 450 C 200 350, 350 150, 550 250 C 700 350, 800 500, 960 330");
+  animation: ingredient-travel 12s linear infinite;
+}
+
+@keyframes ingredient-travel {
+  0% {
+    offset-distance: 0%;
+    transform: scale(0);
+    opacity: 0;
+  }
+  5% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  90% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    transform: scale(0.5);
+    opacity: 0;
+  }
+}
+
+.ing-1 { animation-delay: 0s; }
+.ing-2 { animation-delay: -2.4s; }
+.ing-3 { animation-delay: -4.8s; }
+.ing-4 { animation-delay: -7.2s; }
+.ing-5 { animation-delay: -9.6s; }
+
+/* Food Results */
+.food-chip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: transparent;
+  padding: 8px 16px 8px 8px;
+  border-radius: 30px;
+  font-weight: 600;
+  color: #F5C400;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  opacity: 0;
+  offset-path: path("M 960 330 C 980 370, 1000 450, 1100 450 C 1250 450, 1300 200, 1500 150 C 1700 100, 1800 350, 1970 350");
+  animation: food-result-travel 8s linear infinite;
+}
+
+.food-chip::before {
+  content: "";
+  position: absolute;
+  inset: 0; 
+  background-image: url("/batik/pattern_background.webp");
+  background-size: 100px;
+  z-index: -1;
+}
+
+.chip-img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25));
+}
+
+.food-chip-img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid var(--color-kuning-kepodang, #F5C400);
+}
+
+@keyframes food-result-travel {
+  0% {
+    offset-distance: 0%;
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  90% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+.food-1 { animation-delay: 0s; }
+.food-2 { animation-delay: -2.6s; }
+.food-3 { animation-delay: -5.3s; }
+
+/* Mascot Area */
+.mascot-area {
+  position: absolute;
+  top: 330px;
+  left: 960px;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.podo-sprite {
+  width: 250px;
+  height: 250px;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;
+}
+
+.steam-container {
+  position: absolute;
+  top: 130px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.steam-container.active {
+  opacity: 1;
+}
+
+.steam-container.active .steam-particle {
+  animation: single-steam-rise 0.8s ease-out forwards;
+}
+
+.steam-particle {
+  width: 8px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  filter: blur(3px);
+  opacity: 0;
+}
+
+.steam-particle:nth-child(2) {
+  height: 40px;
+  animation-delay: 0.1s;
+}
+
+.steam-particle:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+@keyframes single-steam-rise {
+  0% { transform: translateY(0) scaleX(1); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateY(-70px) scaleX(2.5); opacity: 0; }
+}
+
+/* Make it responsive */
+@media (max-width: 1600px) {
+  .cooking-stage-inner { transform: translateX(-50%) scale(0.85); }
+}
+@media (max-width: 1200px) {
+  .cooking-stage-inner { transform: translateX(-50%) scale(0.7); }
+}
+@media (max-width: 900px) {
+  .cooking-stage-inner { transform: translateX(-50%) scale(0.5); }
+}
+@media (max-width: 600px) {
+  .cooking-stage-inner { transform: translateX(-50%) scale(0.35); }
+}

@@ -58,8 +58,10 @@
 .commandCenter {
   position: sticky;
   top: 40px;
-  height: calc(100vh - 80px); /* 40px atas, 40px bawah */
-  padding: 30px 40px 40px; /* Ditambah sedikit agar tidak terlalu mepet dengan header */
+  height: calc(100vh - 80px);
+  /* 40px atas, 40px bawah */
+  padding: 30px 40px 40px;
+  /* Ditambah sedikit agar tidak terlalu mepet dengan header */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -77,7 +79,8 @@
 .stickyMobileWrapper {
   display: flex;
   flex-direction: column;
-  flex-grow: 1; /* Fills remaining space so search section goes to bottom */
+  flex-grow: 1;
+  /* Fills remaining space so search section goes to bottom */
 }
 
 /* Typography & Sentence Filter */
@@ -469,7 +472,8 @@
 .searchSection {
   position: relative;
   width: 100%;
-  margin-top: auto; /* Direset di desktop karena flex-grow sudah mendorongnya ke bawah */
+  margin-top: auto;
+  /* Direset di desktop karena flex-grow sudah mendorongnya ke bawah */
   z-index: 20;
 }
 
@@ -814,7 +818,8 @@
   }
 
   .commandCenter {
-    display: contents; /* Menghilangkan struktur pembungkus asli di mobile */
+    display: contents;
+    /* Menghilangkan struktur pembungkus asli di mobile */
   }
 
   .upperContentWrapper {
@@ -829,7 +834,8 @@
 
   .stickyMobileWrapper {
     position: sticky;
-    top: 0; /* Lengket persis di atas layar karena navbar dihapus */
+    top: 0;
+    /* Lengket persis di atas layar karena navbar dihapus */
     z-index: 50;
     background-color: var(--color-krem-mori, #F2EAD3);
     padding: 10px 5% 30px;
@@ -844,7 +850,8 @@
   }
 
   .visualFilterContainer {
-    gap: 140px; /* Jarak dibuat sangat lebar khusus di mobile sesuai permintaan */
+    gap: 140px;
+    /* Jarak dibuat sangat lebar khusus di mobile sesuai permintaan */
   }
 
   .sentenceText {
@@ -856,7 +863,8 @@
   }
 
   .searchSection {
-    margin-top: 40px; /* Menggantikan margin auto dengan margin statis */
+    margin-top: 40px;
+    /* Menggantikan margin auto dengan margin statis */
   }
 
   .desktopBr {

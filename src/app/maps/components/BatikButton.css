@@ -1,0 +1,74 @@
+.batik-btn {
+  position: relative;
+  min-width: 180px;
+  height: 44px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  padding: 0 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Seamless Batik Kawung pattern SVG placeholder, can be replaced with url('/motif/batik-kawung.webp') later */
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0c11.046 0 20 8.954 20 20s-8.954 20-20 20S0 31.046 0 20 8.954 0 20 0zm0 2c-9.941 0-18 8.059-18 18s8.059 18 18 18 18-8.059 18-18S29.941 2 20 2zm0 4c7.732 0 14 6.268 14 14s-6.268 14-14 14S6 27.732 6 20 12.268 6 20 6zm0 2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 4c4.418 0 8 3.582 8 8s-3.582 8-8 8-8-3.582-8-8 3.582-8 8-8zm0 2c-3.314 0-6 2.686-6 6s2.686 6 6 6 6-2.686 6-6-2.686-6-6-6z' fill='%23C8B89A' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
+  background-color: #3B1F0C;
+  background-size: 40px;
+  box-shadow: none;
+  transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.batik-btn-inner {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  border-radius: 100px;
+  background: rgba(59, 31, 12, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.batik-btn:hover {
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.batik-btn:hover .batik-btn-inner {
+  top: 4px; right: 4px; bottom: 4px; left: 4px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.batik-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  color: #F2EAD3;
+  transition: color 500ms ease;
+}
+
+.batik-btn:hover .batik-btn-icon {
+  color: #3B1F0C;
+}
+
+.batik-btn-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.batik-btn-text-java {
+  font-family: var(--font-noto-javanese);
+  font-size: 14px;
+  font-weight: 500;
+  color: #F2EAD3;
+}
+
+.batik-btn-text-latin {
+  font-family: var(--font-dm-sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #3B1F0C;
+}

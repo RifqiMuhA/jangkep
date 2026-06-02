@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Map from 'react-map-gl/mapbox';
-import { FaMapMarkedAlt } from 'react-icons/fa';
+import { Map as MapIcon } from 'lucide-react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { kotaAktif, type KotaAktif } from '@/data/peta';
 import styles from './MiniPetaSection.module.css';
@@ -239,7 +239,7 @@ export default function MiniPetaSection() {
               ) : (
                 <div className={styles.panelEmpty}>
                     <div className={styles.panelHintIcon} aria-hidden="true">
-                        <FaMapMarkedAlt size={36} color="#5B3A29" />
+                        <MapIcon size={36} color="#5B3A29" />
                     </div>
                     <div className={styles.panelHintText}>
                       Hover atau klik kabupaten untuk melihat kuliner khasnya
