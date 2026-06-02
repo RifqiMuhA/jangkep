@@ -5,10 +5,12 @@ import MiniPetaSection from '@/components/beranda/MiniPetaSection';
 import FeaturedKulinerSection from '@/components/beranda/FeaturedKulinerSection';
 import PromoGamesSection from '@/components/beranda/PromoGamesSection';
 import FooterSection from '@/components/beranda/FooterSection';
+import LoadingScreen from '@/components/beranda/LoadingScreen';
 
 export default function Home() {
   return (
     <main>
+      <LoadingScreen />
       <HeroSection />
       <SipodoIntroSection />
       <RempahSection />
