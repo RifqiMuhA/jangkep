@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+  <img src="public/kuliner/mascot_ngintip_1.webp" alt="Mascot Jangkep" width="200" />
+  
+  # Jangkep: Jangkep Rasane, Jangkep Critane
+  
+  *Website eksplorasi kuliner Jawa Tengah yang imersif, interaktif, dan edukatif.*
+</div>
 
-## Getting Started
+---
 
-First, run the development server:
+## Tim Pengembang
+Proyek ini dikembangkan oleh kelompok mahasiswa kelas **3SI1**:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+| Nama Lengkap | NIM | Kelas |
+| :--- | :--- | :--- |
+| **M Rezky Raya Kilwouw** | 222313190 | 3SI1 |
+| **Rifqi Muhadzib Ahdan** | 222313350 | 3SI1 |
+| **Safira Inayah** | 222313365 | 3SI1 |
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Alasan Memilih Jawa Tengah
+Jawa Tengah memiliki kekayaan kuliner peninggalan leluhur yang luar biasa, mulai dari keberagaman rasa (manis, gurih, pedas), filosofi mendalam di balik cara memasaknya, hingga akulturasi budaya. Sayangnya, dokumentasi kekayaan ini seringkali disajikan dengan kaku. Melalui **Jangkep**, kami ingin mengangkat derajat kuliner tradisional Jawa Tengah dengan balutan teknologi web modern (seperti efek paralaks, *scroll-telling*, dan gamifikasi), sehingga warisan kuliner Nusantara ini dapat dinikmati dan dipelajari oleh generasi muda dengan cara yang menyenangkan.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Cara Instalasi Web
 
-To learn more about Next.js, take a look at the following resources:
+Ikuti langkah-langkah di bawah ini untuk menjalankan proyek Jangkep di komputer lokal Anda:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Clone Repositori**
+   ```bash
+   git clone <url-repositori-anda>
+   cd jangkep
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. **Instalasi Dependensi**
+   Pastikan Anda sudah menginstal [Node.js](https://nodejs.org/). Kemudian jalankan perintah berikut di terminal:
+   ```bash
+   npm install
+   ```
 
-## Deploy on Vercel
+3. **Jalankan Server Development**
+   ```bash
+   npm run dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. **Buka di Browser**
+   Buka web browser Anda dan kunjungi `http://localhost:3000` untuk melihat dan berinteraksi dengan aplikasi.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Cuplikan Layar (Screenshots)
+
+Berikut adalah contoh tampilan antarmuka website **Jangkep** di berbagai ukuran layar:
+
+### Tampilan Desktop
+*(Silakan ganti/tambahkan file screenshot asli Anda di folder `public` dan perbarui tautan di bawah ini)*
+![Screenshot Desktop](https://placehold.co/1200x800/F2EAD3/3B1F0C?text=Tampilan+Desktop+Jangkep)
+
+### Tampilan Tablet
+![Screenshot Tablet](https://placehold.co/800x1024/F2EAD3/3B1F0C?text=Tampilan+Tablet+Jangkep)
+
+### Tampilan Handphone (Mobile)
+![Screenshot Mobile](https://placehold.co/400x800/F2EAD3/3B1F0C?text=Tampilan+Mobile+Jangkep)
+
+---
+
+## Teknologi yang Digunakan
+- **Framework Utama**: [Next.js](https://nextjs.org/) (React) dengan TypeScript
+- **Styling**: Vanilla CSS & CSS Modules (Desain Kustom dengan tema khas Jawa/Batik)
+- **Animasi & Interaksi**: 
+  - [Framer Motion](https://www.framer.com/motion/) (Animasi layout dan gesture)
+  - [GSAP](https://gsap.com/) (Animasi ScrollTrigger kompleks)
+  - Lenis / Locomotive (Smooth Scrolling)
+- **Fitur Spesial**: 
+  - `react-pageflip` (Untuk interaksi buku resep manuskrip kuno 3D)
+  - `@hello-pangea/dnd` (Untuk *Drag-and-Drop* mini-game racik bumbu)
+
+## Fitur Unggulan
+- **Ensiklopedia Kuliner**: Katalog kuliner interaktif yang dilengkapi filter visual kategori dan rasa.
+- **Buku Resep Manuskrip**: Pengalaman imersif membalik halaman buku resep secara realistis dari kiri ke kanan.
+- **Sejarah (*Scroll-Telling*)**: Cerita sejarah makanan yang dikemas dalam bentuk animasi horizontal dengan latar belakang wayang.
+- **Game Meracik Masakan (*Dolan*)**: Mini-game interaktif (*drag-and-drop*) meracik bumbu ke dalam wajan yang dilengkapi animasi pantulan dan taburan bumbu.

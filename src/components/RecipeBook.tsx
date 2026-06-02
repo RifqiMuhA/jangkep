@@ -14,6 +14,18 @@ interface RecipeBookProps {
   ingredients: Ingredient[];
 }
 
+const HintArrowUpRight = () => (
+  <div className={styles.hintSwipe}>
+    <span className={styles.hintSwipeText}>geser halaman</span>
+    <svg width="40" height="40" viewBox="0 0 50 50" fill="none" stroke="currentColor" className={styles.hintSwipeSvg}>
+      <path d="M40,10 Q35,30 15,40" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M25,32 L15,40 L22,48" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10,45 L5,48" strokeWidth="1" strokeLinecap="round" />
+      <path d="M8,38 L3,36" strokeWidth="1" strokeLinecap="round" />
+    </svg>
+  </div>
+);
+
 // @ts-ignore - react-pageflip types are missing/incomplete for functional components
 const Page = React.forwardRef<HTMLDivElement, { children: React.ReactNode, density?: "hard" | "soft" }>((props, ref) => {
   return (
@@ -179,6 +191,8 @@ export default function RecipeBook({ ingredients }: RecipeBookProps) {
           <Image src="/motif/motif_kanan_buku.webp" alt="Dekorasi Kanan" fill sizes="300px" className={styles.bookSideDecorImage} unoptimized />
         </div>
         
+        <HintArrowUpRight />
+
         {/* @ts-ignore */}
         <HTMLFlipBook
           key={`flipbook-${isMobile ? 'mobile' : 'desktop'}`}

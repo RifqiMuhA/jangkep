@@ -231,3 +231,44 @@
     padding: 0 10px;
   }
 }
+
+/* Hint Swipe */
+.hintSwipe {
+  position: absolute;
+  top: -50px;
+  right: -80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: rgba(59, 31, 12, 0.7);
+  pointer-events: none;
+  z-index: 20;
+  animation: bounceHint 2s infinite;
+}
+.hintSwipeText {
+  font-family: var(--font-playfair), serif;
+  font-size: 0.95rem;
+  font-style: italic;
+  font-weight: 700;
+  margin-bottom: -10px;
+  white-space: nowrap;
+}
+.hintSwipeSvg {
+  opacity: 0.8;
+}
+
+@keyframes bounceHint {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@media (max-width: 1024px) {
+  .hintSwipe {
+    top: -30px;
+    right: 10px;
+  }
+}

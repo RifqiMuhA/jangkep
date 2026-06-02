@@ -21,7 +21,7 @@ export default function Navbar() {
 
   const navLinks = [
     { name: 'Beranda', path: '/' },
-    { name: 'Ensiklopedia', path: '/kuliner/katalog' },
+    { name: 'Ensiklopedia', path: '/kuliner' },
     { name: 'Rasa', path: '/rasa' },
     { name: 'Peta Rasa', path: '/maps' },
     { name: 'Dolan', path: '/games' },
@@ -107,6 +107,10 @@ export default function Navbar() {
       });
     }
   }, [isMobileMenuOpen]);
+
+  if (pathname === '/kuliner/katalog') {
+    return null;
+  }
 
   // Classes for the main nav wrapper
   const navClass = `

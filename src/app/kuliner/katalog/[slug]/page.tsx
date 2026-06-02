@@ -10,6 +10,7 @@ import { kulinerData } from '@/data/kulinerData';
 import HistoryTimeline from './HistoryTimeline';
 import BatikTransition from '@/components/BatikTransition';
 import { ExploreButton } from '@/components/ExploreButton';
+import FooterSection from '@/components/beranda/FooterSection';
 import styles from './detail.module.css';
 
 const RecipeBook = dynamic(() => import('@/components/RecipeBook'), {
@@ -315,6 +316,7 @@ export default function KulinerDetail({ params }: { params: Promise<{ slug: stri
           />
         </div>
       </section>
+      <FooterSection />
     </div>
   );
 }

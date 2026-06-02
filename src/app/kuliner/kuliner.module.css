@@ -1,10 +1,23 @@
-.pageBackground {
+.mainWrapper {
   min-height: 100vh;
+  background-color: var(--color-krem-mori);
+  overflow-x: hidden;
+}
+
+.topSection {
+  width: 100%;
+  background-color: var(--color-krem-mori);
+  padding-bottom: var(--spacing-48);
+}
+
+.bottomSection {
+  width: 100%;
   background-image: url('/sipodo/bg-kuliner.png');
   background-repeat: no-repeat;
-  background-position: center center;
+  background-position: center top;
   background-size: cover;
-  overflow-x: hidden; /* Mencegah horizontal scroll dari elemen dekorasi yang keluar batas */
+  position: relative;
+  z-index: 1;
 }
 
 .gridContainer {
@@ -22,7 +35,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-64) var(--spacing-24) var(--spacing-32);
+  padding: var(--spacing-96) var(--spacing-24) var(--spacing-32);
 }
 
 .heroTitle {
@@ -51,105 +64,32 @@
   vertical-align: baseline;
 }
 
-.pakarImageWrapper {
-  width: 100%;
-  max-width: 1050px; /* Diperkecil sedikit dari 1200px */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto var(--spacing-48) auto;
-  position: relative;
-}
 
-.pakarImage {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  position: relative;
-  z-index: 5;
-  filter: drop-shadow(0 15px 25px rgba(59, 31, 12, 0.2));
-}
 
-.pakarDeco {
-  position: absolute;
-  top: 40%;
-  transform: translateY(-50%);
-  width: 30%;
-  height: auto;
-  object-fit: contain;
-  opacity: 0.15;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.pakarDecoLeft {
-  left: -5%;
-}
-
-.pakarDecoRight {
-  right: -5%;
-}
-
-.pakarWayang {
-  position: absolute;
-  bottom: 15%;
-  height: 80%;
-  width: auto;
-  object-fit: contain;
-  opacity: 0.3;
-  z-index: 6; /* Lebih tinggi dari pakarImage (z-index 5) agar berada di depan */
-  pointer-events: none;
-  filter: sepia(0.6) hue-rotate(340deg) saturate(1.5) opacity(0.5); /* blend naturally */
-}
-
-.pakarWayangLeft {
-  left: -20%;
-  transform: scaleX(-1); /* Face inwards */
-}
-
-.pakarWayangRight {
-  right: -20%;
-}
-
-.avatarContainer {
+/* Decorative Section Title */
+.sectionTitleHeader {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-16);
-}
-
-.avatarGroupWrapper {
-  display: flex;
-  align-items: center;
   justify-content: center;
-  gap: var(--spacing-32); /* Jarak antara motif awan dan jejeran avatar */
-  position: relative;
+  gap: 0;
+  margin-bottom: 0; /* Diubah menjadi 0px sesuai permintaan */
+  width: 100%;
 }
 
-.avatarSubtext {
-  font-size: var(--text-subheading, 20px);
-  color: var(--color-coklat-batik);
+.sectionTitle {
+  font-family: var(--font-heading), serif;
+  font-size: 3rem;
+  color: var(--color-coklat-batik, #3C2A21);
+  margin: 5px 0;
+  text-align: center;
   font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-top: -16px; /* Merapatkan dengan avatar karena AnimatedTooltip punya margin-bottom bawaan */
 }
 
-.highlightLeft, .highlightRight {
-  width: 80px;
-  height: 120px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  opacity: 0.9;
-}
-
-.highlightLeft {
-  background-image: url('/motif/motif_highlight_kiri.webp');
-}
-
-.highlightRight {
-  background-image: url('/motif/motif_highlight_kanan.webp');
+.dekorAtas, .dekorBawah {
+  width: 250px;
+  height: auto;
+  object-fit: contain;
 }
 
 /* Responsive CSS Grid */
@@ -399,4 +339,13 @@
 .mascotItem:hover .aksaraRight {
   opacity: 0.9;
   transform: translate(calc(-50% + 95px), -50%) scale(1);
+}
+
+@media (max-width: 768px) {
+  .sectionTitle {
+    font-size: 2rem;
+  }
+  .dekorAtas, .dekorBawah {
+    width: 200px;
+  }
 }

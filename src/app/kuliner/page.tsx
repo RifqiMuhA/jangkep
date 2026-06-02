@@ -1,17 +1,19 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { AnimatedTooltip } from '@/components/AnimatedTooltip';
+import PakarInteractiveImage from '@/components/PakarInteractiveImage';
 import { RotatingText } from '@/components/RotatingText';
 import { ExploreButton } from '@/components/ExploreButton';
+import BatikTransition from '@/components/BatikTransition';
+import FooterSection from '@/components/beranda/FooterSection';
 import RotatingTextStyles from '@/components/RotatingText.module.css';
 import styles from './kuliner.module.css';
 
 const kulinerExperts = [
   { id: 1, name: "Mbah Joyo", designation: "Legenda Bakso", image: "/avatars/avatar_1.png" },
-  { id: 2, name: "Nyi Roro", designation: "Pakar Lapis Legit", image: "/avatars/avatar_2.png" },
   { id: 3, name: "Raden Bima", designation: "Master Sate", image: "/avatars/avatar_3.png" },
-  { id: 4, name: "Sekar Ayu", designation: "Ratu Dawet", image: "/avatars/avatar_4.png" },
   { id: 5, name: "Ki Darmo", designation: "Spesialis Gudeg", image: "/avatars/avatar_5.png" },
+  { id: 4, name: "Sekar Ayu", designation: "Ratu Dawet", image: "/avatars/avatar_4.png" },
+  { id: 2, name: "Nyi Roro", designation: "Pakar Lapis Legit", image: "/avatars/avatar_2.png" },
 ];
 
 const mascotData = [
@@ -29,7 +31,7 @@ const mascotData = [
 
 export default function KulinerIndex() {
   return (
-    <main className={styles.pageBackground}>
+    <main className={styles.mainWrapper}>
       {/* SVG Definitions for Hover Fill */}
       <svg width="0" height="0" style={{ position: 'absolute', width: 0, height: 0 }}>
         <defs>
@@ -42,7 +44,8 @@ export default function KulinerIndex() {
 
 
       {/* Container utama halaman */}
-      <div className={styles.gridContainer}>
+      <div className={styles.topSection}>
+        <div className={styles.gridContainer} style={{ paddingBottom: 0 }}>
 
         {/* HERO SECTION AWWWARDS STYLE */}
         <section className={styles.heroSection}>
@@ -68,32 +71,22 @@ export default function KulinerIndex() {
             Menjelajahi keanekaragaman <span className={styles.aksaraInline}>ꦏꦸꦭꦶꦤꦼꦂ</span> (kuliner) khas Jawa Tengah bagaikan napak tilas ke masa keemasan kerajaan Nusantara masa lampau. Dari setiap gigitan <span className={styles.aksaraInline}>ꦗꦗꦤ꧀ꦥꦱꦂ</span> (jajan pasar) tradisional yang legit memanjakan lidah, hingga pesona kehangatan kuah kaldu rempah pilihan, tersimpan pusaka rasa yang telah berurat akar melintasi zaman. Setiap resep masakan yang terhidang adalah <span className={styles.aksaraInline}>ꦮꦫꦶꦱꦤ꧀</span> (warisan) luhur, selalu dijaga kemurniannya dan diwariskan dengan cinta dari generasi ke generasi oleh tangan-tangan terampil para sesepuh kita. Mari kita <span className={styles.aksaraInline}>ꦩꦔꦤ꧀</span> (mangan) dan mencecap setiap kisah unik di balik penciptaannya. Temukan teman jalan yang tepat untuk memandumu mengarungi lautan kenikmatan rasa yang begitu otentik, membumi, dan tentu saja tak akan pernah terlupakan di dalam ingatan lidahmu.
           </div>
 
-          <div className={styles.pakarImageWrapper}>
-            {/* Background Decorations */}
-            <Image src="/motif/motif_kiri_buku.webp" alt="" width={400} height={400} className={`${styles.pakarDeco} ${styles.pakarDecoLeft}`} unoptimized />
-            <Image src="/motif/motif_kanan_buku.webp" alt="" width={400} height={400} className={`${styles.pakarDeco} ${styles.pakarDecoRight}`} unoptimized />
-            <Image src="/motif/wayang_2.webp" alt="" width={300} height={400} className={`${styles.pakarWayang} ${styles.pakarWayangLeft}`} unoptimized />
-            <Image src="/motif/wayang_2.webp" alt="" width={300} height={400} className={`${styles.pakarWayang} ${styles.pakarWayangRight}`} unoptimized />
-
-            <Image
-              src="/avatars/pakar.webp"
-              alt="Para Pakar Kuliner Jawa Tengah"
-              width={1600}
-              height={500}
-              className={styles.pakarImage}
-              unoptimized
-            />
-          </div>
-
-          <div className={styles.avatarContainer}>
-            <div className={styles.avatarGroupWrapper}>
-              <div className={styles.highlightLeft} />
-              <AnimatedTooltip items={kulinerExperts} />
-              <div className={styles.highlightRight} />
-            </div>
-            <p className={styles.avatarSubtext}>Pakar Kuliner Jateng</p>
-          </div>
+          <PakarInteractiveImage items={kulinerExperts} />
         </section>
+        </div>
+      </div>
+
+      <BatikTransition />
+
+      <div className={styles.bottomSection}>
+        <div className={styles.gridContainer} style={{ paddingTop: 'var(--spacing-64)' }}>
+
+        {/* TITLE KULINER POPULER */}
+        <div className={styles.sectionTitleHeader}>
+          <Image src="/motif/dekor_header_atas.webp" alt="Dekorasi Atas" width={250} height={40} className={styles.dekorAtas} unoptimized />
+          <h2 className={styles.sectionTitle}>Kuliner Populer</h2>
+          <Image src="/motif/dekor_header_bawah.webp" alt="Dekorasi Bawah" width={250} height={40} className={styles.dekorBawah} unoptimized />
+        </div>
 
         {/* Grid Responsive Baru */}
         <section className={styles.gridScattered}>
@@ -151,7 +144,9 @@ export default function KulinerIndex() {
             textMobile="Monggo"
           />
         </div>
+        </div>
       </div>
+      <FooterSection />
     </main>
   );
 }

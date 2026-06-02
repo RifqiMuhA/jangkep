@@ -1,0 +1,86 @@
+.imageContainer {
+  width: 100%;
+  max-width: 1050px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto var(--spacing-48) auto;
+  position: relative;
+}
+
+.mainWrapper {
+  position: relative;
+  width: 100%;
+  z-index: 5;
+}
+
+.pakarImage {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 15px 25px rgba(59, 31, 12, 0.2));
+}
+
+.hoverZone {
+  position: absolute;
+  /* Outline for debugging if needed: border: 1px solid red; */
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+}
+
+.tooltipPositioner {
+  position: absolute;
+  top: -60px; /* Position closer above the person's head */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Background Decorations (Moved from kuliner.module.css) */
+.pakarDeco {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  width: 30%;
+  height: auto;
+  object-fit: contain;
+  opacity: 0.15;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.pakarDecoLeft {
+  left: -5%;
+}
+
+.pakarDecoRight {
+  right: -5%;
+}
+
+.pakarWayang {
+  position: absolute;
+  bottom: 15%;
+  height: 80%;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.3;
+  z-index: 6; /* Slightly above pakarImage */
+  pointer-events: none;
+  filter: sepia(0.6) hue-rotate(340deg) saturate(1.5) opacity(0.5);
+}
+
+.pakarWayangLeft {
+  left: -20%;
+  transform: scaleX(-1);
+}
+
+.pakarWayangRight {
+  right: -20%;
+}

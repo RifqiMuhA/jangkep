@@ -189,7 +189,7 @@
   bottom: 30%; /* Meets at 70% height, behind the opaque wave */
   left: 0;
   right: 0;
-  background-color: var(--color-krem-mori, #F2EAD3);
+  /* background-color: var(--color-krem-mori, #F2EAD3); removed to prevent seam with heroOrnament */
   z-index: -1;
   pointer-events: none;
 }

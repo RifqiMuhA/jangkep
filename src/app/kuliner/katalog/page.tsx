@@ -10,12 +10,66 @@ import styles from './katalog.module.css';
 const categories = ['Semua Kategori', 'Makanan Berat', 'Jajanan', 'Minuman'];
 const tastes = ['Semua Rasa', 'Manis', 'Gurih', 'Pedas', 'Segar'];
 
+const HintArrowDownLeft = () => (
+  <div className={`${styles.hintWrapper} ${styles.hintWrapperSentence}`}>
+    <span className={styles.hintText}>klik filter</span>
+    <svg width="40" height="40" viewBox="0 0 50 50" fill="none" stroke="currentColor" className={styles.hintSvg}>
+      <path d="M35,5 Q35,25 15,30" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M22,23 L15,30 L22,37" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M5,30 L10,30" strokeWidth="1" strokeLinecap="round" />
+      <path d="M8,20 L12,23" strokeWidth="1" strokeLinecap="round" />
+      <path d="M15,40 L15,35" strokeWidth="1" strokeLinecap="round" />
+      <path d="M8,40 L12,37" strokeWidth="1" strokeLinecap="round" />
+      <path d="M25,40 L20,37" strokeWidth="1" strokeLinecap="round" />
+    </svg>
+  </div>
+);
+
+const HintArrowUpLeft = () => (
+  <div className={`${styles.hintWrapper} ${styles.hintWrapperVisual}`}>
+    <span className={styles.hintText}>klik filter</span>
+    <svg width="40" height="40" viewBox="0 0 50 50" fill="none" stroke="currentColor" className={styles.hintSvg}>
+      <path d="M40,40 Q35,20 15,15" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M22,8 L15,15 L22,22" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M5,15 L10,15" strokeWidth="1" strokeLinecap="round" />
+      <path d="M8,5 L12,8" strokeWidth="1" strokeLinecap="round" />
+      <path d="M15,5 L15,10" strokeWidth="1" strokeLinecap="round" />
+      <path d="M25,5 L20,8" strokeWidth="1" strokeLinecap="round" />
+      <path d="M8,25 L12,22" strokeWidth="1" strokeLinecap="round" />
+    </svg>
+  </div>
+);
+
 export default function KatalogKuliner() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState(categories[0]);
   const [activeTaste, setActiveTaste] = useState(tastes[0]);
   const [isCatHovered, setIsCatHovered] = useState(false);
   const [isTasteHovered, setIsTasteHovered] = useState(false);
+  const catHoverTimeout = React.useRef<NodeJS.Timeout | null>(null);
+  const tasteHoverTimeout = React.useRef<NodeJS.Timeout | null>(null);
+
+  const handleCatEnter = () => {
+    if (catHoverTimeout.current) clearTimeout(catHoverTimeout.current);
+    setIsCatHovered(true);
+  };
+
+  const handleCatLeave = () => {
+    catHoverTimeout.current = setTimeout(() => {
+      setIsCatHovered(false);
+    }, 300);
+  };
+
+  const handleTasteEnter = () => {
+    if (tasteHoverTimeout.current) clearTimeout(tasteHoverTimeout.current);
+    setIsTasteHovered(true);
+  };
+
+  const handleTasteLeave = () => {
+    tasteHoverTimeout.current = setTimeout(() => {
+      setIsTasteHovered(false);
+    }, 300);
+  };
 
   const { scrollY } = useScroll();
   const yParallax = useTransform(scrollY, [0, 2000], [0, 400]);
@@ -128,8 +182,8 @@ export default function KatalogKuliner() {
                 &quot;Tampilkan <span
                   className={styles.selector}
                   onClick={cycleCategory}
-                  onMouseEnter={() => setIsCatHovered(true)}
-                  onMouseLeave={() => setIsCatHovered(false)}
+                  onMouseEnter={handleCatEnter}
+                  onMouseLeave={handleCatLeave}
                 >
                   <AnimatePresence mode="popLayout">
                     <motion.span
@@ -142,6 +196,7 @@ export default function KatalogKuliner() {
                       [{activeCategory}]
                     </motion.span>
                   </AnimatePresence>
+                  <HintArrowDownLeft />
                   {/* Bubble Menu Radial */}
                   <AnimatePresence>
                     {isCatHovered && (
@@ -161,7 +216,12 @@ export default function KatalogKuliner() {
                               exit={{ opacity: 0, y: -30, scale: 0.8, transition: { duration: 0.2 } }}
                               transition={{ type: "spring", stiffness: 300, damping: 25 }}
                               className={`${styles.bubbleItem} ${styles[`bubble${index + 1}`]} ${getFilterCategoryBadgeClass(item)}`}
-                            /* onClick dihilangkan agar tidak bisa diklik secara individual */
+                              whileHover={{ scale: 1.1 }}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setActiveCategory(item);
+                                setIsCatHovered(false);
+                              }}
                             >
                               {item}
                             </motion.div>
@@ -174,8 +234,8 @@ export default function KatalogKuliner() {
                 dengan rasa <span
                   className={styles.selector}
                   onClick={cycleTaste}
-                  onMouseEnter={() => setIsTasteHovered(true)}
-                  onMouseLeave={() => setIsTasteHovered(false)}
+                  onMouseEnter={handleTasteEnter}
+                  onMouseLeave={handleTasteLeave}
                 >
                   <AnimatePresence mode="popLayout">
                     <motion.span
@@ -207,7 +267,12 @@ export default function KatalogKuliner() {
                               exit={{ opacity: 0, y: -30, scale: 0.8, transition: { duration: 0.2 } }}
                               transition={{ type: "spring", stiffness: 300, damping: 25 }}
                               className={`${styles.bubbleItem} ${styles[`bubble${index + 1}`]} ${getFilterTasteBadgeClass(item)}`}
-                            /* onClick dihilangkan agar tidak bisa diklik secara individual */
+                              whileHover={{ scale: 1.1 }}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setActiveTaste(item);
+                                setIsTasteHovered(false);
+                              }}
                             >
                               {item}
                             </motion.div>
@@ -299,6 +364,7 @@ export default function KatalogKuliner() {
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     style={{ cursor: 'pointer' }}
                   />
+                  <HintArrowUpLeft />
                 </div>
                 <div className={`${styles.filterBadge} ${activeCategory === 'Makanan Berat' ? styles.badgeMakananBerat : activeCategory === 'Jajanan' ? styles.badgeJajanan : activeCategory === 'Minuman' ? styles.badgeMinuman : ''}`}>{activeCategory}</div>
               </div>

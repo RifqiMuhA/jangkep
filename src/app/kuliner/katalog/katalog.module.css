@@ -50,8 +50,7 @@
   display: grid;
   grid-template-columns: 35% 65%;
   min-height: 100vh;
-  max-width: 1600px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 /* Kiri: Command Center */
@@ -176,8 +175,7 @@
   letter-spacing: 1px;
   white-space: nowrap;
   box-shadow: 0 4px 10px rgba(59, 31, 12, 0.1);
-  pointer-events: none;
-  /* Non-clickable and no hover effects */
+  cursor: pointer;
 }
 
 /* Removed .bubbleItem::before and .bubbleItem:hover */
@@ -231,6 +229,43 @@
   flex-direction: column;
   align-items: center;
   gap: 15px;
+}
+
+/* Click Hint Styles */
+.hintWrapper {
+  position: absolute;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--color-coklat-batik, #3B1F0C);
+  opacity: 0.6;
+  z-index: 50;
+}
+
+.hintWrapperSentence {
+  top: -25px;
+  right: -30px;
+}
+
+.hintWrapperVisual {
+  bottom: 10px;
+  right: -60px; /* Digeser ke kanan sedikit */
+}
+
+.hintText {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: -2px;
+  transform: rotate(5deg);
+}
+
+.hintSvg {
+  width: 25px;
+  height: 25px;
+  stroke: var(--color-coklat-batik, #3B1F0C);
 }
 
 .filterBadge {
