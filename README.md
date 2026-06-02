@@ -4,6 +4,8 @@
   # Jangkep: Jangkep Rasane, Jangkep Critane
   
   *Website eksplorasi kuliner Jawa Tengah yang imersif, interaktif, dan edukatif.*
+
+  **[Kunjungi Website Jangkep Live!](https://jangkep.vercel.app)**
 </div>
 
 ---
@@ -30,7 +32,7 @@ Ikuti langkah-langkah di bawah ini untuk menjalankan proyek Jangkep di komputer 
 
 1. **Clone Repositori**
    ```bash
-   git clone <url-repositori-anda>
+   git clone https://github.com/RifqiMuhA/jangkep.git
    cd jangkep
    ```
 
@@ -55,14 +57,13 @@ Ikuti langkah-langkah di bawah ini untuk menjalankan proyek Jangkep di komputer 
 Berikut adalah contoh tampilan antarmuka website **Jangkep** di berbagai ukuran layar:
 
 ### Tampilan Desktop
-*(Silakan ganti/tambahkan file screenshot asli Anda di folder `public` dan perbarui tautan di bawah ini)*
-![Screenshot Desktop](https://placehold.co/1200x800/F2EAD3/3B1F0C?text=Tampilan+Desktop+Jangkep)
+![alt text](ss_desktop.png)
 
 ### Tampilan Tablet
-![Screenshot Tablet](https://placehold.co/800x1024/F2EAD3/3B1F0C?text=Tampilan+Tablet+Jangkep)
+![alt text](ss_tablet.png)
 
 ### Tampilan Handphone (Mobile)
-![Screenshot Mobile](https://placehold.co/400x800/F2EAD3/3B1F0C?text=Tampilan+Mobile+Jangkep)
+![alt text](ss_mobile.jpeg)
 
 ---
 
