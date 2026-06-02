@@ -1,0 +1,791 @@
+.pageBackground {
+  min-height: 100vh;
+  background-image: url('/games/game1/background.webp');
+  background-size: auto 100%;
+  /* Keep vertical size consistent */
+  background-position: center bottom;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-48) var(--spacing-24);
+  overflow-y: auto;
+  overflow-x: auto;
+  /* Allow horizontal scrolling on mobile */
+  /* Hide scrollbar */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.pageBackground::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari and Opera */
+}
+
+/* =================================
+   INTRO & RESULT MODAL
+   ================================= */
+.resultOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(26, 10, 2, 0.85);
+  /* Hitam Arang transparan */
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.resultOverlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.resultCard {
+  background-image: url('/games/game3/frame_background.webp');
+  background-size: 100% 100%;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  padding: 60px 40px 40px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  transform: translateY(20px) scale(0.95);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  color: var(--color-coklat-batik);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.resultOverlay.active .resultCard {
+  transform: translateY(0) scale(1);
+}
+
+.mascotReaction {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  margin-top: -100px;
+  margin-bottom: var(--spacing-16);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.feedbackTitle {
+  font-family: var(--font-playfair);
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: var(--spacing-16);
+  color: var(--color-coklat-batik);
+  font-style: italic;
+}
+
+.subText {
+  font-family: var(--font-dm-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: var(--spacing-32);
+}
+
+.actionRow {
+  display: flex;
+  gap: var(--spacing-16);
+  justify-content: center;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.nextButton,
+.finishButton {
+  background-size: 100% 100%;
+  background-position: center;
+  background-color: transparent;
+  font-family: var(--font-dm-sans);
+  font-size: 16px;
+  font-weight: 800;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  min-height: 50px;
+  min-width: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
+}
+
+.nextButton {
+  background-image: url('/games/game3/button.webp');
+  color: var(--color-coklat-batik);
+}
+
+.finishButton {
+  background-image: url('/games/game3/button_selesai.webp');
+  color: #fff9c4;
+}
+
+.nextButton:hover,
+.finishButton:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
+}
+
+.nextButton:active,
+.finishButton:active {
+  transform: scale(0.95);
+}
+
+/* =================================
+   GAMEPLAY AREA
+   ================================= */
+.gameContainer {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(253, 249, 238, 0.9);
+  padding: 12px 24px;
+  border-radius: 50px;
+  border: 2px solid var(--color-emas-keris);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: var(--spacing-24);
+  backdrop-filter: blur(4px);
+  position: sticky;
+  top: 16px;
+  z-index: 100;
+}
+
+.progressWrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.progressText {
+  font-family: var(--font-dm-sans);
+  font-weight: 700;
+  color: var(--color-coklat-batik);
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.progressBarBg {
+  flex: 1;
+  max-width: 300px;
+  height: 12px;
+  background-color: var(--color-coklat-kayu);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.progressBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, #FFC107, #FF9800);
+  border-radius: 10px;
+  transition: width 0.5s ease-in-out;
+}
+
+.timer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-dm-sans);
+  font-weight: 800;
+  color: var(--color-coklat-batik);
+  font-size: 18px;
+  background-color: rgba(253, 249, 238, 0.5);
+  /* Coklat muda */
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-left: 24px;
+}
+
+.timerWarning {
+  color: #fff !important;
+  background-color: #D32F2F !important;
+  box-shadow: 0 0 15px rgba(211, 47, 47, 0.6) !important;
+  animation: heartbeat 1s infinite;
+}
+
+.timeAddedText {
+  position: absolute;
+  left: 0;
+  /* Animated with Framer Motion, starting near center */
+  color: #4CAF50;
+  /* Hijau segar */
+  font-weight: 900;
+  font-size: 24px;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 2px 2px 4px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  z-index: 20;
+}
+
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+  }
+
+  15% {
+    transform: scale(1.15);
+    box-shadow: 0 0 25px rgba(211, 47, 47, 0.9);
+  }
+
+  30% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.headerControls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: auto;
+}
+
+.btnSelesaiWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.btnSelesaiWrapper:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.btnSelesaiWrapper:active {
+  transform: scale(0.95);
+}
+
+.btnSelesaiBg {
+  width: auto;
+  height: 45px;
+  object-fit: contain;
+  z-index: 1;
+}
+
+.btnSelesaiText {
+  position: absolute;
+  z-index: 2;
+  font-family: var(--font-dm-sans);
+  font-weight: 800;
+  font-size: 16px;
+  color: #fff;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.targetCard {
+  text-align: center;
+  margin: 0 auto var(--spacing-24) auto;
+  padding: 24px 40px;
+  background-color: transparent;
+  border: none;
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+}
+
+.cornerMotifLeft {
+  position: absolute;
+  bottom: -4px;
+  left: -4px;
+  width: 70px;
+  height: auto;
+  z-index: 5;
+}
+
+.cornerMotifRight {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  width: 70px;
+  height: auto;
+  z-index: 5;
+}
+
+.titleWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  white-space: nowrap;
+}
+
+.targetTitle {
+  font-family: var(--font-playfair);
+  font-size: 32px;
+  color: var(--color-coklat-batik);
+  margin-bottom: 0;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.titleMotif {
+  object-fit: contain;
+  opacity: 0.8;
+}
+
+.targetDesc {
+  font-size: 16px;
+  color: var(--color-hitam-arang);
+  opacity: 0.8;
+}
+
+/* Wajan (Drop Zone) */
+.wajanContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  z-index: 10;
+}
+
+.dropHint {
+  position: absolute;
+  top: -40px;
+  left: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--color-coklat-batik);
+  z-index: 20;
+  pointer-events: none;
+  animation: floatBounce 4s infinite ease-in-out;
+}
+
+.dropHintText {
+  font-family: var(--font-playfair);
+  font-weight: 400;
+  font-size: 18px;
+  font-style: italic;
+  margin-bottom: -5px;
+  margin-left: -60px;
+  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+}
+
+.dropHintArrow {
+  color: var(--color-coklat-batik);
+  filter: drop-shadow(2px 2px 2px rgba(255,255,255,0.8));
+}
+
+@keyframes floatBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.bottomSection {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+/* Wajan Area Layout */
+.wajanAreaWrapper {
+  display: flex;
+  align-items: flex-end;
+  /* Aligns wajan and mascot at the bottom */
+  justify-content: center;
+  width: 100%;
+  transform: translateY(-3vh) scale(1.1);
+  transform-origin: bottom center;
+}
+
+.mascotArea {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  margin-left: -60px;
+  /* Pull the mascot closer to the wok */
+  z-index: 5;
+  flex-shrink: 0;
+}
+
+.cookingMascot {
+  object-fit: contain;
+  width: min(240px, 24vh);
+  height: auto;
+}
+
+.chatBubble {
+  position: absolute;
+  top: 10px;
+  right: 100%;
+  /* Position to the left of mascot */
+  transform: translateX(20px);
+  background-color: white;
+  border: 2px solid var(--color-emas-keris);
+  border-radius: 16px;
+  border-bottom-right-radius: 0;
+  padding: 12px 20px;
+  color: var(--color-hitam-arang);
+  font-family: var(--font-dm-sans);
+  font-weight: 700;
+  font-size: 16px;
+  white-space: nowrap;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  z-index: 20;
+}
+
+/* Confetti */
+.confettiContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 2000;
+  overflow: hidden;
+}
+
+.confettiPiece {
+  position: absolute;
+  opacity: 1;
+}
+
+.wajanPlaceholder {
+  width: min(450px, 45vh);
+  aspect-ratio: 450 / 322;
+  background-image: url('/games/game1/wajan.webp');
+  background-size: contain;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  margin-bottom: -5vh;
+  /* Push the wajan lower relative to the mascot and tray using percentage */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  flex-shrink: 0;
+}
+
+.wajanActive {
+  transform: scale(1.05);
+  filter: brightness(1.2) drop-shadow(0 0 15px rgba(212, 175, 55, 0.8));
+}
+
+.wajanText {
+  color: transparent;
+  /* Sembunyikan teks Wajan karena sudah pakai gambar sungguhan */
+  font-family: var(--font-dm-sans);
+  font-weight: 700;
+  pointer-events: none;
+}
+
+/* Smoke Effect */
+.smokeContainer {
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 250px;
+  height: 250px;
+  pointer-events: none;
+  z-index: 15;
+}
+
+.smoke {
+  position: absolute;
+  bottom: 20px;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 70%);
+  border-radius: 50%;
+  filter: blur(8px);
+  opacity: 0;
+  animation: riseSmoke linear infinite;
+}
+
+.smoke1 {
+  left: 15%;
+  animation-duration: 3.5s;
+  animation-delay: 0s;
+}
+
+.smoke2 {
+  left: 45%;
+  animation-duration: 4.5s;
+  animation-delay: 1.2s;
+}
+
+.smoke3 {
+  left: 65%;
+  animation-duration: 4s;
+  animation-delay: 0.6s;
+}
+
+.smoke4 {
+  left: 35%;
+  animation-duration: 3.8s;
+  animation-delay: 2.1s;
+}
+
+@keyframes riseSmoke {
+  0% {
+    bottom: 20px;
+    transform: scale(1) translateX(0);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 0.6;
+  }
+
+  100% {
+    bottom: 250px;
+    transform: scale(5) translateX(-30px);
+    opacity: 0;
+  }
+}
+
+.feedbackBadgeWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Draggable Ingredients Tray */
+.trayContainer {
+  position: relative;
+  z-index: 50;
+  background-image: url('/games/game1/laci.webp');
+  background-size: 100% 100%;
+  background-position: center;
+  background-color: transparent;
+  width: min(100%, 700px, 70vh);
+  margin: -5vh auto 0 auto;
+  aspect-ratio: 1901 / 686;
+  padding: 3% 4.5% 8% 4.5%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  row-gap: 25%;
+  column-gap: 4%;
+  place-items: center;
+}
+
+.ingredientItem {
+  width: min(80px, 8vh);
+  height: min(80px, 8vh);
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: grab;
+  position: relative;
+  z-index: 10;
+  touch-action: none;
+  /* Prevent scroll on drag for mobile */
+}
+
+.ingredientItem:active {
+  cursor: grabbing;
+}
+
+/* Tooltip for Ingredients */
+.tooltipContainer {
+  position: absolute;
+  top: -45px;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-hitam-arang, #222);
+  border-radius: 8px;
+  padding: 8px 16px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  z-index: 50;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.tooltipName {
+  font-weight: 700;
+  color: var(--color-putih-santan, #fff);
+  font-size: 14px;
+  font-family: inherit;
+  text-transform: capitalize;
+}
+
+.ingredientImage {
+  width: min(60px, 6vh);
+  height: min(60px, 6vh);
+  object-fit: contain;
+  pointer-events: none;
+  /* Let the parent handle drag events */
+}
+
+/* Animations */
+.splashAnimation {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.8) 0%, rgba(212, 175, 55, 0) 70%);
+  border-radius: 50%;
+  animation: splash 0.5s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes splash {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+
+/* Indicator showing how many ingredients left */
+.recipeProgress {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  justify-content: center;
+}
+
+.recipeDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ddd;
+  border: 1px solid #aaa;
+}
+
+.recipeDot.filled {
+  background-color: var(--color-rasa-segar);
+  border-color: #388e3c;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 899px) {
+  .pageBackground {
+    padding: 16px 12px 70px 12px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 20px;
+  }
+
+  .progressWrapper {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .headerControls {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+  }
+
+  .timer {
+    margin-left: 0;
+  }
+
+  .resultCard {
+    width: 90%;
+    padding: 40px 24px 24px;
+  }
+
+  .targetCard {
+    padding: 16px;
+  }
+
+  .targetTitle {
+    font-size: 24px;
+  }
+
+  .trayContainer {
+    padding: 3% 4.5% 8% 4.5%;
+    row-gap: 15%;
+  }
+
+  .ingredientItem {
+    width: 50px;
+    height: 50px;
+  }
+
+  .ingredientImage {
+    width: 40px;
+    height: 40px;
+  }
+
+  .mascotArea {
+    margin-left: -180px;
+    /* Pull the mascot significantly behind the wok on mobile */
+  }
+
+  .chatBubble {
+    right: 90%;
+    top: 0;
+    transform: translateX(10px);
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+}
