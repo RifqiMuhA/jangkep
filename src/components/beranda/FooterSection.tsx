@@ -4,8 +4,16 @@ import styles from './FooterSection.module.css';
 export default function FooterSection() {
   return (
     <footer className={styles.footer}>
+      {/* ── Decorative Motif Backgrounds ── */}
+      <div className={styles.ornamentLeft}>
+        <img src="/motif/motif_bunga_1.webp" alt="" className={styles.ornamentImage} />
+      </div>
+      <div className={styles.ornamentRight}>
+        <img src="/motif/motif_bunga_1.webp" alt="" className={styles.ornamentImage} />
+      </div>
+
       <div className={styles.container}>
-        {/* ── ROW 1: 4-column grid ── */}
+        {/* ── ROW 1: Grid ── */}
         <div className={styles.topGrid}>
           {/* Kolom 1 — Brand Identity */}
           <div className={styles.brand}>
@@ -15,10 +23,6 @@ export default function FooterSection() {
             <p className={styles.brandDesc}>
               Menjelajahi rempah, resep, dan cerita kuliner Jawa yang diwariskan turun temurun. Dari dapur, untuk dunia.
             </p>
-            {/* Ornamen Pawon */}
-            <div className={styles.brandOrnament}>
-              <img src="/ornaments/pawon-lineart.png" alt="" className={styles.ornamentImage} />
-            </div>
           </div>
 
           {/* Kolom 2 — Navigasi */}
@@ -26,11 +30,13 @@ export default function FooterSection() {
             <div className={styles.columnLabel}>
               <span className={styles.columnIcon}>✦</span> MENJELAJAH
             </div>
-            <Link href="/" className={styles.footerLink}>Beranda</Link>
-            <Link href="/rasa" className={styles.footerLink}>Ensiklopedia</Link>
-            <Link href="/kuliner" className={styles.footerLink}>Resep</Link>
-            <Link href="/maps" className={styles.footerLink}>Peta Rasa</Link>
-            <Link href="/games" className={styles.footerLink}>Dolan</Link>
+            <div className={styles.navGrid}>
+              <Link href="/" className={styles.footerLink}>Beranda</Link>
+              <Link href="/rasa" className={styles.footerLink}>Ensiklopedia</Link>
+              <Link href="/kuliner" className={styles.footerLink}>Resep</Link>
+              <Link href="/maps" className={styles.footerLink}>Peta Rasa</Link>
+              <Link href="/games" className={styles.footerLink}>Dolan</Link>
+            </div>
           </nav>
 
           {/* Kolom 3 — Hubungi Kami */}
@@ -65,7 +71,7 @@ export default function FooterSection() {
           </div>
         </div>
 
-        {/* ── Divider ── */}
+        {/* ── Divider Top ── */}
         <div className={styles.divider} aria-hidden="true" />
 
         {/* ── ROW 2: Quote Center ── */}
@@ -82,6 +88,9 @@ export default function FooterSection() {
             Makan atau tidak makan, yang penting bersama.
           </p>
         </div>
+
+        {/* ── Divider Bottom ── */}
+        <div className={styles.divider} aria-hidden="true" />
 
         {/* ── Bottom Bar ── */}
         <div className={styles.bottomBar}>
