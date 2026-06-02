@@ -1,6 +1,6 @@
 .portalBackground {
   min-height: 100vh;
-  background-color: #F2E7C9; /* Custom krem mori to match transition */
+  background-color: var(--color-krem-mori);
   position: relative;
   overflow-x: hidden;
 }
@@ -8,9 +8,11 @@
 .gamesSection {
   background-color: var(--color-coklat-batik);
   position: relative;
+  z-index: 2; /* Higher than heroSection to allow cards to overlap */
+  display: flow-root; /* Prevent margin collapse from negative margin */
   padding-top: 0;
-  padding-bottom: var(--spacing-96);
-  min-height: 50vh;
+  padding-bottom: var(--spacing-48);
+  min-height: auto;
 }
 
 .textureOverlay {
@@ -29,9 +31,15 @@
 /* --- HERO SECTION --- */
 .heroSection {
   position: relative;
-  z-index: 2;
+  z-index: 1; /* Lower than gamesSection */
   text-align: center;
-  padding: 64px var(--spacing-24) 40px;
+  padding: 90px var(--spacing-24) 100px; /* Increased bottom padding to prevent overlap */
+  max-width: 100%; /* Changed from var(--container-max) to span full width for gradient */
+  margin: 0 auto;
+  background: linear-gradient(to bottom, var(--color-krem-mori) 0%, #F2E7C9 100%);
+}
+
+.heroContent {
   max-width: var(--container-max);
   margin: 0 auto;
 }
@@ -61,14 +69,21 @@
 }
 
 .heroSubtitle {
-  font-family: var(--font-dm-sans);
-  font-size: var(--text-subheading);
+  font-family: var(--font-playfair);
+  font-size: 18px;
+  font-weight: 400;
   color: var(--color-hitam-arang);
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
   line-height: var(--leading-body-lg);
   position: relative;
   z-index: 5;
+}
+
+.javaneseText {
+  font-family: var(--font-noto-javanese);
+  font-size: 1.2em;
+  margin: 0 4px;
 }
 
 .desktopOnlyBreak {
@@ -106,7 +121,7 @@
   align-items: stretch;
   gap: var(--spacing-32);
   max-width: 1200px;
-  margin: -40px auto 0; /* Pull cards up so they overlap the boundary */
+  margin: -80px auto 0; /* Pull cards up higher */
   padding: 0 var(--spacing-24);
 }
 
@@ -123,8 +138,8 @@
   align-items: center;
   position: relative;
   transition: filter 0.3s ease;
-  padding: 50px 32px 32px;
-  min-height: 480px;
+  padding: 40px 24px 24px;
+  min-height: 420px;
 }
 
 .gameCard:hover {
@@ -152,8 +167,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 30px;
-  margin-bottom: var(--spacing-16);
+  margin-top: 50px;
+  margin-bottom: 0px;
   background: none;
   border: none;
   overflow: visible;
@@ -195,7 +210,7 @@
   font-size: 26px;
   color: #4e342e;
   font-weight: 800;
-  margin-bottom: var(--spacing-12);
+  margin-bottom: 4px;
   line-height: 1.2;
 }
 
@@ -203,9 +218,8 @@
   font-family: var(--font-dm-sans);
   font-size: 15px;
   color: #5d4037;
-  margin-bottom: var(--spacing-24);
+  margin-bottom: 16px;
   line-height: 1.5;
-  flex-grow: 1;
 }
 
 .cardCta {
@@ -222,6 +236,7 @@
   font-weight: 700;
   cursor: pointer;
   transition: filter 0.2s ease;
+  margin-top: auto; /* Pushes the button to align at the bottom */
   margin-bottom: 12px;
   display: flex;
   justify-content: center;

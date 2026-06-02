@@ -16,6 +16,13 @@ export default function Game3Page() {
   const [timeLeft, setTimeLeft] = useState(10);
   const [options, setOptions] = useState<FoodQuestion[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  // Initialize game on mount
+  useEffect(() => {
+    startGame();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Initialize game
   const startGame = () => {
@@ -92,25 +99,25 @@ export default function Game3Page() {
 
   return (
     <main className={styles.pageBackground}>
-      {/* INTRO OVERLAY */}
-      <div className={`${styles.resultOverlay} ${gameState === 'intro' ? styles.active : ''}`}>
-        <div className={styles.resultCard}>
-          <Image src="/games/mascot_kuliner_1.webp" alt="Si Podo" width={150} height={150} className={styles.mascotReaction} unoptimized />
-          <h1 className={styles.feedbackTitle}>Kenali Masakanmu</h1>
-          <p className={styles.subText}>
-            Tebak masakan yang perlahan muncul dari buram. Waktu Anda hanya 15 detik per soal. Ayo buktikan pengetahuan kulinermu!
-          </p>
-          <button className={styles.nextButton} onClick={startGame}>Mulai Bermain</button>
-        </div>
-      </div>
-
       {gameState !== 'intro' && currentQuestion && (
-        <div className={styles.gameContainer}>
+        <div className={`${styles.gameContainer} ${gameState !== 'playing' ? styles.feedbackMode : ''}`}>
           <div className={styles.header}>
-            <span className={styles.progress}>Soal {currentIndex + 1} / 10</span>
-            <span className={styles.timer}>
-              ⏱ {timeLeft} detik
-            </span>
+            <span className={styles.progress}>Soal {currentIndex + 1} dari 10</span>
+            <div className={styles.headerLine}>
+              <div className={styles.progressTrack}></div>
+              <div className={styles.progressDots}>
+                {Array.from({ length: 10 }).map((_, i) => (
+                  <div 
+                    key={i} 
+                    className={`${styles.progressDot} ${i <= currentIndex ? styles.progressDotActive : ''} ${i === currentIndex ? styles.progressDotCurrent : ''}`}
+                  ></div>
+                ))}
+              </div>
+            </div>
+            <div className={styles.timer}>
+              <span className={styles.timerNumber}>{timeLeft}</span>
+              <span className={styles.timerText}>detik</span>
+            </div>
           </div>
 
           <div className={styles.splitContainer}>
@@ -133,7 +140,9 @@ export default function Game3Page() {
             {/* RIGHT COLUMN: CONTROLS & FEEDBACK */}
             <div className={styles.rightColumn}>
               {gameState === 'playing' && (
-              <div className={styles.playingArea}>
+              <div className={styles.rightColumnCard}>
+                <h3 className={styles.instructionTitle}>Pilih jawaban yang menurutmu benar</h3>
+                <div className={styles.decorativeLine}></div>
                 <div className={styles.optionsGrid}>
                   {options.map((opt, index) => (
                     <button 
@@ -151,32 +160,39 @@ export default function Game3Page() {
 
             {/* INLINE FEEDBACK */}
             {gameState === 'feedback' && (
-              <div className={styles.feedbackInline}>
-                <div className={styles.feedbackHeader}>
-                  <Image 
-                    src={isCorrect ? '/games/mascot_kuliner_3.webp' : '/games/mascot_kuliner_12.webp'} 
-                    alt="Mascot Reaction" 
-                    width={80} 
-                    height={80} 
-                    className={styles.mascotReaction} 
-                    unoptimized
-                  />
-                  <h2 className={`${styles.feedbackTitle} ${isCorrect ? styles.correctText : styles.wrongText}`}>
-                    {isCorrect ? 'Benar Sekali!' : selectedAnswer === 'timeout' ? 'Waktu Habis!' : 'Kurang Tepat!'}
-                  </h2>
-                </div>
-                {!isCorrect && (
-                  <div style={{ marginBottom: '16px', color: 'var(--color-coklat-batik)', fontWeight: 'bold' }}>
-                    Jawaban yang benar adalah: {currentQuestion?.name}
+              <div className={styles.rightColumnCard}>
+                <div className={styles.feedbackInline}>
+                  <div className={styles.feedbackHeader}>
+                    <Image 
+                      src={isCorrect ? '/games/mascot_kuliner_3.webp' : '/games/mascot_kuliner_12.webp'} 
+                      alt="Mascot Reaction" 
+                      width={120} 
+                      height={120} 
+                      className={styles.mascotReaction} 
+                      unoptimized
+                    />
+                    <h2 className={`${styles.feedbackTitle} ${isCorrect ? styles.correctText : styles.wrongText}`}>
+                      {isCorrect ? 'Benar Sekali!' : selectedAnswer === 'timeout' ? 'Waktu Habis!' : 'Kurang Tepat!'}
+                    </h2>
                   </div>
-                )}
-                <div className={styles.funFactBox}>
-                  <strong>Tahukah kamu?</strong><br />
-                  {currentQuestion?.funFact}
+                  {!isCorrect && (
+                    <div className={styles.correctAnswerBadge}>{currentQuestion?.name}</div>
+                  )}
+                  <div className={styles.funFactContainer}>
+                    <h3 className={styles.funFactTitle}>Tahukah kamu?</h3>
+                    <div className={styles.funFactBox}>
+                      {currentQuestion?.funFact}
+                    </div>
+                  </div>
+                  <button className={styles.nextButton} onClick={nextQuestion}>
+                    {currentIndex + 1 < 10 ? (
+                      <>
+                        <span className={styles.hideOnMobile}>Lanjut </span>
+                        Soal Berikutnya
+                      </>
+                    ) : 'Lihat Hasil Akhir'}
+                  </button>
                 </div>
-                <button className={styles.nextButton} onClick={nextQuestion}>
-                  {currentIndex + 1 < 10 ? 'Lanjut Soal Berikutnya' : 'Lihat Hasil Akhir'}
-                </button>
               </div>
             )}
             </div>
@@ -185,7 +201,7 @@ export default function Game3Page() {
           <div className={styles.finishContainer}>
             <button 
               className={styles.finishButton}
-              onClick={() => setGameState('result')}
+              onClick={() => setShowConfirmModal(true)}
             >
               Selesaikan Game
             </button>
@@ -218,11 +234,31 @@ export default function Game3Page() {
           </p>
 
           <div className={styles.actionRow}>
-            <Link href="/games" className={`${styles.nextButton} ${styles.secondaryBtn}`}>
+            <Link href="/games" className={styles.finishButton}>
               Kembali ke Lobi
             </Link>
             <button className={styles.nextButton} onClick={startGame}>
               Main Lagi
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* CONFIRM MODAL */}
+      <div className={`${styles.resultOverlay} ${showConfirmModal ? styles.active : ''}`}>
+        <div className={styles.resultCard}>
+          <Image src="/games/mascot_kuliner_1.webp" alt="Si Podo" width={100} height={100} className={styles.mascotReaction} unoptimized style={{ marginTop: '-40px' }} />
+          <h2 className={styles.feedbackTitle}>Yakin Ingin Selesai?</h2>
+          <p className={styles.subText} style={{ marginBottom: '24px' }}>
+            Kamu belum menyelesaikan semua soal lho.
+          </p>
+
+          <div className={styles.actionRow}>
+            <button className={styles.finishButton} style={{ minWidth: '120px' }} onClick={() => setShowConfirmModal(false)}>
+              Batal
+            </button>
+            <button className={styles.nextButton} style={{ minWidth: '120px' }} onClick={() => { setShowConfirmModal(false); setGameState('result'); }}>
+              Ya, Selesai
             </button>
           </div>
         </div>
