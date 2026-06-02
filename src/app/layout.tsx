@@ -54,8 +54,9 @@ export default function RootLayout({
     <html
       lang="id"
       className={`${playfair.variable} ${dmSans.variable} ${notoJavanese.variable} ${pinyonScript.variable}`}
+      suppressHydrationWarning
     >
-      <body>
+      <body suppressHydrationWarning>
         <LenisProvider>
           <Navbar />
           {children}

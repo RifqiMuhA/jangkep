@@ -86,24 +86,28 @@
 
 .carouselTrack {
   position: relative;
-  width: 320px;
-  height: 380px;
-  /* slides are absolutely positioned inside */
+  width: 440px;
+  height: 480px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .slide {
   position: absolute;
   top: 0;
   left: 50%;
-  width: 320px;
-  margin-left: -160px; /* center anchor */
-  transition: transform 500ms var(--ease-reveal),
-              opacity 500ms var(--ease-reveal),
-              filter 500ms var(--ease-reveal);
-  will-change: transform, opacity, filter;
+  width: 440px;
+  margin-left: -220px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: transform 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              opacity 500ms ease,
+              filter 500ms ease;
+  will-change: transform, opacity;
+  transform-origin: center center;
 }
 
 /* Hover on active slide */
@@ -179,46 +183,44 @@
   overflow: hidden;
 }
 
-/* ── Arrow Buttons ── */
-.arrowBtn {
-  appearance: none;
-  -webkit-appearance: none;
-  background: var(--color-putih-santan);
-  border: 1px solid var(--color-emas-keris);
-  border-radius: 50%;
-  width: 44px;
-  height: 44px;
-  font-size: 24px;
+
+
+/* ── Minimal Navigation Buttons ── */
+.navBtn {
+  position: absolute;
+  top: 35%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  width: 48px;
+  height: 48px;
   color: var(--color-coklat-batik);
+  opacity: 0.3;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 200ms ease, transform 200ms ease, box-shadow 200ms ease;
-  flex-shrink: 0;
+  transition: opacity 200ms ease, transform 200ms ease;
   z-index: 20;
   padding: 0;
-  margin: 0;
-  box-shadow: none;
   outline: none;
 }
 
-.arrowBtn:hover {
-  background: var(--color-emas-keris);
-  color: var(--color-putih-santan);
-  box-shadow: 0 4px 16px rgba(184, 134, 11, 0.25);
+.navBtn:hover {
+  opacity: 0.8;
+  transform: translateY(-50%) scale(1.1);
 }
 
-.arrowBtn:active {
-  transform: scale(0.92);
+.navBtn:active {
+  transform: translateY(-50%) scale(0.95);
 }
 
-.arrowLeft {
-  margin-right: 32px;
+.navLeft {
+  left: calc(50% - 180px);
 }
 
-.arrowRight {
-  margin-left: 32px;
+.navRight {
+  right: calc(50% - 180px);
 }
 
 /* ── Dot Indicators ── */
@@ -284,19 +286,27 @@
   .header {
     padding: 0 32px;
   }
-
-  .arrowLeft {
-    margin-right: 16px;
+  .navLeft {
+    left: calc(50% - 160px);
   }
-
-  .arrowRight {
-    margin-left: 16px;
+  .navRight {
+    right: calc(50% - 160px);
   }
 }
 
 @media (max-width: 768px) {
   .section {
     padding: 64px 0 56px;
+  }
+  .navBtn {
+    width: 40px;
+    height: 40px;
+  }
+  .navLeft {
+    left: calc(50% - 110px);
+  }
+  .navRight {
+    right: calc(50% - 110px);
   }
 
   .header {
@@ -318,13 +328,13 @@
   }
 
   .carouselTrack {
-    width: 260px;
-    height: 500px;
+    width: 320px;
+    height: 420px;
   }
 
   .slide {
-    width: 260px;
-    margin-left: -130px;
+    width: 320px;
+    margin-left: -160px;
   }
 
   .slideTitle {
@@ -335,37 +345,33 @@
     font-size: 13px;
   }
 
-  .arrowBtn {
-    width: 38px;
-    height: 38px;
-    font-size: 20px;
-  }
 
-  .arrowLeft {
-    margin-right: 8px;
-  }
-
-  .arrowRight {
-    margin-left: 8px;
-  }
 }
 
 @media (max-width: 480px) {
   .headline {
     font-size: 30px;
   }
+  .navLeft {
+    left: calc(50% - 80px);
+  }
+  .navRight {
+    right: calc(50% - 80px);
+  }
 
   .carouselTrack {
-    width: 240px;
-    height: 460px;
+    width: 280px;
+    height: 380px;
   }
 
   .slide {
-    width: 240px;
-    margin-left: -120px;
+    width: 280px;
+    margin-left: -140px;
   }
 
   .slideImg {
-    max-height: 300px;
+    max-height: 380px;
   }
+
+
 }

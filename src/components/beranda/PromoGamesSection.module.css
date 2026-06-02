@@ -226,17 +226,38 @@
   .heroImageWrap {
     order: 1;
     transform: none;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .sipodoImg {
+    width: 100%;
+    max-width: 440px;
+    height: auto;
+    transform: translate(-15%, 0);
   }
   .speechBubble {
-    position: relative;
-    top: auto;
-    left: auto;
-    margin: 40px auto 0;
-    max-width: 90%;
-    border-radius: 24px;
+    position: absolute;
+    top: -5%;
+    right: -8%;
+    max-width: 280px;
+    margin: 0;
+    padding: 16px 24px;
+    border-radius: 20px;
   }
   .speechBubble::after {
-    display: none;
+    display: block;
+    left: 30%;
+    bottom: -18px;
+    width: 16px;
+    height: 16px;
+  }
+  .speechBubble::before {
+    display: block;
+    left: 20%;
+    bottom: -32px;
+    width: 10px;
+    height: 10px;
   }
 }
 
@@ -245,6 +266,17 @@
     font-size: 48px;
   }
   .textJawa, .textIndo {
-    font-size: 18px;
+    font-size: 16px;
+  }
+  .sipodoImg {
+    width: 100%;
+    max-width: 360px;
+    transform: translate(-12%, 0);
+  }
+  .speechBubble {
+    top: -12%;
+    right: -12%;
+    max-width: 220px;
+    padding: 12px 16px;
   }
 }

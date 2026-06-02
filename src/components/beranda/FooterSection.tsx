@@ -9,80 +9,58 @@ export default function FooterSection() {
         <div className={styles.topGrid}>
           {/* Kolom 1 — Brand Identity */}
           <div className={styles.brand}>
-            <div className={styles.brandLogo}>Jangkep</div>
-            <div className={styles.brandAksara}>ꦗꦁꦏꦼꦥ꧀</div>
+            <div className={styles.brandLogo}>Jangkep<span className={styles.brandDot}>.</span></div>
+            <div className={styles.brandSubtitle}>rasa yang jangkep, jiwa yang utuh.</div>
+            <div className={styles.brandDivider}></div>
             <p className={styles.brandDesc}>
-              Jangkep Rasane, Jangkep Critane —
-              platform storytelling kuliner &amp; budaya
-              Jawa Tengah.
+              Menjelajahi rempah, resep, dan cerita kuliner Jawa yang diwariskan turun temurun. Dari dapur, untuk dunia.
             </p>
+            {/* Ornamen Pawon */}
+            <div className={styles.brandOrnament}>
+              <img src="/ornaments/pawon-lineart.png" alt="" className={styles.ornamentImage} />
+            </div>
           </div>
 
           {/* Kolom 2 — Navigasi */}
           <nav className={styles.column} aria-label="Navigasi footer">
-            <div className={styles.columnLabel}>NAVIGASI</div>
+            <div className={styles.columnLabel}>
+              <span className={styles.columnIcon}>✦</span> MENJELAJAH
+            </div>
             <Link href="/" className={styles.footerLink}>Beranda</Link>
-            <Link href="/maps" className={styles.footerLink}>Story Maps</Link>
-            <Link href="/kuliner" className={styles.footerLink}>Kuliner</Link>
-            <Link href="/games" className={styles.footerLink}>Mini Games</Link>
+            <Link href="/rasa" className={styles.footerLink}>Ensiklopedia</Link>
+            <Link href="/kuliner" className={styles.footerLink}>Resep</Link>
+            <Link href="/maps" className={styles.footerLink}>Peta Rasa</Link>
+            <Link href="/games" className={styles.footerLink}>Dolan</Link>
           </nav>
 
-          {/* Kolom 3 — Tentang */}
+          {/* Kolom 3 — Hubungi Kami */}
           <div className={styles.column}>
-            <div className={styles.columnLabel}>TENTANG</div>
-            <Link href="/tentang" className={styles.footerLink}>Tentang Jangkep</Link>
-            <Link href="/sumber-data" className={styles.footerLink}>Sumber Data</Link>
-            <Link href="/kredit" className={styles.footerLink}>Kredit</Link>
-          </div>
-
-          {/* Kolom 4 — Ikuti Kami */}
-          <div className={styles.column}>
-            <div className={styles.columnLabel}>IKUTI KAMI</div>
-            <div className={styles.socialRow}>
-              {/* Instagram */}
-              <a
-                href="https://instagram.com/jangkep"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.socialBtn}
-                aria-label="Instagram Jangkep"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                  <circle cx="12" cy="12" r="4" />
-                  <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
-                </svg>
-              </a>
-
-              {/* TikTok */}
-              <a
-                href="https://tiktok.com/@jangkep"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.socialBtn}
-                aria-label="TikTok Jangkep"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
-                </svg>
-              </a>
-
-              {/* YouTube */}
-              <a
-                href="https://youtube.com/@jangkep"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.socialBtn}
-                aria-label="YouTube Jangkep"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.13C5.12 19.56 12 19.56 12 19.56s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.43z" />
-                  <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="currentColor" stroke="none" />
-                </svg>
-              </a>
+            <div className={styles.columnLabel}>
+              <span className={styles.columnIcon}>✦</span> HUBUNGI KAMI
+            </div>
+            
+            <div className={styles.contactItem}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="m2 7 10 7 10-7" />
+              </svg>
+              <span>hello@jangkep.rasa</span>
+            </div>
+            
+            <div className={styles.contactItem}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              <span>Yogyakarta, Indonesia</span>
+            </div>
+            
+            <div className={styles.contactItem}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              <span>Senin - Jumat<br />09.00 - 17.00 WIB</span>
             </div>
           </div>
         </div>

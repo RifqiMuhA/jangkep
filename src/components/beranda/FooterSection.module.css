@@ -23,8 +23,10 @@
 
 .topGrid {
   display: grid;
-  grid-template-columns: 30fr 20fr 20fr 30fr;
+  grid-template-columns: 2fr 1.2fr 1.5fr;
   gap: 32px;
+  position: relative;
+  z-index: 10;
 }
 
 /* ── Kolom 1: Brand Identity ── */
@@ -32,17 +34,32 @@
   font-family: var(--font-playfair), 'Playfair Display', serif;
   font-size: 32px;
   font-weight: 700;
-  font-style: italic;
   color: var(--color-krem-mori);
   line-height: 1.2;
 }
 
+.brandDot {
+  color: var(--color-emas-keris, #B8860B);
+}
+
 .brandAksara {
-  font-family: var(--font-noto-javanese), 'Noto Sans Javanese', serif;
-  font-size: 14px;
-  color: var(--color-emas-keris);
-  opacity: 0.7;
+  display: none; /* Disembunyikan karena sudah ada logo baru */
+}
+
+.brandSubtitle {
+  font-family: var(--font-playfair), 'Playfair Display', serif;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--color-emas-keris, #B8860B);
   margin-top: 4px;
+}
+
+.brandDivider {
+  width: 24px;
+  height: 2px;
+  background: var(--color-emas-keris, #B8860B);
+  margin: 16px 0;
+  opacity: 0.5;
 }
 
 .brandDesc {
@@ -51,63 +68,116 @@
   font-weight: 400;
   color: var(--color-krem-tua);
   line-height: 1.65;
-  margin-top: 16px;
-  max-width: 200px;
+  max-width: 260px;
   margin-bottom: 0;
 }
 
+.brand {
+  position: relative;
+}
+
+.brandOrnament {
+  position: absolute;
+  left: -24px;
+  bottom: -40px;
+  width: 180px;
+  height: 180px;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ornamentImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 /* ── Kolom 2 & 3: Navigation columns ── */
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .columnLabel {
   font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--color-emas-keris);
-  margin-bottom: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.columnIcon {
+  font-size: 10px;
+  opacity: 0.8;
 }
 
 .footerLink {
-  display: block;
+  display: inline-block;
   font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
   font-size: 14px;
   font-weight: 400;
   color: var(--color-krem-tua);
   text-decoration: none;
-  margin-bottom: 10px;
-  transition: color 200ms ease;
+  margin-bottom: 12px;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.footerLink::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-emas-keris);
+  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 0 8px rgba(245, 196, 0, 0.4);
 }
 
 .footerLink:hover {
   color: var(--color-krem-mori);
+  transform: translateX(4px);
+  text-shadow: 0 0 12px rgba(245, 196, 0, 0.2);
 }
 
-/* ── Kolom 4: Ikuti Kami ── */
-.socialRow {
-  display: flex;
-  gap: 12px;
-  margin-top: 4px;
+.footerLink:hover::after {
+  width: 100%;
 }
 
-.socialBtn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: transparent;
-  border: 1px solid rgba(184, 134, 11, 0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 200ms ease;
+.footerLinkDisabled {
+  display: block;
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
   color: var(--color-krem-tua);
-  text-decoration: none;
+  margin-bottom: 12px;
+  cursor: default;
+  opacity: 0.5;
 }
 
-.socialBtn:hover {
-  border-color: var(--color-emas-keris);
-  background: rgba(184, 134, 11, 0.12);
-  color: var(--color-krem-mori);
+.contactItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--color-krem-tua);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.contactItem svg {
+  color: var(--color-emas-keris);
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
 /* ══════════════════════════════════
@@ -115,9 +185,9 @@
    ══════════════════════════════════ */
 
 .divider {
-  margin: 48px 0 40px;
+  margin: 64px 0 48px;
   height: 1px;
-  background: rgba(184, 134, 11, 0.2);
+  background: rgba(212, 169, 71, 0.22);
 }
 
 /* ══════════════════════════════════

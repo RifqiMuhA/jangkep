@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Map from 'react-map-gl/mapbox';
+import { Map as MapIcon } from 'lucide-react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { kotaAktif, type KotaAktif } from '@/data/peta';
 import styles from './MiniPetaSection.module.css';
@@ -175,27 +176,26 @@ export default function MiniPetaSection() {
         <div className={styles.svgLayer} onMouseLeave={handleMapLeave}>
           <div className={styles.svgContainer} ref={mapWrapperRef}>
             {/* SVG injected here */}
+            {svgLoaded && kotaAktif.map((kota) => (
+              <button
+                key={kota.id}
+                className={styles.petaPin}
+                style={{ left: `${kota.pin.x}%`, top: `${kota.pin.y}%` }}
+                onClick={() => handlePinClick(kota)}
+                onMouseEnter={() => handlePinEnter(kota)}
+                onMouseLeave={handlePinLeave}
+                aria-label={`${kota.nama} — ${kota.makanan}`}
+                type="button"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  className={styles.petaPinImg}
+                  src={kota.foto}
+                  alt={kota.makanan}
+                />
+              </button>
+            ))}
           </div>
-          
-          {svgLoaded && kotaAktif.map((kota) => (
-            <button
-              key={kota.id}
-              className={styles.petaPin}
-              style={{ left: `${kota.pin.x}%`, top: `${kota.pin.y}%` }}
-              onClick={() => handlePinClick(kota)}
-              onMouseEnter={() => handlePinEnter(kota)}
-              onMouseLeave={handlePinLeave}
-              aria-label={`${kota.nama} — ${kota.makanan}`}
-              type="button"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                className={styles.petaPinImg}
-                src={kota.foto}
-                alt={kota.makanan}
-              />
-            </button>
-          ))}
         </div>
 
         {/* Layer 5: Floating UI */}
@@ -213,28 +213,40 @@ export default function MiniPetaSection() {
             </svg>
           </div>
 
-          {/* Panel */}
-          <div ref={panelRef} className={styles.uiPanel}>
-            {displayCity ? (
-              <div key={animKeyRef.current} className={styles.panelActive}>
-                <div className={styles.panelKota}>{displayCity.nama}</div>
-                <div className={styles.panelMakanan}>{displayCity.makanan}</div>
-                <div className={styles.panelDesc}>{displayCity.deskripsi}</div>
-                
-                <div className={styles.ctaWrap}>
-                  <Link href={`/kuliner`} className={styles.btnSecondaryGold}>
-                    Jelajahi Kuliner →
-                  </Link>
+          {/* Bottom Area */}
+          <div className={styles.uiBottom}>
+            {/* Main CTA Button */}
+            <div className={styles.uiBottomLeft}>
+              <Link href="/kuliner/katalog" className={styles.btnPrimaryPill}>
+                JELAJAH KULINER ✦
+              </Link>
+            </div>
+
+            {/* Panel */}
+            <div ref={panelRef} className={styles.uiPanel}>
+              {displayCity ? (
+                <div key={animKeyRef.current} className={styles.panelActive}>
+                  <div className={styles.panelKota}>{displayCity.nama}</div>
+                  <div className={styles.panelMakanan}>{displayCity.makanan}</div>
+                  <div className={styles.panelDesc}>{displayCity.deskripsi}</div>
+                  
+                  <div className={styles.ctaWrap}>
+                    <Link href={`/kuliner/katalog`} className={styles.btnSecondaryGold}>
+                      Jelajahi Kuliner →
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <div className={styles.panelEmpty}>
-                <div className={styles.panelHintIcon}>🗺️</div>
-                <div className={styles.panelHintText}>
-                  Hover atau klik kabupaten untuk melihat kuliner khasnya
-                </div>
-              </div>
-            )}
+              ) : (
+                <div className={styles.panelEmpty}>
+                    <div className={styles.panelHintIcon} aria-hidden="true">
+                        <MapIcon size={36} color="#5B3A29" />
+                    </div>
+                    <div className={styles.panelHintText}>
+                      Hover atau klik kabupaten untuk melihat kuliner khasnya
+                    </div>
+                  </div>
+              )}
+            </div>
           </div>
           
         </div>

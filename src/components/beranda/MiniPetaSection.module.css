@@ -58,19 +58,22 @@
 
 /* ── LAYER 3: SVG & PINS LAYER ── */
 .svgLayer {
-  position: relative;
-  top: -60px;
-  left: -20px;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: 3;
-  width: 90%;
-  max-width: 1000px; /* Reduced width so it fits perfectly on screen */
-  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: auto; /* Allow interactions */
+  transform: translate(-20px, -60px);
 }
 
 .svgContainer {
-  width: 100%;
-  height: auto;
+  width: 75%;
+  max-width: 900px;
+  margin: auto;
   position: relative;
 }
 
@@ -217,9 +220,42 @@
   height: auto;
 }
 
+/* BOTTOM AREA */
+.uiBottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.uiBottomLeft {
+  pointer-events: auto;
+  margin-bottom: 32px;
+}
+
+.btnPrimaryPill {
+  display: inline-block;
+  padding: 16px 36px;
+  background-color: var(--color-kuning-kepodang, #F5C400);
+  color: var(--color-hitam-arang, #1A1A1A);
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 10px 25px rgba(245, 196, 0, 0.25);
+}
+
+.btnPrimaryPill:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(245, 196, 0, 0.4);
+  background-color: #FFD700;
+}
+
 /* FLOATING PANEL */
 .uiPanel {
-  align-self: flex-end;
   pointer-events: auto;
   width: 400px;
   background: rgba(59, 31, 12, 0.6);
@@ -349,8 +385,8 @@
     min-height: 100vh;
   }
   .svgLayer {
-    margin-top: 120px;
     width: 100%;
+    /* Let absolute positioning handle it */
   }
   .uiLayer {
     position: relative;
@@ -358,13 +394,22 @@
     height: auto;
   }
   .uiHeader { margin-bottom: 40px; }
+  
+  .uiBottom {
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 32px;
+  }
+  
+  .uiBottomLeft {
+    margin-bottom: 0;
+  }
+  
   .uiPanel {
     width: 100%;
-    margin-top: 40px;
     align-self: center;
   }
-  .mapboxLayer {
-    position: fixed; /* Keep map background fixed on mobile scroll */
+  .svgContainer {
+    width: 95%; /* Make map wider on mobile */
   }
-  .mapOverlay { position: fixed; }
 }
