@@ -21,6 +21,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { kulinerData } from '@/data/kulinerData';
+import LoadingScreen from '@/components/beranda/LoadingScreen';
 import './maps.css';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -775,98 +776,117 @@ export default function StoryMapsClient() {
 
     // 1. (Hero zoom removed, hero will scroll up normally)
 
-    // 1b. Horizontal Scroll Sections
-    const horizontalWrapper = document.querySelector('.horizontal-scroll-wrapper');
-    const horizontalContainer = document.querySelector('.horizontal-scroll-container');
-    const horizontalPanels = gsap.utils.toArray('.horizontal-panel');
-    if (horizontalWrapper && horizontalContainer && horizontalPanels.length > 0) {
-      ScrollTrigger.create({
-        trigger: horizontalWrapper,
-        start: 'top top',
-        end: `+=${100 * horizontalPanels.length}%`,
-        pin: true,
-        animation: gsap.to(horizontalContainer, {
-          x: () => -(horizontalContainer.scrollWidth - window.innerWidth),
-          ease: 'none'
-        }),
-        scrub: 1,
-        invalidateOnRefresh: true // recalculates width if window resizes
-      });
+    // 1b. Horizontal Scroll Sections (Desktop) / Vertical Stack (Mobile) using GSAP matchMedia
+    let mm = gsap.matchMedia();
 
-      // Spice Route entrance — triggered via horizontal scroll progress
-      // IntersectionObserver doesn't work inside GSAP pinned containers (CSS transform, not scroll)
-      // So we hook into the scroll trigger's progress instead.
-      let spiceTriggered = false;
-      const spiceTl = gsap.timeline({ paused: true });
+    // DESKTOP: Horizontal Scroll for bridging panels
+    mm.add("(min-width: 769px)", () => {
+      const horizontalWrapper = document.querySelector('.horizontal-scroll-wrapper');
+      const horizontalContainer = document.querySelector('.horizontal-scroll-container');
+      const horizontalPanels = gsap.utils.toArray('.horizontal-panel');
+      
+      if (horizontalWrapper && horizontalContainer && horizontalPanels.length > 0) {
+        ScrollTrigger.create({
+          trigger: horizontalWrapper,
+          start: 'top top',
+          end: `+=${100 * horizontalPanels.length}%`,
+          pin: true,
+          animation: gsap.to(horizontalContainer, {
+            x: () => -(horizontalContainer.scrollWidth - window.innerWidth),
+            ease: 'none'
+          }),
+          scrub: 1,
+          invalidateOnRefresh: true // recalculates width if window resizes
+        });
 
-      const setupSpiceTimeline = () => {
-        const spicePoints = Array.from(document.querySelectorAll<HTMLElement>('.spice-point-animated'));
-        const spiceDots   = Array.from(document.querySelectorAll<HTMLElement>('.spice-dot-animated'));
-        const spiceLine   = document.querySelector('.spice-line-animated');
+        // Spice Route entrance — triggered via horizontal scroll progress
+        let spiceTriggered = false;
+        const spiceTl = gsap.timeline({ paused: true });
 
-        if (spicePoints.length === 0 || !spiceLine) return null;
+        const setupSpiceTimeline = () => {
+          const spicePoints = Array.from(document.querySelectorAll<HTMLElement>('.spice-point-animated'));
+          const spiceDots   = Array.from(document.querySelectorAll<HTMLElement>('.spice-dot-animated'));
+          const spiceLine   = document.querySelector('.spice-line-animated');
 
-        spiceTl.clear();
-        
-        // The total animation duration for the line
-        const totalDuration = 2;
-        
-        // 1. Animate the line growing from left to right
-        spiceTl.to(spiceLine, { scaleX: 1, duration: totalDuration, ease: "none" }, 0);
-        
-        // 2. Activate points as the line reaches them
-        // Point 1 is at the start (0%)
-        spiceTl.call(() => {
-          spicePoints[0]?.classList.add('is-visible');
-          spiceDots[0]?.classList.add('is-active');
-        }, [], 0);
+          if (spicePoints.length === 0 || !spiceLine) return null;
 
-        // Point 2 is at the middle (50%)
-        spiceTl.call(() => {
-          spicePoints[1]?.classList.add('is-visible');
-          spiceDots[1]?.classList.add('is-active');
-        }, [], totalDuration * 0.5);
+          spiceTl.clear();
+          const totalDuration = 2;
+          
+          // 1. Animate the line growing from left to right
+          spiceTl.to(spiceLine, { scaleX: 1, duration: totalDuration, ease: "none" }, 0);
+          
+          // 2. Activate points as the line reaches them
+          spiceTl.call(() => {
+            spicePoints[0]?.classList.add('is-visible');
+            spiceDots[0]?.classList.add('is-active');
+          }, [], 0);
 
-        // Point 3 is at the end (100%)
-        spiceTl.call(() => {
-          spicePoints[2]?.classList.add('is-visible');
-          spiceDots[2]?.classList.add('is-active');
-        }, [], totalDuration);
+          spiceTl.call(() => {
+            spicePoints[1]?.classList.add('is-visible');
+            spiceDots[1]?.classList.add('is-active');
+          }, [], totalDuration * 0.5);
 
-        return spiceTl;
-      };
+          spiceTl.call(() => {
+            spicePoints[2]?.classList.add('is-visible');
+            spiceDots[2]?.classList.add('is-active');
+          }, [], totalDuration);
 
-      const fireSpiceAnimations = () => {
-        if (spiceTriggered) return;
-        spiceTriggered = true;
-        const tl = setupSpiceTimeline();
-        if (tl) tl.play(0);
-      };
+          return spiceTl;
+        };
 
-      const resetSpiceAnimations = () => {
-        if (!spiceTriggered) return;
-        spiceTriggered = false;
-        spiceTl.pause(0);
-        gsap.set('.spice-line-animated', { scaleX: 0 });
-        document.querySelectorAll('.spice-point-animated').forEach(el => el.classList.remove('is-visible'));
-        document.querySelectorAll('.spice-dot-animated').forEach(el => el.classList.remove('is-active'));
-      };
+        const fireSpiceAnimations = () => {
+          if (spiceTriggered) return;
+          spiceTriggered = true;
+          const tl = setupSpiceTimeline();
+          if (tl) tl.play(0);
+        };
 
-      // With 3 panels (0-based), panel-3 (index 2) starts at progress ~0.66
-      // We fire when progress > 0.62 (entering the last panel)
-      ScrollTrigger.create({
-        trigger: horizontalWrapper,
-        start: 'top top',
-        end: `+=${100 * horizontalPanels.length}%`,
-        onUpdate: (self) => {
-          if (self.progress > 0.62) {
-            fireSpiceAnimations();
-          } else {
-            resetSpiceAnimations();
+        const resetSpiceAnimations = () => {
+          if (!spiceTriggered) return;
+          spiceTriggered = false;
+          spiceTl.pause(0);
+          gsap.set('.spice-line-animated', { scaleX: 0 });
+          document.querySelectorAll('.spice-point-animated').forEach(el => el.classList.remove('is-visible'));
+          document.querySelectorAll('.spice-dot-animated').forEach(el => el.classList.remove('is-active'));
+        };
+
+        // Fire spice animations at 62% of horizontal scroll
+        ScrollTrigger.create({
+          trigger: horizontalWrapper,
+          start: 'top top',
+          end: `+=${100 * horizontalPanels.length}%`,
+          onUpdate: (self) => {
+            if (self.progress > 0.62) {
+              fireSpiceAnimations();
+            } else {
+              resetSpiceAnimations();
+            }
           }
-        }
+        });
+      }
+    });
+
+    // MOBILE: Vertical Scroll fade-in animations for stacked panels
+    mm.add("(max-width: 768px)", () => {
+      const spicePoints = Array.from(document.querySelectorAll<HTMLElement>('.spice-point-animated'));
+      const spiceDots   = Array.from(document.querySelectorAll<HTMLElement>('.spice-dot-animated'));
+
+      spicePoints.forEach((point, index) => {
+        ScrollTrigger.create({
+          trigger: point,
+          start: 'top 80%',
+          onEnter: () => {
+            point.classList.add('is-visible');
+            spiceDots[index]?.classList.add('is-active');
+          },
+          onLeaveBack: () => {
+            point.classList.remove('is-visible');
+            spiceDots[index]?.classList.remove('is-active');
+          }
+        });
       });
-    }
+    });
 
     // 1c. Animate the curtain reveal to expose the map smoothly
     if (curtainRef.current && firstMapTriggerRef.current) {
@@ -1469,6 +1489,7 @@ export default function StoryMapsClient() {
   // ═══════════ RENDER ═══════════
   return (
     <div className={`maps-page mode-${mode}`}>
+      <LoadingScreen />
 
 
 
@@ -1544,7 +1565,7 @@ export default function StoryMapsClient() {
                 {/* Panel 2: Topography Biomes (formerly Panel 3) */}
                 <div className="horizontal-panel panel-2">
                   <div className="bridging-content" style={{ width: '100%', maxWidth: '1400px', position: 'relative' }}>
-                    <h2 className="bridging-quote" style={{ fontSize: '36px', marginBottom: '60px', position: 'relative', zIndex: 10 }}>Bentang Alam & Lahirnya Rasa</h2>
+                    <h2 className="bridging-quote" style={{ position: 'relative', zIndex: 10 }}>Bentang Alam &amp; Lahirnya Rasa</h2>
                     <div className="biome-container">
                       {/* Card 1: Pesisir */}
                       <div className="biome-card">
@@ -1609,7 +1630,7 @@ export default function StoryMapsClient() {
                 {/* Panel 3: Spice Route Parallax */}
                 <div className="horizontal-panel panel-3">
                   <div className="bridging-content" style={{ width: '100%', maxWidth: '1100px' }}>
-                    <h2 className="bridging-quote" style={{ fontSize: '36px', marginBottom: '100px', position: 'relative', zIndex: 2 }}>Jejak Akulturasi Rempah</h2>
+                    <h2 className="bridging-quote" style={{ position: 'relative', zIndex: 2 }}>Jejak Akulturasi Rempah</h2>
                     <div className="spice-route-container">
                       <div className="spice-line-bg"></div>
                       <div className="spice-line spice-line-animated"></div>

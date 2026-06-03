@@ -13,6 +13,7 @@ import { MapControls } from '../components/MapControls';
 import { Search, Play, Pause, X } from 'lucide-react';
 import { foodsData, regions, regionCityMap } from '../data/foods';
 import type { Food } from '../data/foods';
+import LoadingScreen from '@/components/beranda/LoadingScreen';
 import '../maps.css';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZ2l0cmF5YTE0MDAiLCJhIjoiY21wcGl1M2hkMGpmaDJwcXBraXdobGZkdCJ9.J5D7thClJjFmcmnYmTlm3g';
@@ -831,6 +832,7 @@ export default function ExploreMapPage() {
 
   return (
     <div id="explore-page-wrapper" style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
+      <LoadingScreen />
       <style dangerouslySetInnerHTML={{
         __html: `
         /* Hide global navigation bar when map is zoomed out */
@@ -875,6 +877,103 @@ export default function ExploreMapPage() {
         .food-marker-wrapper:hover .inactive-flower {
           transform: scale(1.1);
         }
+
+        /* ── EXPLORE PAGE RESPONSIVE ── */
+        @media (max-width: 768px) {
+          #explore-left-sidebar {
+            width: calc(100% - 32px) !important;
+            left: 16px !important;
+            bottom: 80px !important;
+            max-width: 360px !important;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+          }
+          .explore-filter-bar,
+          .explore-auto-tour-start,
+          .explore-auto-tour-bar,
+          .map-controls {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+          }
+          .hidden-on-mobile {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            transform: translateY(30px) !important;
+          }
+          #explore-ui-overlay.panel-open #explore-left-sidebar {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            transform: translateY(30px) !important;
+          }
+          #explore-ui-overlay.panel-open .explore-filter-bar {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            transform: translateY(-30px) !important;
+          }
+          #explore-ui-overlay.panel-open .explore-auto-tour-start,
+          #explore-ui-overlay.panel-open .explore-auto-tour-bar {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            transform: translate(-50%, 30px) !important;
+          }
+          #explore-ui-overlay.panel-open .map-controls {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+          }
+          #explore-welcome-title {
+            font-size: 36px !important;
+            letter-spacing: 3px !important;
+          }
+          #explore-welcome-desc {
+            font-size: 14px !important;
+          }
+          #explore-welcome-jawa {
+            font-size: 16px !important;
+          }
+          .explore-auto-tour-start {
+            width: 200px !important;
+            height: 48px !important;
+          }
+          .explore-auto-tour-bar {
+            min-width: unset !important;
+            width: calc(100% - 32px) !important;
+            max-width: 380px !important;
+            height: 48px !important;
+            padding: 0 12px !important;
+          }
+        }
+        @media (max-width: 480px) {
+          #explore-left-sidebar {
+            width: calc(100% - 24px) !important;
+            left: 12px !important;
+            bottom: 70px !important;
+            max-width: 100% !important;
+          }
+          #explore-welcome-title {
+            font-size: 28px !important;
+            letter-spacing: 2px !important;
+          }
+          #explore-welcome-desc {
+            font-size: 13px !important;
+          }
+          #explore-welcome-jawa {
+            font-size: 14px !important;
+          }
+          .explore-auto-tour-start {
+            width: 180px !important;
+            height: 44px !important;
+          }
+          .explore-auto-tour-bar {
+            width: calc(100% - 24px) !important;
+            max-width: 100% !important;
+            height: 44px !important;
+            gap: 8px !important;
+            padding: 0 8px !important;
+          }
+        }
       `}} />
 
       {/* Map Container */}
@@ -890,9 +989,9 @@ export default function ExploreMapPage() {
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             style={{
               position: 'absolute',
-              top: '40%',
-              left: '50%',
-              transform: 'translateX(-50%) translateY(-50%)',
+              top: '30%',
+              left: '5%',
+              right: '5%',
               zIndex: 100,
               pointerEvents: 'none',
               textAlign: 'center',
@@ -900,8 +999,8 @@ export default function ExploreMapPage() {
               flexDirection: 'column',
               alignItems: 'center',
               gap: '16px',
-              width: '90%',
               maxWidth: '650px',
+              margin: '0 auto',
               color: '#F8F5E9',
               textShadow: '0 4px 15px rgba(0, 0, 0, 0.9)'
             }}
@@ -910,7 +1009,7 @@ export default function ExploreMapPage() {
             <div style={{ width: '120px', height: '2px', background: 'linear-gradient(90deg, transparent, var(--color-emas-keris), transparent)' }} />
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <span style={{
+              <span id="explore-welcome-jawa" style={{
                 fontFamily: '"Noto Sans Javanese", sans-serif',
                 fontSize: '22px',
                 color: 'var(--color-emas-keris)',
@@ -919,7 +1018,7 @@ export default function ExploreMapPage() {
               }}>
                 ꦥꦺꦠꦫꦱꦗꦮꦠꦼꦔꦲ꧀
               </span>
-              <h1 style={{
+              <h1 id="explore-welcome-title" style={{
                 fontFamily: 'var(--font-playfair)',
                 fontSize: '52px',
                 fontWeight: 800,
@@ -930,7 +1029,7 @@ export default function ExploreMapPage() {
               }}>
                 PETA RASA
               </h1>
-              <p style={{
+              <p id="explore-welcome-desc" style={{
                 fontFamily: 'var(--font-dm-sans)',
                 fontSize: '16px',
                 lineHeight: '1.8',
@@ -947,11 +1046,11 @@ export default function ExploreMapPage() {
       </AnimatePresence>
 
       {/* UI Overlay */}
-      <div id="explore-ui-overlay" style={{ pointerEvents: 'none', width: '100%', height: '100%', position: 'absolute', inset: 0, zIndex: 10, transition: 'opacity 0.8s ease' }}>
+      <div id="explore-ui-overlay" className={selectedFood ? 'panel-open' : ''} style={{ pointerEvents: 'none', width: '100%', height: '100%', position: 'absolute', inset: 0, zIndex: 10, transition: 'opacity 0.8s ease' }}>
 
         <div style={{ pointerEvents: 'none', width: '100%', height: '100%', position: 'relative' }}>
           {/* Navigation / Header */}
-          <div style={{ padding: '24px', position: 'relative', zIndex: 50, pointerEvents: 'auto' }}>
+          <div className={selectedFood ? 'hidden-on-mobile' : ''} style={{ padding: '24px', position: 'relative', zIndex: 50, pointerEvents: 'auto', transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)' }}>
             <FilterBar
               regions={regions}
               activeRegion={activeRegion}
@@ -970,7 +1069,7 @@ export default function ExploreMapPage() {
             />
 
             {/* Combined Left Sidebar Container (prevents overlap) */}
-            <div style={{
+            <div id="explore-left-sidebar" className={selectedFood ? 'hidden-on-mobile' : ''} style={{
               pointerEvents: 'auto',
               position: 'absolute',
               bottom: '32px',
@@ -984,7 +1083,17 @@ export default function ExploreMapPage() {
               
               {/* 1. Si Podo & Legend Bubble */}
               <div style={{ pointerEvents: 'auto' }}>
-                <SiPodo style={{ position: 'relative', bottom: 'auto', left: 'auto' }} />
+                {!isIndonesiaView && (
+                  <SiPodo
+                    message={
+                      isAutoTourActive && currentAutoTourFood
+                        ? `${currentAutoTourFood.city} — ${currentAutoTourFood.name} enak tenan!`
+                        : undefined
+                    }
+                    isWalking={isAutoTourActive}
+                    style={{ position: 'relative', bottom: 'auto', left: 'auto' }}
+                  />
+                )}
               </div>
 
               {/* 2. Suggestions / Filters / Search block */}
@@ -1160,7 +1269,7 @@ export default function ExploreMapPage() {
               {!isAutoTourActive ? (
                 <button
                   onClick={handleAutoTourStart}
-                  className="jawa-indo-btn"
+                  className={`jawa-indo-btn explore-auto-tour-start ${selectedFood ? 'hidden-on-mobile' : ''}`}
                   suppressHydrationWarning
                   style={{
                     position: 'absolute',
@@ -1198,6 +1307,7 @@ export default function ExploreMapPage() {
                 </button>
               ) : (
                 <div
+                  className={`explore-auto-tour-bar ${selectedFood ? 'hidden-on-mobile' : ''}`}
                   style={{
                     position: 'absolute',
                     bottom: '36px',
@@ -1209,7 +1319,7 @@ export default function ExploreMapPage() {
                     maxWidth: '90vw',
                     height: '56px',
                     borderRadius: '99px',
-                    background: '#F5F2EB', // Cream white
+                    background: '#F5F2EB',
                     border: '2px solid var(--color-emas-keris)',
                     boxShadow: '0 8px 30px rgba(59, 31, 12, 0.25)',
                     display: 'flex',
@@ -1348,6 +1458,16 @@ export default function ExploreMapPage() {
           </div>
         </div>
       </div>
+
+      {/* Floating Onboarding SiPodo (visible when zoomed out to Indonesia) */}
+      <AnimatePresence>
+        {isIndonesiaView && showOnboarding && (
+          <SiPodo
+            message="Klik pin manapun kanggo mulai njelajah!"
+            isWalking={false}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

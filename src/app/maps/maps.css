@@ -311,6 +311,15 @@
   position: relative;
 }
 
+@media (max-width: 768px) {
+  .spice-route-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    padding: 0 16px;
+  }
+}
+
 /* Dashed line background */
 .spice-line-bg {
   position: absolute;
@@ -335,6 +344,13 @@
   opacity: 1;
   transform-origin: left;
   transform: scaleX(0);
+}
+
+@media (max-width: 768px) {
+  .spice-line-bg,
+  .spice-line {
+    display: none !important;
+  }
 }
 
 /* Each spice stop */
@@ -1741,4 +1757,644 @@
 
 .floating-search-icon {
   color: rgba(248, 245, 233, 0.8);
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+   ══════════════════════════════════════════ */
+
+/* ── TABLET (max-width: 1024px) ── */
+@media (max-width: 1024px) {
+  .bridging-title-huge {
+    font-size: 72px;
+  }
+
+  .bridging-quote {
+    font-size: 36px;
+  }
+
+  .bridging-desc {
+    font-size: 18px;
+  }
+
+  .biome-container {
+    flex-direction: column;
+    gap: 24px;
+    padding: 0 24px;
+  }
+
+  .biome-card {
+    height: 360px;
+  }
+
+  .spice-route-container {
+    padding: 0 24px;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .spice-point {
+    width: 240px;
+  }
+
+  .spice-image-wrapper {
+    width: 220px;
+    height: 120px;
+  }
+
+  .spice-line-bg,
+  .spice-line {
+    display: none;
+  }
+
+  .spice-title {
+    font-size: 22px;
+  }
+
+  .spice-desc {
+    font-size: 13px;
+  }
+
+  .chapter-section {
+    padding: 10vh 4vw;
+  }
+
+  .web-story-card {
+    max-width: 400px;
+    padding: 36px 28px 80px 28px;
+  }
+
+  .story-title {
+    font-size: 28px;
+  }
+
+  .hero-card .story-title {
+    font-size: 52px;
+  }
+
+  .hero-card .story-description {
+    font-size: 18px;
+  }
+
+  .story-panel {
+    width: 380px;
+  }
+
+  .corner-ornament {
+    width: 160px;
+    top: 24px;
+  }
+
+  .corner-ornament.top-left { left: 24px; }
+  .corner-ornament.top-right { right: 24px; }
+
+  .auto-journey-bar {
+    width: 380px;
+    padding: 0 24px;
+  }
+
+  .map-legend {
+    left: 16px;
+    bottom: 120px;
+  }
+
+  .si-podo-container {
+    bottom: 24px;
+    left: 24px;
+  }
+
+  .map-controls {
+    right: 16px;
+    bottom: 24px;
+  }
+}
+
+/* ── MOBILE LANDSCAPE / SMALL TABLET (max-width: 768px) ── */
+@media (max-width: 768px) {
+  /* Stack GSAP horizontal scroll sections vertically on mobile */
+  .horizontal-scroll-wrapper {
+    height: auto !important;
+    overflow: visible !important;
+    background-attachment: scroll !important; /* better performance on mobile */
+  }
+
+  .horizontal-scroll-container {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .horizontal-panel {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    padding: 80px 24px !important;
+    flex-shrink: 1 !important;
+  }
+
+  .bridging-title-huge {
+    font-size: 48px;
+  }
+
+  .bridging-subtitle {
+    font-size: 14px;
+    letter-spacing: 3px;
+  }
+
+  .bridging-quote {
+    font-size: 26px;
+    margin-bottom: 24px;
+    line-height: 1.4;
+  }
+
+  .bridging-desc {
+    font-size: 16px;
+  }
+
+  .bridging-content {
+    padding: 0;
+  }
+
+  .biome-container {
+    flex-direction: column;
+    gap: 32px;
+    padding: 0;
+    margin-top: 40px;
+    height: auto;
+  }
+
+  .biome-card {
+    flex: none;
+    height: 320px;
+    width: 100%;
+  }
+
+  .biome-title {
+    font-size: 24px;
+  }
+
+  .biome-card-front {
+    padding: 24px;
+  }
+
+  .spice-route-container {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 48px !important;
+    padding: 0 !important;
+    margin-top: 40px;
+  }
+
+  .spice-point {
+    width: 100% !important;
+    max-width: 320px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 12px !important;
+    text-align: center !important;
+  }
+
+  .spice-image-wrapper {
+    width: 100% !important;
+    height: 160px !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .chapter-section {
+    padding: 8vh 4vw;
+    min-height: 150vh;
+  }
+
+  .chapter-section.last-chapter-section {
+    min-height: 100vh;
+  }
+
+  .chapter-content-wrapper {
+    top: calc(65px + 8vh);
+  }
+
+  .biome-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .biome-card {
+    height: 320px;
+  }
+
+  .web-story-card {
+    max-width: 340px;
+    padding: 28px 20px 60px 20px;
+    border-radius: 16px;
+  }
+
+  .web-story-card.hero-card {
+    max-width: 100%;
+    padding: 60px 20px;
+  }
+
+  .web-story-card.epilogue-card {
+    max-width: 100%;
+    padding: 60px 20px;
+  }
+
+  .story-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .story-title {
+    font-size: 24px;
+  }
+
+  .hero-card .story-title {
+    font-size: 40px;
+  }
+
+  .story-subtitle {
+    font-size: 12px;
+    letter-spacing: 1.5px;
+  }
+
+  .story-description {
+    font-size: 14px;
+  }
+
+  .hero-card .story-description {
+    font-size: 16px;
+  }
+
+  .story-progress-nav {
+    right: 12px;
+    gap: 8px;
+  }
+
+  .progress-dot {
+    width: 20px;
+    height: 20px;
+  }
+
+  .dot-inner {
+    width: 16px;
+    height: 16px;
+  }
+
+  .progress-dot.active .dot-inner {
+    width: 18px;
+    height: 18px;
+  }
+
+  .progress-dot::after {
+    display: none;
+  }
+
+  .podo-epilogue-sitting {
+    width: 150px;
+    top: -120px;
+    right: -30px;
+  }
+
+  .story-panel {
+    width: 100%;
+    top: auto;
+    bottom: 0;
+    height: 70vh;
+    border-radius: 24px 24px 0 0;
+    border-left: none;
+    border-top: 2px solid rgba(210, 195, 170, 0.5);
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .story-panel-hero {
+    height: 200px;
+  }
+
+  .explore-filter-bar {
+    padding: 0 16px;
+    gap: 8px;
+    height: auto;
+    min-height: 56px;
+    flex-wrap: wrap;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .filter-pill {
+    font-size: 12px;
+    padding: 0 14px;
+    height: 32px;
+  }
+
+  .filter-search {
+    min-width: 180px;
+    width: 100%;
+    order: -1;
+  }
+
+  .auto-journey-bar {
+    width: calc(100% - 32px);
+    max-width: 400px;
+    padding: 0 16px;
+    height: 56px;
+    bottom: 24px;
+  }
+
+  .corner-ornament {
+    width: 100px;
+    top: 16px;
+    opacity: 0.5;
+  }
+
+  .corner-ornament.top-left { left: 8px; }
+  .corner-ornament.top-right { right: 8px; }
+
+  .ornament-top-center {
+    width: 160px;
+  }
+
+  .ornament-bottom-right {
+    width: 60px;
+  }
+
+  .si-podo-peeking-card {
+    width: 140px;
+  }
+
+  .card-stack-container {
+    max-width: 340px;
+  }
+
+  .map-legend {
+    left: 12px;
+    bottom: 100px;
+    padding: 12px 14px;
+    border-radius: 12px;
+  }
+
+  .si-podo-container {
+    bottom: 16px;
+    left: 16px;
+  }
+
+  .map-controls {
+    right: 12px;
+    bottom: 16px;
+  }
+
+  .map-ctrl-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .explore-cta-huge {
+    height: 48px;
+    padding: 0 24px;
+    font-size: 14px;
+  }
+
+  .auto-tour-right {
+    width: 110px;
+    height: 36px;
+    font-size: 11px;
+  }
+
+  .floating-search-bar {
+    width: 200px;
+    padding: 8px 12px;
+  }
+}
+
+/* ── MOBILE PORTRAIT (max-width: 480px) ── */
+@media (max-width: 480px) {
+  .bridging-title-huge {
+    font-size: 36px;
+  }
+
+  .bridging-subtitle {
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+
+  .bridging-quote {
+    font-size: 22px;
+  }
+
+  .bridging-desc {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .bridging-content {
+    padding: 0 16px;
+  }
+
+  .biome-container {
+    padding: 0 16px;
+    height: auto;
+  }
+
+  .biome-card {
+    flex: none;
+    height: 260px;
+    width: 100%;
+  }
+
+  .biome-title {
+    font-size: 20px;
+  }
+
+  .biome-desc {
+    font-size: 14px;
+  }
+
+  .biome-card-front {
+    padding: 20px;
+    gap: 12px;
+  }
+
+  .spice-point {
+    max-width: 100%;
+  }
+
+  .chapter-section {
+    padding: 6vh 3vw;
+    min-height: 130vh;
+  }
+
+  .chapter-content-wrapper {
+    top: calc(55px + 5vh);
+  }
+
+  .web-story-card {
+    max-width: calc(100vw - 24px);
+    padding: 24px 16px 48px 16px;
+    border-radius: 14px;
+  }
+
+  .web-story-card.hero-card {
+    padding: 48px 16px;
+  }
+
+  .web-story-card.epilogue-card {
+    padding: 48px 16px;
+  }
+
+  .story-title {
+    font-size: 20px;
+  }
+
+  .hero-card .story-title {
+    font-size: 32px;
+  }
+
+  .story-description {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .hero-card .story-description {
+    font-size: 14px;
+  }
+
+  .story-progress-nav {
+    position: fixed;
+    right: auto;
+    left: 50%;
+    top: auto;
+    bottom: 12px;
+    transform: translateX(-50%);
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .progress-dot {
+    width: 16px;
+    height: 16px;
+  }
+
+  .dot-inner {
+    width: 12px;
+    height: 12px;
+  }
+
+  .progress-dot.active .dot-inner {
+    width: 14px;
+    height: 14px;
+  }
+
+  .podo-epilogue-sitting {
+    width: 120px;
+    top: -100px;
+    right: -15px;
+  }
+
+  .story-panel {
+    height: 75vh;
+  }
+
+  .story-panel-hero {
+    height: 180px;
+  }
+
+  .explore-filter-bar {
+    padding: 8px 12px;
+  }
+
+  .filter-pill {
+    font-size: 11px;
+    padding: 0 10px;
+    height: 28px;
+  }
+
+  .auto-journey-bar {
+    width: calc(100% - 24px);
+    bottom: 16px;
+    height: 52px;
+    padding: 0 12px;
+  }
+
+  .corner-ornament {
+    display: none;
+  }
+
+  .ornament-top-center {
+    width: 120px;
+  }
+
+  .ornament-bottom-right {
+    width: 40px;
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .ornament-bottom-center-dekor {
+    width: 100px;
+  }
+
+  .si-podo-peeking-card {
+    width: 120px;
+  }
+
+  .card-stack-container {
+    max-width: calc(100vw - 24px);
+  }
+
+  .web-story-card.theme-light-indo {
+    transform: translate(8px, 8px) rotate(2deg);
+  }
+
+  .web-story-card.theme-dark-jawa.is-revealed {
+    transform: translate(-10px, 10px) rotate(-2deg);
+  }
+
+  .map-legend {
+    display: none;
+  }
+
+  .si-podo-container {
+    bottom: 12px;
+    left: 12px;
+    gap: 8px;
+  }
+
+  .map-controls {
+    right: 8px;
+    bottom: 12px;
+  }
+
+  .map-ctrl-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .explore-cta-huge {
+    height: 44px;
+    padding: 0 20px;
+    font-size: 13px;
+  }
+
+  .floating-search-bar {
+    width: 100%;
+  }
+
+  .podo-thought-bubble {
+    max-width: 150px;
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+
+  .scroll-indicator-bridge {
+    bottom: 40px;
+  }
+
+  .biome-motif-left-bottom,
+  .biome-motif-left-center,
+  .biome-motif-right-bottom {
+    display: none;
+  }
 }

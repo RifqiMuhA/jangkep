@@ -1,97 +1,497 @@
-.container {
+.pageBackground {
   min-height: 100vh;
-  background-color: var(--color-krem-dasar);
-  background-image: url('/motif/Batik_Parang_Seamless.png');
-  background-size: 400px;
-  background-blend-mode: soft-light;
+  background-image: url('/games/game2/bg_dolan_2.webp');
+  background-size: cover;
+  background-position: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: var(--spacing-24);
   overflow: hidden;
 }
 
-.content {
-  text-align: center;
+/* Modal and Overlays */
+.resultOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(26, 10, 2, 0.85);
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.resultOverlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.resultCard {
+  background-image: url('/games/game3/frame_background.webp');
+  background-size: 100% 100%;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  padding: 60px 40px 40px;
   max-width: 500px;
   width: 100%;
+  text-align: center;
   position: relative;
+  transform: translateY(20px) scale(0.95);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  color: var(--color-coklat-batik);
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.mascotWrapper {
+.resultOverlay.active .resultCard {
+  transform: translateY(0) scale(1);
+}
+
+.mascotReaction {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  margin-top: -100px;
+  margin-bottom: var(--spacing-16);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.feedbackTitle {
+  font-family: var(--font-playfair);
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: var(--spacing-16);
+  color: var(--color-coklat-batik);
+  font-style: italic;
+}
+
+.subText {
+  font-family: var(--font-dm-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: var(--spacing-32);
+}
+
+.actionRow {
+  display: flex;
+  gap: var(--spacing-16);
+  justify-content: center;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.nextButton,
+.finishButton {
+  background-size: 100% 100%;
+  background-position: center;
+  background-color: transparent;
+  font-family: var(--font-dm-sans);
+  font-size: 16px;
+  font-weight: 800;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  min-height: 50px;
+  min-width: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
+}
+.nextButton {
+  background-image: url('/games/game3/button.webp');
+  color: var(--color-coklat-batik);
+}
+.finishButton {
+  background-image: url('/games/game3/button_selesai.webp');
+  color: #fff9c4;
+}
+.nextButton:hover,
+.finishButton:hover { filter: brightness(1.1); transform: scale(1.02); }
+.nextButton:active,
+.finishButton:active { transform: scale(0.95); }
+
+/* GAMEPLAY AREA */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(253, 249, 238, 0.9);
+  padding: 12px 24px;
+  border-radius: 50px;
+  border: 2px solid var(--color-emas-keris);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: var(--spacing-16);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.progressWrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.progressText {
+  font-family: var(--font-dm-sans);
+  font-weight: 700;
+  color: var(--color-coklat-batik);
+  font-size: 16px;
+}
+
+.headerControls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.timer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-dm-sans);
+  font-weight: 800;
+  color: var(--color-coklat-batik);
+  font-size: 18px;
+  background-color: rgba(253, 249, 238, 0.5);
+  padding: 6px 16px;
+  border-radius: 20px;
   position: relative;
-  width: 300px;
-  height: 300px;
-  margin-bottom: 24px;
+}
+
+.timerWarning {
+  color: #fff !important;
+  background-color: #D32F2F !important;
+  box-shadow: 0 0 15px rgba(211, 47, 47, 0.6) !important;
+  animation: heartbeat 1s infinite;
+}
+
+.timeAddedText {
+  position: absolute;
+  left: 0;
+  color: #4CAF50;
+  font-weight: 900;
+  font-size: 24px;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 2px 2px 4px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  z-index: 20;
+}
+
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  15% { transform: scale(1.15); box-shadow: 0 0 25px rgba(211, 47, 47, 0.9); }
+  30% { transform: scale(1); }
+  100% { transform: scale(1); }
+}
+
+.btnSelesaiWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+.btnSelesaiWrapper:hover { transform: scale(1.05); filter: brightness(1.1); }
+.btnSelesaiWrapper:active { transform: scale(0.95); }
+.btnSelesaiBg { width: auto; height: 45px; object-fit: contain; z-index: 1; }
+.btnSelesaiText {
+  position: absolute;
+  z-index: 2;
+  font-family: var(--font-dm-sans);
+  font-weight: 800;
+  font-size: 16px;
+  color: #fff;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Layout Container */
+.gameArea {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: 1200px;
+  flex: 1;
+  gap: 24px;
+  align-items: stretch;
+}
+
+/* Left Panel (Food Tray) */
+.leftPanel {
+  flex: 0 0 300px;
+  background-image: url('/games/game3/frame_background.webp');
+  background-size: 100% 100%;
+  background-position: center;
+  padding: 32px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 50;
+  filter: drop-shadow(4px 4px 10px rgba(0,0,0,0.5));
+}
+
+.panelTitle {
+  font-family: var(--font-playfair);
+  color: var(--color-emas-keris);
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+  border-bottom: 1px solid var(--color-emas-keris);
+  padding-bottom: 8px;
+  width: 80%;
+  text-align: center;
+}
+
+.foodItemWrapper {
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url('/games/game3/frame_background.webp');
+  background-size: 100% 100%;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+  margin-bottom: 4px;
+}
+
+.foodItem {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: grab;
+  position: relative;
+  z-index: 10;
+  touch-action: none;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5));
 }
 
-.mascot {
+.foodItem:active {
+  cursor: grabbing;
+}
+
+.foodImage {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--color-emas-keris);
+  pointer-events: none;
 }
 
-.title {
-  color: var(--color-merah-bata);
-  font-family: var(--font-playfair);
-  font-size: 36px;
-  margin-bottom: 16px;
-}
-
-.indonesia {
-  color: var(--color-hitam-arang);
-  font-size: 18px;
-  line-height: 1.5;
-  margin-bottom: 32px;
-  font-weight: 500;
-}
-
-.btnKembali {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  cursor: pointer;
+.foodNamePlate {
+  margin-top: -12px;
+  background-color: var(--color-emas-keris);
+  padding: 4px 16px;
+  border-radius: 4px;
+  border: 2px solid #5a3c1a;
+  color: #3b250e;
+  font-family: var(--font-dm-sans);
+  font-weight: 800;
+  font-size: 14px;
+  z-index: 100;
+  white-space: nowrap;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.4);
   position: relative;
 }
 
-.btnImage {
-  object-fit: contain;
+/* Right Panel (Map + Mascot) */
+.rightPanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
-.btnText {
+.mapWrapper {
+  flex: 1;
+  width: 100%;
+  position: relative;
+  border-radius: 20px;
+  border: 4px solid var(--color-emas-keris);
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  background-color: #1a242f; /* Deep dark for contrast */
+}
+
+.mapContainer {
+  width: 100%;
+  height: 100%;
+}
+
+.instructionOverlay {
   position: absolute;
-  color: white;
-  font-family: var(--font-dm-sans, sans-serif);
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(253, 249, 238, 0.9);
+  padding: 8px 24px;
+  border-radius: 20px;
+  font-family: var(--font-dm-sans);
   font-weight: 700;
+  color: var(--color-hitam-arang);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 20;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* Mascot Reaction Area */
+.mascotArea {
+  position: absolute;
+  bottom: 0px;
+  right: -20px;
+  display: flex;
+  align-items: flex-end;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.podoMascot {
+  width: 180px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+  transition: transform 0.3s ease;
+}
+
+.chatBubble {
+  position: absolute;
+  bottom: 120px;
+  right: 140px;
+  background-color: #fff;
+  border: 3px solid var(--color-emas-keris);
+  border-radius: 20px;
+  border-bottom-right-radius: 0;
+  padding: 16px 24px;
+  color: var(--color-hitam-arang);
+  font-family: var(--font-dm-sans);
+  font-size: 14px;
+  max-width: 250px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  z-index: 40;
+}
+
+.chatTitle {
+  font-weight: 800;
+  color: var(--color-rasa-segar); /* Green for success */
   font-size: 16px;
-  z-index: 1;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.btnKembali:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.05);
+.chatTitle.error {
+  color: #e74c3c;
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 600px) {
-  .title {
-    font-size: 32px;
-  }
+.chatDesc {
+  line-height: 1.4;
+}
 
-  .indonesia {
-    font-size: 16px;
-  }
+.confettiContainer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2000;
+  overflow: hidden;
+}
+.confettiPiece {
+  position: absolute;
+  opacity: 1;
+}
 
-  .jawa {
-    font-size: 14px;
+@media (max-width: 768px) {
+  .pageBackground {
+    padding: var(--spacing-12);
+  }
+  .header {
+    padding: 8px 16px;
+    margin-bottom: 8px;
+  }
+  .gameArea {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .leftPanel {
+    flex: 0 0 auto;
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 12px;
+    background-image: url('/games/game1/laci.webp');
+    background-size: cover;
+    gap: 16px;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  }
+  .panelTitle {
+    display: none;
+  }
+  .foodItemWrapper {
+    width: auto;
+    height: auto;
+    flex-shrink: 0;
+    background-image: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+  }
+  .foodItem {
+    width: 65px;
+    height: 65px;
+  }
+  .foodNamePlate {
+    margin-top: -6px;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-width: 1px;
+  }
+  .mascotArea {
+    bottom: -5px;
+    right: -5px;
+  }
+  .podoMascot {
+    width: 110px;
+  }
+  .chatBubble {
+    bottom: 80px;
+    right: 70px;
+    max-width: 180px;
+    font-size: 11px;
+    padding: 10px 14px;
+  }
+  .instructionOverlay {
+    font-size: 12px;
+    padding: 6px 16px;
+    top: 10px;
   }
 }

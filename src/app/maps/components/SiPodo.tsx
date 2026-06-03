@@ -1,10 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface SiPodoProps {
-  // props removed as we render the legend internally
   isWalking?: boolean;
   message?: string;
   style?: React.CSSProperties;
@@ -31,7 +30,7 @@ const LegendContent = ({ isJawa }: { isJawa: boolean }) => (
     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '10px' }}>
       <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--color-kuning-kepodang), var(--color-emas-keris))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', color: '#3B1F0C', fontWeight: 'bold', flexShrink: 0 }}>3</div>
       <span style={{ fontSize: isJawa ? '15px' : '13px', fontWeight: 600, color: '#3B1F0C' }}>
-        {isJawa ? 'ꦩꦸꦭ꧀ꦠꦶꦏꦸꦭꦶꦤꦼꦂ' : 'Multi Kuliner'}
+        {isJawa ? 'ꦩꦸꦭ꧀ꦠꦏꦸꦭꦶꦤꦼꦂ' : 'Multi Kuliner'}
       </span>
     </div>
     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -43,11 +42,25 @@ const LegendContent = ({ isJawa }: { isJawa: boolean }) => (
   </div>
 );
 
-export function SiPodo({ isWalking = false, style }: SiPodoProps) {
+export function SiPodo({ isWalking = false, message, style }: SiPodoProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [walkFrame, setWalkFrame] = useState(1);
+
+  // Cycling flight animation frames when walking/touring
+  useEffect(() => {
+    if (!isWalking) return;
+    const interval = setInterval(() => {
+      setWalkFrame((f) => (f % 3) + 1);
+    }, 200);
+    return () => clearInterval(interval);
+  }, [isWalking]);
 
   // Default: Jawa (Batik), Hover: Indo (Polos)
   const isJawa = !isHovered;
+
+  const spriteSrc = isWalking
+    ? `/kuliner/sejarah/terbang_${walkFrame}.webp`
+    : '/sipodo/jelajah.webp';
 
   return (
     <motion.div
@@ -72,7 +85,7 @@ export function SiPodo({ isWalking = false, style }: SiPodoProps) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Dialog Bubble (Legend) */}
+      {/* Dialog Bubble (Legend or Chat Message) */}
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -80,11 +93,12 @@ export function SiPodo({ isWalking = false, style }: SiPodoProps) {
         style={{
           background: isJawa ? '#FFFFFF' : 'var(--color-putih-santan, #F8F5E9)',
           border: '1px solid #B8860B',
-          padding: '16px 20px',
+          padding: message ? '12px 16px' : '16px 20px',
           borderRadius: '16px',
           boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
-          width: '210px',
-          height: '150px',
+          width: message ? '240px' : '210px',
+          minHeight: message ? 'unset' : '150px',
+          height: message ? 'auto' : '150px',
           position: 'relative',
           marginBottom: '20px',
           transition: 'all 0.4s ease',
@@ -93,17 +107,23 @@ export function SiPodo({ isWalking = false, style }: SiPodoProps) {
           justifyContent: 'center'
         }}
       >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={isJawa ? 'jawa' : 'indo'}
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -5 }}
-            transition={{ duration: 0.2 }}
-          >
-            <LegendContent isJawa={isJawa} />
-          </motion.div>
-        </AnimatePresence>
+        {message ? (
+          <div style={{ textAlign: 'center', fontFamily: 'var(--font-dm-sans)', fontSize: '13px', fontWeight: 600, color: '#3B1F0C', lineHeight: '1.5' }}>
+            {message}
+          </div>
+        ) : (
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={isJawa ? 'jawa' : 'indo'}
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -5 }}
+              transition={{ duration: 0.2 }}
+            >
+              <LegendContent isJawa={isJawa} />
+            </motion.div>
+          </AnimatePresence>
+        )}
         
         {/* Thought bubble dots (Tail) - Posisi diarahkan tepat ke kepala Si Podo */}
         <div style={{ position: 'absolute', bottom: '-16px', left: '50%', transform: 'translateX(-50%)', width: '12px', height: '12px', borderRadius: '50%', background: isJawa ? '#FFFFFF' : 'var(--color-putih-santan, #F8F5E9)', border: '1px solid #B8860B', transition: 'all 0.4s ease' }} />
@@ -112,9 +132,9 @@ export function SiPodo({ isWalking = false, style }: SiPodoProps) {
 
       {/* Wrapper untuk Maskot */}
       <div style={{ position: 'relative' }}>
-        {/* Si Podo Bird Image - STATIS, tanpa bergerak */}
+        {/* Si Podo Bird Image */}
         <div style={{ width: '140px', height: '140px', flexShrink: 0, position: 'relative', zIndex: 5 }}>
-          <img src="/sipodo/jelajah.webp" alt="Si Podo Mascot" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+          <img src={spriteSrc} alt="Si Podo Mascot" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
         </div>
       </div>
     </motion.div>
