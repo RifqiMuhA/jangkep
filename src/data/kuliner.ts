@@ -13,15 +13,15 @@ export interface KulinerItem {
 
 export const featuredKuliner: KulinerItem[] = [
   {
-    id: 'gudeg',
-    nama: 'Gudeg',
-    kota: 'Solo / Yogyakarta',
+    id: 'soto',
+    nama: 'Soto Kudus',
+    kota: 'Kudus',
     deskripsi:
-      'Warisan kuliner keraton yang memasak nangka muda berjam-jam dalam santan dan gula merah hingga berwarna coklat legam. Setiap suapan menyimpan cerita panjang budaya Jawa.',
-    deskripsiSingkat: 'Nangka muda dimasak berjam-jam dalam santan & gula merah',
-    flavors: ['Manis', 'Legit', 'Gurih'],
-    image: '/makanan/gudeg.webp',
-    slug: 'gudeg',
+      'Soto kaldu bening dengan daging kerbau atau ayam, disajikan di mangkuk keramik kecil bersama taoge dan bawang putih goreng.',
+    deskripsiSingkat: 'Soto kaldu bening khas Kudus di mangkuk porselen kecil',
+    flavors: ['Segar', 'Gurih'],
+    image: '/kuliner/gallery/soto_1.webp',
+    slug: 'soto',
   },
   {
     id: 'nasi-liwet',
@@ -46,14 +46,14 @@ export const featuredKuliner: KulinerItem[] = [
     slug: 'lumpia',
   },
   {
-    id: 'tengkleng',
-    nama: 'Tengkleng',
-    kota: 'Solo',
+    id: 'sate',
+    nama: 'Sate Ayam Blora',
+    kota: 'Blora',
     deskripsi:
-      'Sup tulang kambing berkuah bening penuh rempah. Dulunya makanan rakyat kecil dari sisa tulang yang tak terpakai, kini menjadi ikon kuliner Solo yang dicari pelancong.',
-    deskripsiSingkat: 'Sup tulang kambing berkuah bening penuh rempah khas Solo',
-    flavors: ['Gurih', 'Pedas', 'Segar'],
-    image: '/makanan/tengkleng.webp',
-    slug: 'tengkleng',
+      'Sate ayam kampung empuk bersiram bumbu kacang kental yang legit. Biasanya dinikmati dengan cara unik beserta kuah lodeh yang gurih.',
+    deskripsiSingkat: 'Sate ayam kampung bumbu kacang legit khas Blora',
+    flavors: ['Manis', 'Gurih'],
+    image: '/kuliner/gallery/sate_1.webp',
+    slug: 'sate',
   },
 ];

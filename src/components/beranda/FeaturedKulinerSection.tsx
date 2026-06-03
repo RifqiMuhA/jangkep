@@ -58,7 +58,7 @@ function KulinerCard({
   return (
     <Link
       ref={cardRef}
-      href={`/kuliner/${item.slug}`}
+      href={`/kuliner/katalog/${item.slug}`}
       className={cardClasses}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}

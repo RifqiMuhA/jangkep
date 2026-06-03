@@ -143,13 +143,12 @@ export default function SipodoIntroSection() {
       {/* ── Section Header ── */}
       <div className={styles.header}>
         <h2 className={`${styles.headline} ${styles.revealItem} ${styles.revealDelay0}`}>
-          Di Balik Si Podo,
+          Monggo Kenalan,
           <br />
-          Ada <em className={styles.headlineAccent}>Filosofi.</em>
+          Sama <em className={styles.headlineAccent}>Si Podo</em>
         </h2>
         <p className={`${styles.desc} ${styles.revealItem} ${styles.revealDelay1}`}>
-          Setiap detail Si Podo bukan kebetulan. Dari paruh hingga celana,
-          semuanya mengandung cerita Jawa Tengah yang sudah berabad-abad.
+          Burung Kepodang ceria yang siap memandumu menjelajahi aneka rasa Jawa Tengah. Setiap detail penampilannya adalah wujud kearifan budaya lokal.
         </p>
       </div>
 
