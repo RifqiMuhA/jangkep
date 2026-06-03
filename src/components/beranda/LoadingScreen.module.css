@@ -51,7 +51,9 @@
   height: 80px;
   display: flex;
   align-items: center;
-  border-radius: 12px; /* Add some rounding if there's a background */
+  border-radius: 12px;
+  border: 1.5px solid rgba(59, 31, 12, 0.2); /* Menambahkan border pada kontainer bar */
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5), 0 4px 12px rgba(59, 31, 12, 0.05); /* Bayangan luar dan dalam tipis */
   overflow: hidden; /* Ensure the background doesn't bleed */
 }
 
@@ -114,8 +116,8 @@
   width: 0%; /* Animated by GSAP */
   overflow: hidden;
   border-right: 2px solid var(--color-kuning-kepodang); /* Add a tiny glowing edge to the mask */
-  box-shadow: 2px 0 15px rgba(245, 196, 0, 0.3);
-  background-color: rgba(245, 196, 0, 0.05); /* Slight tint to the filled area */
+  box-shadow: 2px 0 15px rgba(59, 31, 12, 0.4);
+  background: url('/batik/pattern_background.webp') top left / auto 100% repeat; /* Fixed anchor to prevent scaling */
   z-index: 3;
 }
 

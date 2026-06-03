@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 import { rempahData, type Rempah } from '@/data/rempah';
 import styles from './RasaPage.module.css';
 import { X } from 'lucide-react';
@@ -74,18 +75,29 @@ export default function RasaPage() {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [selectedRempah, setSelectedRempah] = useState<Rempah | null>(null);
   
-  const filteredRempah = rempahData.filter(r => {
-    const searchLower = searchQuery.toLowerCase();
-    const matchesSearch = r.nama.toLowerCase().includes(searchLower) ||
-                          r.makanan.toLowerCase().includes(searchLower) ||
-                          r.peran.toLowerCase().includes(searchLower);
-    
-    const matchesFilter = activeFilter 
-      ? getFlavorTags(r.peran).map(t => t.toLowerCase()).includes(activeFilter.toLowerCase())
-      : true;
+  // Pre-calculate tags so we don't do string matching on every render
+  const rempahWithTags = useMemo(() => {
+    return rempahData.map(r => ({
+      ...r,
+      tags: getFlavorTags(r.peran),
+      lowerTags: getFlavorTags(r.peran).map(t => t.toLowerCase())
+    }));
+  }, []);
 
-    return matchesSearch && matchesFilter;
-  });
+  const filteredRempah = useMemo(() => {
+    return rempahWithTags.filter(r => {
+      const searchLower = searchQuery.toLowerCase();
+      const matchesSearch = r.nama.toLowerCase().includes(searchLower) ||
+                            r.makanan.toLowerCase().includes(searchLower) ||
+                            r.peran.toLowerCase().includes(searchLower);
+      
+      const matchesFilter = activeFilter 
+        ? r.lowerTags.includes(activeFilter.toLowerCase())
+        : true;
+
+      return matchesSearch && matchesFilter;
+    });
+  }, [searchQuery, activeFilter, rempahWithTags]);
 
   useEffect(() => {
     if (selectedRempah) {
@@ -103,114 +115,139 @@ export default function RasaPage() {
 
   return (
     <main className={styles.page}>
-      {/* Background Decor */}
-      <div className={styles.pageBg}>
-        <div className={styles.noise} />
-        <div className={styles.kawungPattern} />
-        <Image src="/motif/wayang_2.webp" alt="" width={600} height={800} className={styles.wayangShadow} unoptimized />
-        <Image src="/motif/wayang_2.webp" alt="" width={600} height={800} className={styles.wayangShadowRight} unoptimized />
-        <div className={styles.aksaraBg}>ꦫꦱ</div>
-      </div>
-
-      <div className={styles.hero}>
-        <h1 className={styles.titleJawa}>Ensiklopedia Jejak Rasa Jawa</h1>
-        <p className={styles.subtitle}>
-          Menelusuri rempah, aroma, dan warisan rasa yang membentuk kuliner Jawa Tengah.
-        </p>
-      </div>
-
-      <div className={styles.searchContainer}>
-        <input 
-          type="text" 
-          placeholder="ketik nama rempah..."
-          className={styles.searchInput}
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        {(searchQuery || activeFilter) && (
-          <div className={styles.counter}>
-            Menampilkan {filteredRempah.length} dari {rempahData.length} rempah
+      
+      <section className={styles.topSection}>
+        <div className={styles.hero}>
+          <h1 className={styles.titleJawa}>Jejak Rasa Jawa</h1>
+          <div className={styles.heroOrnament}>
+            <Image src="/motif/dekor_header_bawah.webp" alt="" width={300} height={24} className={styles.ornamentImage} unoptimized />
           </div>
-        )}
-      </div>
+          <p className={styles.subtitle}>
+            Menelusuri rempah, aroma, dan warisan rasa yang membentuk kuliner Jawa Tengah.
+          </p>
+        </div>
 
-      <div className={styles.filterContainer}>
-        {FLAVOR_FILTERS.map(f => (
-          <button
-            key={f.label}
-            className={`${styles.filterPill} ${activeFilter === f.value ? styles.active : ''}`}
-            onClick={() => setActiveFilter(f.value)}
-          >
-            {f.label}
-          </button>
-        ))}
-      </div>
+        <div className={styles.searchWrapper}>
+          <div className={styles.searchContainer}>
+            <svg className={styles.searchIcon} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input 
+              type="text" 
+              placeholder="Cari nama rempah..."
+              className={styles.searchInput}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            {searchQuery && (
+              <button className={styles.clearSearchStyled} onClick={() => setSearchQuery('')}>
+                ×
+              </button>
+            )}
+          </div>
+        </div>
 
-      <div className={styles.grid}>
-        {rempahData.map((r, index) => {
-          const isVisible = filteredRempah.some(filtered => filtered.id === r.id);
-          const visibleIndex = filteredRempah.findIndex(filtered => filtered.id === r.id);
-          
-          const cardStyle: React.CSSProperties = isVisible ? {
-            opacity: 1,
-            transform: 'scale(1) translateY(0)',
-            transitionDelay: `${visibleIndex * 0.04}s`,
-            pointerEvents: 'auto',
-          } : {
-            opacity: 0,
-            transform: 'scale(0.9) translateY(16px)',
-            pointerEvents: 'none',
-          };
-
-          const bgIndex = index % 4;
-
-          return (
-            <div 
-              key={r.id}
-              className={styles.card}
-              style={cardStyle}
-              onClick={() => isVisible && setSelectedRempah(r)}
+        <div className={styles.filterContainer}>
+          {FLAVOR_FILTERS.map(f => (
+            <button
+              key={f.label}
+              className={`${styles.filterPill} ${activeFilter === f.value ? styles.active : ''}`}
+              onClick={() => setActiveFilter(activeFilter === f.value ? null : f.value)}
             >
-              {/* Overlay texture/glow subtle */}
+              {f.label}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.bottomSection}>
+        {/* Transition dipindah ke DALAM bottomSection agar position absolute top: 0 berada tepat di atas bagian gelap */}
+        <div className={styles.transitionWrapper}>
+          <img src="/games/transisi.webp" alt="" className={styles.transitionImage} />
+        </div>
+
+        {/* Texture Overlay */}
+        <div className={styles.textureOverlay} />
+
+        <div className={styles.grid}>
+          <AnimatePresence>
+          {filteredRempah.length > 0 ? (
+            filteredRempah.map((r, visibleIndex) => (
+              <motion.div 
+                layout
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.2 } }}
+                whileHover={{ y: -8 }}
+                transition={{ 
+                  duration: 0.3,
+                  layout: { type: "tween", ease: "easeInOut", duration: 0.35 }
+                }}
+                key={r.id}
+                className={styles.card}
+                onClick={() => setSelectedRempah(r)}
+              >
+                {/* Overlay texture/glow subtle */}
+                <div className={styles.cardOverlay}></div>
+
+                {/* Decorative Aksara overlay */}
+                <div className={styles.cardAksaraOverlay}>{AKSARA_DICT[r.id]}</div>
+
+                <div className={styles.cardTopLeft}>
+                  <div className={styles.cardHeaderTop}>
+                    <span className={styles.cardIndex}>{String(visibleIndex + 1).padStart(2, '0')}</span>
+                  </div>
+                  <h3 className={styles.cardTitle}>{r.nama}</h3>
+                  <span className={styles.cardJawaScientific}>{r.namaJawa}</span>
+                </div>
+                
+                <div className={styles.cardBottomLeft}>
+                  <p className={styles.cardDesc}>{r.peran.split('.')[0] + '.'}</p>
+                  <div className={styles.cardTags}>
+                    {r.tags.slice(0, 3).map(tag => (
+                      <span key={tag} className={styles.cardTag}>{tag}</span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className={styles.cardImageBlock}>
+                  <Image 
+                    src={r.asset} 
+                    alt={r.nama} 
+                    fill
+                    className={styles.cardImage}
+                    unoptimized
+                  />
+                </div>
+                
+                <div className={styles.cardActionIcon}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </div>
+              </motion.div>
+            ))
+          ) : (
+            <motion.div 
+              key="not-found"
+              layout="position"
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.2 } }}
+              transition={{ duration: 0.3 }}
+              className={`${styles.card} ${styles.notFoundCard}`}
+            >
               <div className={styles.cardOverlay}></div>
-
-              {/* Decorative Aksara overlay */}
-              <div className={styles.cardAksaraOverlay}>{AKSARA_DICT[r.id]}</div>
-
-              <div className={styles.cardTopLeft}>
-                <div className={styles.cardHeaderTop}>
-                  <span className={styles.cardIndex}>{String(index + 1).padStart(2, '0')}</span>
-                </div>
-                <h3 className={styles.cardTitle}>{r.nama}</h3>
-                <span className={styles.cardJawaScientific}>{r.namaJawa}</span>
-              </div>
               
-              <div className={styles.cardBottomLeft}>
-                <p className={styles.cardDesc}>{r.peran.split('.')[0] + '.'}</p>
-                <div className={styles.cardTags}>
-                  {getFlavorTags(r.peran).slice(0, 3).map(tag => (
-                    <span key={tag} className={styles.cardTag}>{tag}</span>
-                  ))}
-                </div>
+              <div className={styles.notFoundContent}>
+                <Image src="/kuliner/mascot_not_found.webp" alt="Mascot Bingung" width={160} height={160} unoptimized />
+                <h3>Waduh, Rempahnya Mboten Wonten!</h3>
+                <p>Coba gunakan ejaan kata kunci yang lain atau pilih filter rasa yang berbeda untuk menemukan rempah yang kamu cari.</p>
               </div>
-
-              <div className={styles.cardImageBlock}>
-                <Image 
-                  src={r.asset} 
-                  alt={r.nama} 
-                  fill
-                  className={styles.cardImage}
-                  unoptimized
-                />
-              </div>
-              
-              <div className={styles.cardActionIcon}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+            </motion.div>
+          )}
+          </AnimatePresence>
+        </div>
+      </section>
 
       {/* FULLSCREEN MODAL */}
       <div className={`${styles.modalOverlay} ${selectedRempah ? styles.active : ''}`} onClick={() => setSelectedRempah(null)}>

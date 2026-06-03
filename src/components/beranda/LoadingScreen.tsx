@@ -36,26 +36,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
   }, []);
 
   useGSAP(() => {
-    // 1. Sync floating animations for background and foreground spices
-    const bgSpices = gsap.utils.toArray(`.${styles.spiceItemBg}`);
-    const fgSpices = gsap.utils.toArray(`.${styles.spiceItemFg}`);
-
-    bgSpices.forEach((el: any, index) => {
-      const anim = {
-        y: index % 2 === 0 ? -6 : 6,
-        rotation: index % 2 === 0 ? 8 : -8,
-        duration: 2 + (index % 3) * 0.4,
-        ease: 'sine.inOut',
-        yoyo: true,
-        repeat: -1,
-      };
-      gsap.to(el, anim);
-      if (fgSpices[index]) {
-        gsap.to(fgSpices[index] as any, anim);
-      }
-    });
-
-    // 2. Main Timeline (Loading & Reveal)
+    // 1. (Animasi melayang telah dihapus sesuai permintaan)
     const tl = gsap.timeline({
       onComplete: () => {
         // Outro Transition
