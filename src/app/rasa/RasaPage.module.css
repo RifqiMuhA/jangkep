@@ -7,42 +7,71 @@
   font-family: var(--font-dm-sans), sans-serif;
 }
 
-.page::before {
+.topSection {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(to bottom, var(--color-krem-mori) 0%, #F2E7C9 100%);
+  padding-bottom: 0px; /* Dihilangkan agar transisi sangat mepet/naik maksimal */
+  overflow: hidden; /* To contain wayang shadows */
+}
+
+.topSection::before {
   content: '';
-  position: fixed;
+  position: absolute;
   inset: 0;
   background: radial-gradient(circle at top, rgba(255,255,255,0.18), transparent 60%);
   pointer-events: none;
   z-index: 1;
 }
 
-/* Background Texture & Shadows */
-.pageBg {
-  position: fixed;
+/* --- BOTTOM SECTION --- */
+.bottomSection {
+  background-color: var(--color-coklat-batik);
+  position: relative;
+  z-index: 2;
+  display: flow-root;
+  padding-top: 0;
+  padding-bottom: var(--spacing-48);
+  min-height: auto;
+}
+
+.textureOverlay {
+  position: absolute;
   inset: 0;
+  background-image: url('/batik/batik_parang.webp');
+  background-size: 400px;
+  opacity: 0.05;
   pointer-events: none;
   z-index: 0;
 }
 
-.noise {
+/* --- TRANSITION --- */
+.transitionWrapper {
+  width: 100%;
   position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.05;
-  mix-blend-mode: multiply;
+  top: 0;
+  left: 0;
+  line-height: 0;
+  z-index: 1; /* Behind cards */
+}
+
+.transitionImage {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .kawungPattern {
   position: absolute;
   inset: 0;
   background-image: url('/batik/bg-rasa.png');
-  background-size: cover;
+  background-size: 300px; /* Diperkecil dari 'cover' agar motif lebih rapat dan tidak terlalu besar */
   background-position: center;
-  background-attachment: fixed;
+  /* background-attachment: fixed dihapus karena container .pageBg sudah fixed */
   opacity: 0.15;
   pointer-events: none;
   z-index: 0;
-  mix-blend-mode: multiply;
+  /* mix-blend-mode dihapus agar tidak repaint konten di bawahnya terus-menerus */
 }
 
 .wayangShadow {
@@ -104,54 +133,102 @@
 }
 
 .titleJawa {
-  font-family: 'Playlist Script', 'Playlist', var(--font-playfair), cursive, serif;
-  font-size: 88px;
-  font-weight: 700;
-  line-height: 1.1;
-  margin-bottom: 24px;
-  color: var(--color-kuning-kepodang, #F5C400);
-  text-shadow: 0 4px 24px rgba(245, 196, 0, 0.4);
-  letter-spacing: -0.02em;
+  font-family: var(--font-playfair);
+  font-size: var(--text-display-md, 64px);
+  color: var(--color-coklat-batik);
+  font-weight: 800;
+  margin-bottom: var(--spacing-8, 8px);
+  position: relative;
+  z-index: 5;
+}
+
+.heroOrnament {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--spacing-16, 16px);
+  position: relative;
+  z-index: 5;
+}
+
+.ornamentImage {
+  width: auto;
+  height: 24px;
+  object-fit: contain;
 }
 
 .subtitle {
-  font-size: 22px;
-  line-height: 1.6;
-  color: rgba(59, 31, 12, 0.8);
-  font-family: var(--font-playfair), serif;
-  font-style: italic;
+  font-family: var(--font-playfair);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--color-hitam-arang);
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: var(--leading-body-lg, 1.6);
+  position: relative;
+  z-index: 5;
 }
 
 /* Search & Filters */
-.searchContainer {
-  position: relative;
-  z-index: 10;
+.searchWrapper {
   max-width: 600px;
   margin: 0 auto 32px;
-  padding: 0 24px;
+  position: relative;
+  z-index: 10;
+}
+
+.searchContainer {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 50px;
+  padding: 16px 24px;
+  box-shadow: 0 10px 30px rgba(59, 31, 12, 0.05);
+  border: 1px solid rgba(59, 31, 12, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.searchContainer:focus-within {
+  border-color: var(--color-kuning-kepodang, #F5C400);
+  box-shadow: 0 10px 30px rgba(245, 196, 0, 0.15);
+}
+
+.searchIcon {
+  color: rgba(59, 31, 12, 0.4);
+  margin-right: 12px;
+  flex-shrink: 0;
 }
 
 .searchInput {
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 2px solid rgba(59, 31, 12, 0.2);
-  padding: 16px 0;
-  font-family: var(--font-playfair), serif;
-  font-size: 24px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 1.1rem;
   color: var(--color-coklat-batik, #3B1F0C);
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  text-align: center;
-}
-
-.searchInput:focus {
   outline: none;
-  border-bottom-color: var(--color-kuning-kepodang, #F5C400);
 }
 
 .searchInput::placeholder {
   color: rgba(59, 31, 12, 0.3);
-  font-style: italic;
+}
+
+.clearSearchStyled {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: rgba(59, 31, 12, 0.4);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s ease;
+  margin-left: 12px;
+}
+
+.clearSearchStyled:hover {
+  color: var(--color-coklat-batik, #3B1F0C);
 }
 
 .counter {
@@ -170,34 +247,37 @@
   gap: 12px;
   flex-wrap: wrap;
   justify-content: center;
-  margin-bottom: 64px;
+  margin-bottom: 24px; /* Dibuat lebih kecil lagi (sebelumnya 40px) */
   padding: 0 24px;
 }
 
 .filterPill {
-  padding: 8px 20px;
-  border: 1.5px solid rgba(59, 31, 12, 0.2);
-  border-radius: 99px;
-  font-family: var(--font-dm-sans), sans-serif;
-  font-size: 12px;
+  padding: 8px 24px;
+  border-radius: 20px;
+  border: 1px solid rgba(59, 31, 12, 0.15);
+  background: linear-gradient(to right, var(--color-kuning-kepodang) 50%, white 50%);
+  background-size: 205% 100%; /* Slightly larger than 200% to ensure coverage */
+  background-position: right bottom; /* Start with white showing */
+  background-repeat: no-repeat; /* Prevent the background from wrapping around the edges */
+  color: var(--color-coklat-batik);
+  font-family: var(--font-inter), sans-serif;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-coklat-batik, #3B1F0C);
-  background: transparent;
+  font-size: 14px;
+  letter-spacing: 1px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-position 0.3s ease-out, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .filterPill:hover {
-  border-color: rgba(59, 31, 12, 0.4);
+  background-position: left bottom; /* Yellow fills in from the left */
+  border-color: var(--color-kuning-kepodang);
 }
 
 .filterPill.active {
-  background: var(--color-kuning-kepodang, #F5C400);
-  border-color: var(--color-kuning-kepodang, #F5C400);
-  color: var(--color-coklat-batik, #3B1F0C);
-  box-shadow: rgba(245, 196, 0, 0.3) 0px 4px 12px;
+  background: var(--color-kuning-kepodang);
+  border-color: var(--color-kuning-kepodang);
+  color: var(--color-coklat-batik);
+  box-shadow: 0 4px 12px rgba(245, 196, 0, 0.3);
 }
 
 /* Editorial Grid */
@@ -208,7 +288,7 @@
   grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
   gap: 18px;
   max-width: 1400px;
-  margin: 0 auto;
+  margin: 20px auto 0; /* Mendorong card kembali ke bawah agar tidak ikut naik dengan transisi */
   padding: 0 40px 120px;
 }
 
@@ -223,12 +303,65 @@
   aspect-ratio: 1.7 / 1;
   display: block;
   box-shadow: rgba(59, 31, 12, 0.08) 0px 4px 24px 0px;
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease, opacity 0.35s ease;
+  transition: box-shadow 0.4s ease; /* Hanya transisi box-shadow agar tidak bentrok dengan Framer Motion */
+  will-change: transform, opacity; /* Beri tahu browser bahwa card ini akan sering dianimasikan */
+  transform: translateZ(0); /* Akselerasi hardware */
 }
 
 .card:hover {
-  transform: translateY(-8px) !important;
   box-shadow: rgba(59, 31, 12, 0.18) 0px 12px 32px 0px;
+}
+
+/* Not Found Card */
+.notFoundCard {
+  grid-column: 1 / -1;
+  max-width: 600px;
+  margin: 100px auto 80px;
+  aspect-ratio: auto !important; /* Biarkan tinggi menyesuaikan isi teks, menimpa aspect-ratio bawaan .card */
+  padding: 48px;
+  background-color: #F2EAD3 !important;
+  background-image: url('/games/game1/motif_bawah_kiri.webp'), url('/games/game1/motif_bawah_kanan.webp') !important;
+  background-position: bottom left, bottom right !important;
+  background-repeat: no-repeat !important;
+  background-size: auto 140px, auto 140px !important;
+  border: 1px solid rgba(59, 31, 12, 0.15) !important;
+  border-radius: 24px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: default;
+  min-height: 380px;
+}
+
+.notFoundCard:hover {
+  box-shadow: rgba(59, 31, 12, 0.08) 0px 4px 24px 0px; /* Disable hover shadow */
+}
+
+.notFoundContent {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.notFoundContent h3 {
+  font-family: var(--font-playfair);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-coklat-batik);
+  margin-top: 12px;
+}
+
+.notFoundContent p {
+  font-family: var(--font-inter);
+  color: rgba(59, 31, 12, 0.7);
+  line-height: 1.6;
+  font-size: 16px;
+  max-width: 80%;
 }
 
 /* Overlays */
@@ -329,16 +462,16 @@
   z-index: 1;
 }
 
-/* Menambahkan efek Glow (Cahaya) di belakang objek */
+/* Menambahkan efek Glow (Cahaya Kuning) di belakang objek secara optimal */
 .cardImageBlock::before {
   content: '';
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 70%;
-  height: 70%;
-  background: radial-gradient(circle, rgba(255,255,255,0.7) 0%, transparent 70%);
+  width: 110%; /* Dibesarkan dari 80% menjadi 110% */
+  height: 110%;
+  background: radial-gradient(circle, rgba(245, 196, 0, 0.38) 0%, transparent 68%); /* Glow menyebar sedikit lebih luas */
   border-radius: 50%;
   z-index: -1;
   pointer-events: none;
@@ -347,13 +480,16 @@
 .cardImage {
   object-fit: contain;
   object-position: bottom right; /* Menyeragamkan posisi objek ke kanan bawah */
-  filter: drop-shadow(0 18px 30px rgba(59,31,12,.18)) drop-shadow(0 0 15px rgba(245, 196, 0, 0.6));
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform: scale(1.08);
+  filter: drop-shadow(0 15px 20px rgba(59,31,12,.15)); /* Hanya bayangan gelap saat diam agar scroll lancar */
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.4s ease;
+  transform: scale(1.08) translateZ(0);
+  will-change: transform, filter;
 }
 
 .card:hover .cardImage {
-  transform: scale(1.14) rotate(-2deg);
+  transform: scale(1.14) rotate(-2deg) translateZ(0);
+  /* Efek bayangan kuning (glow) ganda hanya diaktifkan saat di-hover */
+  filter: drop-shadow(0 18px 30px rgba(59,31,12,.18)) drop-shadow(0 0 15px rgba(245, 196, 0, 0.6));
 }
 
 /* Action Icon */
