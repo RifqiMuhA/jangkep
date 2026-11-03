@@ -86,12 +86,11 @@ export default function PromoGamesSection() {
     <section className={styles.section} ref={sectionRef}>
       <div className={styles.bgWrapper}>
         <Image
-          src="/sipodo/bg-games-1.png"
+          src="/sipodo/bg-games-1.webp"
           alt="Pawon background"
           fill
           className={styles.bgImage}
           priority
-          unoptimized
         />
       </div>
 
