@@ -26,6 +26,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
   const maskRef = useRef<HTMLDivElement>(null);
 
   const [progress, setProgress] = useState(0);
+  const [isMounted, setIsMounted] = useState(true);
 
   // Lock scroll on mount
   React.useEffect(() => {
@@ -42,6 +43,8 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         // Outro Transition
         const outroTl = gsap.timeline({
           onComplete: () => {
+            document.body.style.overflow = '';
+            setIsMounted(false);
             if (onComplete) onComplete();
           }
         });
@@ -87,6 +90,8 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
     }, 0.5);
 
   }, { scope: containerRef });
+
+  if (!isMounted) return null;
 
   return (
     <div ref={containerRef} className={styles.overlay}>

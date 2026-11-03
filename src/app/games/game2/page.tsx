@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, PanInfo, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { Clock, CheckCircle, XCircle } from 'lucide-react';
+import { Clock, CheckCircle, XCircle, MapPin } from 'lucide-react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { kulinerData, KulinerItem } from '@/data/kulinerData';
@@ -13,7 +13,7 @@ import styles from './game2.module.css';
 mapboxgl.accessToken = 'pk.eyJ1IjoiZ2l0cmF5YTE0MDAiLCJhIjoiY21wcGl1M2hkMGpmaDJwcXBraXdobGZkdCJ9.J5D7thClJjFmcmnYmTlm3g';
 
 const originToShapeNames: Record<string, string[]> = {
-  'Solo': ['Kota Surakarta', 'Surakarta'],
+  'Solo': ['Kota Surakarta', 'Surakarta', 'Sukoharjo'],
   'Semarang': ['Kota Semarang', 'Semarang'],
   'Magelang': ['Kota Magelang', 'Magelang'],
   'Kudus': ['Kudus'],
@@ -22,6 +22,28 @@ const originToShapeNames: Record<string, string[]> = {
   'Banyumas': ['Banyumas'],
   'Demak': ['Demak'],
   'Banjarnegara': ['Banjarnegara'],
+  'Wonosobo': ['Wonosobo'],
+  'Pemalang': ['Pemalang'],
+  'Pati': ['Pati'],
+  'Jepara': ['Jepara'],
+  'Pekalongan': ['Kota Pekalongan', 'Pekalongan'],
+  'Tegal': ['Kota Tegal', 'Tegal'],
+  'Rembang': ['Rembang'],
+  'Salatiga': ['Kota Salatiga', 'Salatiga'],
+  'Klaten': ['Klaten'],
+  'Boyolali': ['Boyolali'],
+  'Purworejo': ['Purworejo'],
+  'Kebumen': ['Kebumen'],
+  'Cilacap': ['Cilacap'],
+  'Brebes': ['Brebes'],
+  'Batang': ['Batang'],
+  'Kendal': ['Kendal'],
+  'Temanggung': ['Temanggung'],
+  'Grobogan': ['Grobogan'],
+  'Sragen': ['Sragen'],
+  'Karanganyar': ['Karanganyar'],
+  'Sukoharjo': ['Sukoharjo'],
+  'Purbalingga': ['Purbalingga']
 };
 
 function ConfettiEffect() {
@@ -55,7 +77,21 @@ function ConfettiEffect() {
   );
 }
 
-function FoodDraggable({ item, handleDragEnd }: { item: KulinerItem, handleDragEnd: (item: KulinerItem, info: PanInfo) => void }) {
+function FoodDraggable({ 
+  item, 
+  activeDragItem,
+  draggedRegion,
+  onDragStart,
+  onDrag,
+  handleDragEnd 
+}: { 
+  item: KulinerItem;
+  activeDragItem: string | null;
+  draggedRegion: string | null;
+  onDragStart: (item: KulinerItem) => void;
+  onDrag: (item: KulinerItem, info: PanInfo) => void;
+  handleDragEnd: (item: KulinerItem, info: PanInfo) => void;
+}) {
   const springConfig = { stiffness: 100, damping: 5 };
   const x = useMotionValue(0);
   const rotate = useSpring(useTransform(x, [-100, 100], [-45, 45]), springConfig);
@@ -66,16 +102,36 @@ function FoodDraggable({ item, handleDragEnd }: { item: KulinerItem, handleDragE
     x.set(event.nativeEvent.offsetX - halfWidth);
   };
 
+  const isThisItemDragged = activeDragItem === item.slug;
+  const currentRegion = isThisItemDragged ? draggedRegion : null;
+
   return (
     <div className={styles.foodItemWrapper}>
       <motion.div
         drag
         dragSnapToOrigin={true}
+        onDragStart={() => onDragStart(item)}
+        onDrag={(e, info) => onDrag(item, info)}
         onDragEnd={(e, info) => handleDragEnd(item, info)}
         whileDrag={{ scale: 1.2, zIndex: 100 }}
         className={styles.foodItem}
         onMouseMove={handleMouseMove}
       >
+        <AnimatePresence>
+          {currentRegion && (
+            <motion.div
+              key={currentRegion}
+              initial={{ opacity: 0, y: -20, scale: 0.8 }}
+              animate={{ opacity: 1, y: -60, scale: 1 }}
+              exit={{ opacity: 0, y: -30, scale: 0.8 }}
+              transition={{ duration: 0.15 }}
+              className={styles.dragRegionTooltip}
+            >
+              <MapPin size={14} strokeWidth={2.4} className={styles.pinIcon} />
+              <span>{currentRegion}</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <img
           src={item.galleryImages[0]}
           alt={item.name}
@@ -117,6 +173,11 @@ export default function Game2Page() {
   // Mascot Reaction State
   const [mascotState, setMascotState] = useState<'idle' | 'correct' | 'wrong'>('idle');
   const [chatMessage, setChatMessage] = useState<{ title: string, desc: string } | null>(null);
+  const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
+  const [activeDragSlug, setActiveDragSlug] = useState<string | null>(null);
+  const [draggedRegion, setDraggedRegion] = useState<string | null>(null);
+  const activeHoverIdRef = useRef<string | null>(null);
+  const popupRef = useRef<mapboxgl.Popup | null>(null);
 
   useEffect(() => {
     startGame();
@@ -132,6 +193,12 @@ export default function Game2Page() {
     setShowConfetti(false);
     setMascotState('idle');
     setChatMessage(null);
+    setActiveDragSlug(null);
+    setDraggedRegion(null);
+    activeHoverIdRef.current = null;
+    if (popupRef.current) {
+      popupRef.current.remove();
+    }
 
     // Reset map highlights
     if (mapRef.current && mapRef.current.isStyleLoaded()) {
@@ -208,7 +275,7 @@ export default function Game2Page() {
           }
         });
 
-        // 2. Interactive Fills (Correct/Wrong Drop)
+        // 2. Interactive Fills (Correct, Wrong Drop, and Hover)
         map.addLayer({
           id: 'jateng-fills',
           type: 'fill',
@@ -218,14 +285,20 @@ export default function Game2Page() {
               'case',
               ['boolean', ['feature-state', 'error'], false],
               '#e74c3c', // Red error
-              '#FFC107'  // Kuning Kepodang success
+              ['boolean', ['feature-state', 'highlight'], false],
+              '#2ECC71', // Emerald green success
+              ['boolean', ['feature-state', 'hover'], false],
+              '#F5C400', // Gold hover
+              '#F5C400'
             ],
             'fill-opacity': [
               'case',
               ['boolean', ['feature-state', 'highlight'], false],
-              0.8,
+              0.75,
               ['boolean', ['feature-state', 'error'], false],
-              0.8,
+              0.75,
+              ['boolean', ['feature-state', 'hover'], false],
+              0.35,
               0
             ]
           }
@@ -257,23 +330,97 @@ export default function Game2Page() {
           }
         });
 
-        // 5. Solid Line Border
+        // 5. Solid Line Border with dynamic hover response
         map.addLayer({
           id: 'jateng-borders',
           type: 'line',
           source: 'jateng',
           paint: {
-            'line-color': '#D4AF37',
-            'line-width': 1.5,
-            'line-opacity': 0.8
+            'line-color': [
+              'case',
+              ['boolean', ['feature-state', 'hover'], false],
+              '#FFFFFF',
+              '#D4AF37'
+            ],
+            'line-width': [
+              'case',
+              ['boolean', ['feature-state', 'hover'], false],
+              2.5,
+              1.5
+            ],
+            'line-opacity': 0.9
           }
+        });
+
+        // Hover handling on map polygons with clean on-hover tooltip
+        const hoverPopup = new mapboxgl.Popup({
+          closeButton: false,
+          closeOnClick: false,
+          offset: 14,
+          className: styles.hoverTooltip
+        });
+        popupRef.current = hoverPopup;
+
+        map.on('mousemove', 'jateng-fills', (e) => {
+          if (e.features && e.features.length > 0) {
+            const feature = e.features[0];
+            const shapeName = feature.properties?.shapeName;
+            if (shapeName) {
+              map.getCanvas().style.cursor = 'pointer';
+              if (activeHoverIdRef.current !== shapeName) {
+                if (activeHoverIdRef.current) {
+                  map.setFeatureState(
+                    { source: 'jateng', id: activeHoverIdRef.current },
+                    { hover: false }
+                  );
+                }
+                activeHoverIdRef.current = shapeName;
+                map.setFeatureState(
+                  { source: 'jateng', id: shapeName },
+                  { hover: true }
+                );
+                setHoveredRegion(shapeName);
+              }
+
+              hoverPopup
+                .setLngLat(e.lngLat)
+                .setHTML(`
+                  <div class="${styles.hoverTooltipContent}">
+                    <svg class="${styles.popupIcon}" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                    <strong>${shapeName}</strong>
+                  </div>
+                `)
+                .addTo(map);
+            }
+          }
+        });
+
+        map.on('mouseleave', 'jateng-fills', () => {
+          map.getCanvas().style.cursor = '';
+          if (activeHoverIdRef.current) {
+            map.setFeatureState(
+              { source: 'jateng', id: activeHoverIdRef.current },
+              { hover: false }
+            );
+            activeHoverIdRef.current = null;
+          }
+          setHoveredRegion(null);
+          hoverPopup.remove();
         });
       } catch (err) {
         console.error("Error loading map boundaries:", err);
       }
     });
 
-    return () => map.remove();
+    return () => {
+      if (popupRef.current) {
+        popupRef.current.remove();
+      }
+      map.remove();
+    };
   }, []);
 
   // Timer
@@ -293,7 +440,71 @@ export default function Game2Page() {
     setGameState('result');
   };
 
+  const handleDragStart = (item: KulinerItem) => {
+    setActiveDragSlug(item.slug);
+    if (popupRef.current) {
+      popupRef.current.remove();
+    }
+  };
+
+  const handleDrag = (item: KulinerItem, info: PanInfo) => {
+    if (!mapRef.current || !mapContainerRef.current) return;
+
+    const rect = mapContainerRef.current.getBoundingClientRect();
+    const x = info.point.x - rect.left;
+    const y = info.point.y - rect.top;
+
+    if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+      const features = mapRef.current.queryRenderedFeatures([x, y], { layers: ['jateng-fills'] });
+      if (features.length > 0) {
+        const shapeName = features[0].properties?.shapeName;
+        if (shapeName) {
+          if (activeHoverIdRef.current !== shapeName) {
+            if (activeHoverIdRef.current) {
+              mapRef.current.setFeatureState(
+                { source: 'jateng', id: activeHoverIdRef.current },
+                { hover: false }
+              );
+            }
+            activeHoverIdRef.current = shapeName;
+            mapRef.current.setFeatureState(
+              { source: 'jateng', id: shapeName },
+              { hover: true }
+            );
+            setHoveredRegion(shapeName);
+            setDraggedRegion(shapeName);
+          }
+          return;
+        }
+      }
+    }
+
+    if (activeHoverIdRef.current) {
+      mapRef.current.setFeatureState(
+        { source: 'jateng', id: activeHoverIdRef.current },
+        { hover: false }
+      );
+      activeHoverIdRef.current = null;
+      setHoveredRegion(null);
+      setDraggedRegion(null);
+    }
+  };
+
   const handleDragEnd = (item: KulinerItem, info: PanInfo) => {
+    setActiveDragSlug(null);
+    setDraggedRegion(null);
+
+    if (activeHoverIdRef.current) {
+      if (mapRef.current) {
+        mapRef.current.setFeatureState(
+          { source: 'jateng', id: activeHoverIdRef.current },
+          { hover: false }
+        );
+      }
+      activeHoverIdRef.current = null;
+    }
+    setHoveredRegion(null);
+
     if (!mapRef.current || !mapContainerRef.current) return;
     
     const rect = mapContainerRef.current.getBoundingClientRect();
@@ -421,22 +632,48 @@ export default function Game2Page() {
         {/* LEFT PANEL: FOOD TRAY */}
         <div className={styles.leftPanel}>
           <h2 className={styles.panelTitle}>Daftar Makanan</h2>
-          {gameItems.map(item => (
-            !foundItems.includes(item.slug) && (
-              <FoodDraggable
-                key={item.slug}
-                item={item}
-                handleDragEnd={handleDragEnd}
-              />
-            )
-          ))}
+          <div className={styles.foodList}>
+            {gameItems.map(item => (
+              !foundItems.includes(item.slug) && (
+                <FoodDraggable
+                  key={item.slug}
+                  item={item}
+                  activeDragItem={activeDragSlug}
+                  draggedRegion={draggedRegion}
+                  onDragStart={handleDragStart}
+                  onDrag={handleDrag}
+                  handleDragEnd={handleDragEnd}
+                />
+              )
+            ))}
+          </div>
+
+          {/* Ornamen Bawah Kiri & Kanan */}
+          <img 
+            src="/games/game1/motif_bawah_kiri.webp" 
+            alt="" 
+            className={styles.motifBawahKiri} 
+          />
+          <img 
+            src="/games/game1/motif_bawah_kanan.webp" 
+            alt="" 
+            className={styles.motifBawahKanan} 
+          />
         </div>
 
         {/* RIGHT PANEL: MAPBOX & MASCOT */}
         <div className={styles.rightPanel}>
           <div className={styles.mapWrapper}>
             <div ref={mapContainerRef} className={styles.mapContainer} />
-            <div className={styles.instructionOverlay}>Tarik makanan ke kota asalnya!</div>
+            <div className={styles.instructionOverlay}>
+              {hoveredRegion ? (
+                <span className={styles.highlightRegionText}>
+                  <MapPin size={16} strokeWidth={2.4} className={styles.pinIcon} /> Wilayah: <strong>{hoveredRegion}</strong>
+                </span>
+              ) : (
+                <span>Tarik makanan ke kota asalnya di peta!</span>
+              )}
+            </div>
           </div>
 
           <div className={styles.mascotArea}>

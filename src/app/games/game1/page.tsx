@@ -63,7 +63,6 @@ function IngredientDraggable({ ingredient, handleDrag, handleDragEnd }: { ingred
         width={60}
         height={60}
         className={styles.ingredientImage}
-        unoptimized
         draggable={false}
       />
     </motion.div>

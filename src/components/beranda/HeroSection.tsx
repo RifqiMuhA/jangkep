@@ -35,7 +35,18 @@ export default function HeroSection() {
     if (!el) return;
     el.addEventListener('mousemove', handleMouseMove);
 
+    let isVisible = true;
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = requestAnimationFrame(animate);
+      }
+    }, { threshold: 0.05 });
+    observer.observe(el);
+
     function animate() {
+      if (!isVisible) return;
       const curr = mouseCurrent.current;
       const targ = mouseTarget.current;
       // Lerp
@@ -53,6 +64,7 @@ export default function HeroSection() {
 
     return () => {
       el.removeEventListener('mousemove', handleMouseMove);
+      observer.disconnect();
       cancelAnimationFrame(rafRef.current);
     };
   }, [handleMouseMove]);
@@ -145,7 +157,7 @@ export default function HeroSection() {
           width={1152}
           height={281}
           className={styles.transisiImg}
-          priority={false}
+          priority={true}
           aria-hidden="true"
         />
       </div>

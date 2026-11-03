@@ -28,7 +28,7 @@ interface ChapterCardProps {
   isActive: boolean;
   isFirst: boolean;
   isLast: boolean;
-  peekingFrame: number;
+  peekingFrame?: number;
   galleries: any[];
   activeFoodItem: any;
   onFoodChange: (item: any) => void;
@@ -89,7 +89,21 @@ export default function ChapterCard({
     <div className={`chapter-content-wrapper ${alignClass}`} style={{ position: 'relative' }}>
       {isFirst && (
         <div className="si-podo-peeking-card">
-          <img src={`/kuliner/mascot_ngintip_${peekingFrame}.webp`} alt="Si Podo Ngintip" />
+          <img
+            src="/kuliner/mascot_ngintip_1.webp"
+            alt="Si Podo Ngintip"
+            className="mascot-ngintip-img mascot-ngintip-1"
+          />
+          <img
+            src="/kuliner/mascot_ngintip_2.webp"
+            alt=""
+            className="mascot-ngintip-img mascot-ngintip-2"
+          />
+          <img
+            src="/kuliner/mascot_ngintip_3.webp"
+            alt=""
+            className="mascot-ngintip-img mascot-ngintip-3"
+          />
         </div>
       )}
 

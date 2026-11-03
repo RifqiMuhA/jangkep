@@ -4,7 +4,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { kulinerData } from '@/data/kulinerData';
+import { kulinerData, type KulinerItem } from '@/data/kulinerData';
 import styles from './katalog.module.css';
 
 const categories = ['Semua Kategori', 'Makanan Berat', 'Jajanan', 'Minuman'];
@@ -42,6 +42,15 @@ const HintArrowUpLeft = () => (
 
 export default function KatalogKuliner() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
+
   const [activeCategory, setActiveCategory] = useState(categories[0]);
   const [activeTaste, setActiveTaste] = useState(tastes[0]);
   const [isCatHovered, setIsCatHovered] = useState(false);
@@ -97,15 +106,15 @@ export default function KatalogKuliner() {
   // Filter logic
   const filteredData = useMemo(() => {
     return kulinerData.filter((item) => {
-      const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.origin.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.shortDescription.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch = item.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+        item.origin.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+        item.shortDescription.toLowerCase().includes(debouncedSearch.toLowerCase());
       const matchesCategory = activeCategory === 'Semua Kategori' || item.category === activeCategory;
       const matchesTaste = activeTaste === 'Semua Rasa' || item.tasteProfile === activeTaste;
 
       return matchesSearch && matchesCategory && matchesTaste;
     });
-  }, [searchQuery, activeCategory, activeTaste]);
+  }, [debouncedSearch, activeCategory, activeTaste]);
 
   const [columnCount, setColumnCount] = useState(3);
 
@@ -476,7 +485,7 @@ export default function KatalogKuliner() {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               {searchQuery && (
-                <button className={styles.clearSearchStyled} onClick={() => setSearchQuery('')}>
+                <button className={styles.clearSearchStyled} onClick={() => { setSearchQuery(''); setDebouncedSearch(''); }}>
                   ×
                 </button>
               )}
@@ -495,7 +504,6 @@ export default function KatalogKuliner() {
                 <AnimatePresence mode="popLayout">
                   {col1.map((item, index) => (
                     <motion.div
-                      layout
                       key={item.slug}
                       initial={{ opacity: 0, y: 50 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -514,7 +522,6 @@ export default function KatalogKuliner() {
                   <AnimatePresence mode="popLayout">
                     {col2.map((item, index) => (
                       <motion.div
-                        layout
                         key={item.slug}
                         initial={{ opacity: 0, y: 50 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -534,7 +541,6 @@ export default function KatalogKuliner() {
                   <AnimatePresence mode="popLayout">
                     {col3.map((item, index) => (
                       <motion.div
-                        layout
                         key={item.slug}
                         initial={{ opacity: 0, y: 50 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -562,7 +568,6 @@ export default function KatalogKuliner() {
                 width={150}
                 height={150}
                 className={styles.notFoundImg}
-                unoptimized
               />
               <p className={styles.notFoundText}>Sepurane, kuliner sing sampeyan goleki durung ana. Coba golek sing liyane ya!</p>
             </motion.div>
@@ -574,7 +579,7 @@ export default function KatalogKuliner() {
 }
 
 // Sub-komponen Card
-function CardItem({ item }: { item: any }) {
+function CardItem({ item }: { item: KulinerItem }) {
   const getBadgeClass = (category: string) => {
     switch (category) {
       case 'Makanan Berat': return styles.badgeMakananBerat;
@@ -593,31 +598,9 @@ function CardItem({ item }: { item: any }) {
           fill
           sizes="(max-width: 1024px) 50vw, 30vw"
           className={styles.cardImage}
-          unoptimized={true}
         />
       </div>
       <div className={styles.cardInfo}>
-        {/* Motif Kiri Atas — terpotong setengah */}
-        <div className={`${styles.motif} ${styles.motifLeftTop}`}>
-          <Image src="/motif/motif_bunga_card.webp" alt="" fill style={{ objectFit: 'contain' }} />
-        </div>
-        {/* Motif Kiri Bawah — terpotong setengah */}
-        <div className={`${styles.motif} ${styles.motifLeftBottom}`}>
-          <Image src="/motif/motif_bunga_card.webp" alt="" fill style={{ objectFit: 'contain' }} />
-        </div>
-        {/* Motif Kiri Tengah — hanya sebagian kecil terlihat */}
-        <div className={`${styles.motif} ${styles.motifLeftCenter}`}>
-          <Image src="/motif/motif_bunga_card.webp" alt="" fill style={{ objectFit: 'contain' }} />
-        </div>
-        {/* Motif Kanan Atas — sedang */}
-        <div className={`${styles.motif} ${styles.motifRightTop}`}>
-          <Image src="/motif/motif_bunga_card.webp" alt="" fill style={{ objectFit: 'contain' }} />
-        </div>
-        {/* Motif Kanan Bawah — besar */}
-        <div className={`${styles.motif} ${styles.motifRightBottom}`}>
-          <Image src="/motif/motif_bunga_card.webp" alt="" fill style={{ objectFit: 'contain' }} />
-        </div>
-
         <div className={`${styles.cardCategoryBadge} ${getBadgeClass(item.category)}`}>
           {item.category}
         </div>

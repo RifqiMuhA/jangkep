@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, use } from 'react';
+import React, { useRef, use, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -53,6 +53,10 @@ export default function KulinerDetail({ params }: { params: Promise<{ slug: stri
   const router = useRouter();
 
   const item = kulinerData.find(d => d.slug === resolvedParams.slug);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [resolvedParams.slug]);
 
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({

@@ -21,6 +21,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { kulinerData } from '@/data/kulinerData';
+import { getCulturalQuote } from './data/culturalQuotes';
 import LoadingScreen from '@/components/beranda/LoadingScreen';
 import './maps.css';
 
@@ -238,32 +239,25 @@ export default function StoryMapsClient() {
   const [activeFoodItems, setActiveFoodItems] = useState<Record<string, any>>({});
 
   /* ── Si Podo Mascot States & Effects ── */
-  const [peekingFrame, setPeekingFrame] = useState(1);
   const [flyingFrame, setFlyingFrame] = useState(1);
 
-  // Cycle animation frames for peeking and flying overlays
+  // Cycle animation frames for flying overlay
   useEffect(() => {
     if (mode !== 'story') return;
-    const peekingInterval = setInterval(() => {
-      setPeekingFrame((f) => {
-        if (f === 1) return Math.random() > 0.4 ? 2 : 1;
-        if (f === 2) return Math.random() > 0.5 ? 3 : 1;
-        return 2;
-      });
-    }, 450);
 
     const flyingInterval = setInterval(() => {
       setFlyingFrame((f) => (f % 3) + 1);
     }, 200);
 
     return () => {
-      clearInterval(peekingInterval);
       clearInterval(flyingInterval);
     };
   }, [mode]);
 
   // Dynamically control Mapbox mascot marker visibility (hide in intro, show in regions)
   useEffect(() => {
+    let t1: ReturnType<typeof setTimeout> | null = null;
+    let t2: ReturnType<typeof setTimeout> | null = null;
     if (mascotMarkerRef.current) {
       const el = mascotMarkerRef.current.getElement();
       if (el) {
@@ -271,7 +265,7 @@ export default function StoryMapsClient() {
         if (activeChapter >= 1) {
           el.style.display = 'flex';
           // small timeout to allow display: flex to apply before transitioning opacity
-          setTimeout(() => {
+          t1 = setTimeout(() => {
             if (mascotMarkerRef.current) {
               mascotMarkerRef.current.getElement().style.opacity = '1';
               mascotMarkerRef.current.getElement().style.pointerEvents = 'auto';
@@ -281,7 +275,7 @@ export default function StoryMapsClient() {
           el.style.opacity = '0';
           el.style.pointerEvents = 'none';
           // Wait for fade out then hide
-          setTimeout(() => {
+          t2 = setTimeout(() => {
             if (mascotMarkerRef.current && activeChapter < 1) {
               mascotMarkerRef.current.getElement().style.display = 'none';
             }
@@ -289,6 +283,10 @@ export default function StoryMapsClient() {
         }
       }
     }
+    return () => {
+      if (t1) clearTimeout(t1);
+      if (t2) clearTimeout(t2);
+    };
   }, [activeChapter]);
 
   // Keep activeChapterRef in sync
@@ -311,7 +309,7 @@ export default function StoryMapsClient() {
       const pinImg = walker.querySelector('.pin-image') as HTMLImageElement;
       
       if (foodItem) {
-        if (bubbleText) bubbleText.textContent = `"${foodItem.title} enak tenan!"`;
+        if (bubbleText) bubbleText.textContent = `"${getCulturalQuote(foodItem)}"`;
         if (pinImg) pinImg.src = foodItem.url;
       }
 
@@ -384,6 +382,7 @@ export default function StoryMapsClient() {
   const [isAutoTourPaused, setIsAutoTourPaused] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const autoTourTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const onboardingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const currentAutoTourFood = isAutoTourActive && filteredFoods.length > 0
     ? filteredFoods[autoTourIndex % filteredFoods.length]
     : null;
@@ -406,6 +405,10 @@ export default function StoryMapsClient() {
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
 
+    let patternRafId: number | null = null;
+    let flyInterval: ReturnType<typeof setInterval>;
+    let batikImg: HTMLImageElement | null = null;
+
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: CUSTOM_STYLE,
@@ -415,10 +418,8 @@ export default function StoryMapsClient() {
       bearing: INITIAL_VIEW.bearing,
       antialias: true,
       attributionControl: false,
-      interactive: mode === 'explore',
+      interactive: false,
     });
-
-    let flyInterval: ReturnType<typeof setInterval>;
 
     map.on('style.load', () => {
       map.addSource('mapbox-dem', {
@@ -462,7 +463,7 @@ export default function StoryMapsClient() {
       }
 
       // ── ANIMATED BATIK PATTERN ──
-      const batikImg = new Image();
+      batikImg = new Image();
       batikImg.src = '/batik/batik_parang.webp';
       batikImg.onload = () => {
         const size = 128; // better quality
@@ -472,7 +473,7 @@ export default function StoryMapsClient() {
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
         
-        ctx.drawImage(batikImg, 0, 0, size, size);
+        ctx.drawImage(batikImg!, 0, 0, size, size);
         if (!map.hasImage('batik-pattern')) {
           map.addImage('batik-pattern', ctx.getImageData(0, 0, size, size));
           // Apply the pattern to the line layer once loaded by recreating it
@@ -503,16 +504,16 @@ export default function StoryMapsClient() {
               ctx.clearRect(0, 0, size, size);
               
               // Draw translated to create infinite horizontal scroll effect
-              ctx.drawImage(batikImg, offset, 0, size, size);
-              ctx.drawImage(batikImg, offset - size, 0, size, size);
+              ctx.drawImage(batikImg!, offset, 0, size, size);
+              ctx.drawImage(batikImg!, offset - size, 0, size, size);
               
               map.updateImage('batik-pattern', ctx.getImageData(0, 0, size, size));
               map.triggerRepaint(); // force redraw
             }
           }
-          requestAnimationFrame(animatePattern);
+          patternRafId = requestAnimationFrame(animatePattern);
         };
-        requestAnimationFrame(animatePattern);
+        patternRafId = requestAnimationFrame(animatePattern);
       };
 
       // ── ADD MASCOT MARKER (EMOJI / IMG) ──
@@ -723,11 +724,27 @@ export default function StoryMapsClient() {
 
     mapRef.current = map;
     return () => { 
+      if (batikImg) {
+        batikImg.onload = null;
+      }
+      if (patternRafId !== null) {
+        cancelAnimationFrame(patternRafId);
+      }
       clearInterval(flyInterval);
+      if (autoTourTimerRef.current) {
+        clearTimeout(autoTourTimerRef.current);
+        autoTourTimerRef.current = null;
+      }
+      if (onboardingTimerRef.current) {
+        clearTimeout(onboardingTimerRef.current);
+        onboardingTimerRef.current = null;
+      }
+      mascotMarkerRef.current?.remove();
+      mascotMarkerRef.current = null;
       map.remove(); 
       mapRef.current = null; 
     };
-  }, [mode]);
+  }, []);
 
   useEffect(() => {
     if (!mapRef.current) return;
@@ -1080,6 +1097,7 @@ export default function StoryMapsClient() {
     });
 
     return () => {
+      mm.revert();
       triggers.forEach((t) => t.kill());
       ScrollTrigger.getAll().forEach(t => t.kill());
     };
@@ -1097,11 +1115,16 @@ export default function StoryMapsClient() {
       bearing: -15,
       duration: 2000,
     });
-    setTimeout(() => setShowOnboarding(false), 4000);
+    if (onboardingTimerRef.current) clearTimeout(onboardingTimerRef.current);
+    onboardingTimerRef.current = setTimeout(() => setShowOnboarding(false), 4000);
   }, []);
 
   const exitExploreMode = useCallback(() => {
     setMode('story');
+    if (onboardingTimerRef.current) {
+      clearTimeout(onboardingTimerRef.current);
+      onboardingTimerRef.current = null;
+    }
     window.scrollTo({ top: 0, behavior: 'auto' });
   }, []);
 
@@ -1368,7 +1391,11 @@ export default function StoryMapsClient() {
         { scale: 1, y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'back.out(1.5)', delay: 0.3 }
       );
     }
-    
+
+    return () => {
+      markersRef.current.forEach((m) => m.remove());
+      markersRef.current.clear();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filteredFoods, selectedFood, currentAutoTourFood, isMapLoaded, mode, activeChapter, activeFoodItems]);
 
@@ -1690,7 +1717,6 @@ export default function StoryMapsClient() {
                     isActive={isActive}
                     isFirst={isFirst}
                     isLast={isLast}
-                    peekingFrame={peekingFrame}
                     galleries={CHAPTER_GALLERIES[chapter.id]}
                     activeFoodItem={activeFoodItems[chapter.id]}
                     onFoodChange={(item) => {
@@ -1762,7 +1788,7 @@ export default function StoryMapsClient() {
                     showOnboarding
                       ? 'Klik pin manapun kanggo mulai njelajah!'
                       : currentAutoTourFood
-                        ? `${currentAutoTourFood.city} — ${currentAutoTourFood.name} enak tenan!`
+                        ? `${currentAutoTourFood.city} — ${getCulturalQuote(currentAutoTourFood)}`
                         : ''
                   }
                   isWalking={isAutoTourActive && !showOnboarding}

@@ -684,54 +684,33 @@
   /* DI BAWAH GAMBAR */
 }
 
-/* === MOTIF BUNGA INDIVIDUAL === */
-.motif {
+/* === MOTIF BUNGA CARD VIA CSS MULTIPLE BACKGROUNDS === */
+.cardInfo::before {
+  content: "";
   position: absolute;
+  inset: 0;
   pointer-events: none;
   opacity: 0.25;
   z-index: 0;
-}
-
-/* Kiri Atas: terpotong setengah, lebih ke atas */
-.motifLeftTop {
-  width: 100px;
-  height: 100px;
-  top: -5px;
-  left: -25px;
-}
-
-/* Kiri Bawah: terpotong setengah, lebih ke bawah */
-.motifLeftBottom {
-  width: 120px;
-  height: 120px;
-  bottom: -45px;
-  left: -37px;
-}
-
-/* Kiri Tengah: hanya muncul sebagian kecil */
-.motifLeftCenter {
-  width: 70px;
-  height: 70px;
-  top: 55%;
-  transform: translateY(-50%);
-  left: -50px;
-  /* Lebih keluar, hanya sedikit terlihat */
-}
-
-/* Kanan Atas: ukuran sedang */
-.motifRightTop {
-  width: 115px;
-  height: 115px;
-  top: -15px;
-  right: -25px;
-}
-
-/* Kanan Bawah: ukuran besar */
-.motifRightBottom {
-  width: 180px;
-  height: 180px;
-  bottom: -85px;
-  right: -85px;
+  background-image: 
+    url('/motif/motif_bunga_card.webp'),
+    url('/motif/motif_bunga_card.webp'),
+    url('/motif/motif_bunga_card.webp'),
+    url('/motif/motif_bunga_card.webp'),
+    url('/motif/motif_bunga_card.webp');
+  background-position: 
+    left -25px top -5px,
+    left -37px bottom -45px,
+    left -50px center,
+    right -25px top -15px,
+    right -85px bottom -85px;
+  background-size: 
+    100px 100px,
+    120px 120px,
+    70px 70px,
+    115px 115px,
+    180px 180px;
+  background-repeat: no-repeat;
 }
 
 /* === TEKS CARD === */

@@ -87,6 +87,14 @@ export default function HistoryTimeline({ item }: { item: any }) {
       ease: 'sine.inOut'
     });
 
+    // Ensure ScrollTrigger recalculates cleanly after route transition
+    const refreshTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
+
+    return () => {
+      clearTimeout(refreshTimer);
+    };
   }, { scope: containerRef });
 
   if (!item.historyTimeline) return null;

@@ -11,35 +11,35 @@ const slides = [
     num: '01',
     img: '/sipodo/kepodang.png',
     title: 'Burung Kepodang',
-    desc: 'Maskot resmi Provinsi Jawa Tengah. Si Podo hadir sebagai wajah otentik daerah — bukan karakter generik, tapi representasi budaya yang hidup.',
+    desc: 'Fauna identitas Jawa Tengah penyimbol budi pekerti luhur. Hadir ceria sebagai pemandu setia menelusuri dapur tradisi.',
   },
   {
     id: 'blankon',
     num: '02',
     img: '/sipodo/blankon.png',
     title: 'Blangkon',
-    desc: 'Penutup kepala tradisional Jawa yang dipakai bangga. Simbol kearifan lokal sebagai mahkota identitas, bukan sekadar aksesori.',
+    desc: 'Penutup kepala tradisional Jawa, lambang kerendahan hati dan kendali diri dalam merawat tata krama serta kehormatan hidup.',
   },
   {
     id: 'kawung',
     num: '03',
     img: '/sipodo/short.png',
     title: 'Batik Kawung',
-    desc: 'Motif batik tertua di Jawa, simbol kesempurnaan dan keharmonisan alam semesta. Warisan yang hidup dalam tiap jahitan.',
+    desc: 'Motif batik klasik bermakna kesucian hati dan ketulusan niat untuk senantiasa memberi faedah bagi sesama.',
   },
   {
     id: 'sayap',
     num: '04',
     img: '/sipodo/tangan.png',
     title: 'Sayap Terbuka',
-    desc: 'Pose menyambut dan mengundang. Si Podo bukan dekorasi — ia teman perjalanan kulinermu yang selalu siap terbang bersama.',
+    desc: 'Sayap terbentang mencerminkan sifat grapyak dan sumeh, keramahan tulus khas Jawa yang selalu menyambut sesama.',
   },
   {
     id: 'lengkap',
     num: '05',
     img: '/sipodo/full.png',
     title: 'Si Podo Lengkap',
-    desc: 'Kepodang + Blangkon + Kawung + Sayap Terbuka = Jangkep. Lengkap Rasanya, Lengkap Ceritanya.',
+    desc: 'Perpaduan utuh kepodang, blangkon, dan kawung. Merangkum santapan Jawa Tengah agar jangkep rasane, jangkep critane.',
   },
 ];
 
@@ -148,7 +148,7 @@ export default function SipodoIntroSection() {
           Sama <em className={styles.headlineAccent}>Si Podo</em>
         </h2>
         <p className={`${styles.desc} ${styles.revealItem} ${styles.revealDelay1}`}>
-          Burung Kepodang ceria yang siap memandumu menjelajahi aneka rasa Jawa Tengah. Setiap detail penampilannya adalah wujud kearifan budaya lokal.
+          Burung kepodang yang memandu langkahmu menelusuri kekayaan rasa Jawa Tengah. Setiap lekuk atributnya merawat filosofi dan riwayat budaya leluhur.
         </p>
       </div>
 

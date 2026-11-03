@@ -223,6 +223,8 @@
   height: 100%;
   object-fit: cover;
   transition: filter 1s linear; 
+  will-change: filter, transform;
+  transform: translateZ(0);
 }
 
 .foodImage.revealed {

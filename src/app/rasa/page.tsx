@@ -72,6 +72,15 @@ const AKSARA_DICT: Record<string, string> = {
 
 export default function RasaPage() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
+
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [selectedRempah, setSelectedRempah] = useState<Rempah | null>(null);
   
@@ -86,7 +95,7 @@ export default function RasaPage() {
 
   const filteredRempah = useMemo(() => {
     return rempahWithTags.filter(r => {
-      const searchLower = searchQuery.toLowerCase();
+      const searchLower = debouncedSearch.toLowerCase();
       const matchesSearch = r.nama.toLowerCase().includes(searchLower) ||
                             r.makanan.toLowerCase().includes(searchLower) ||
                             r.peran.toLowerCase().includes(searchLower);
@@ -97,7 +106,7 @@ export default function RasaPage() {
 
       return matchesSearch && matchesFilter;
     });
-  }, [searchQuery, activeFilter, rempahWithTags]);
+  }, [debouncedSearch, activeFilter, rempahWithTags]);
 
   useEffect(() => {
     if (selectedRempah) {
@@ -120,7 +129,7 @@ export default function RasaPage() {
         <div className={styles.hero}>
           <h1 className={styles.titleJawa}>Jejak Rasa Jawa</h1>
           <div className={styles.heroOrnament}>
-            <Image src="/motif/dekor_header_bawah.webp" alt="" width={300} height={24} className={styles.ornamentImage} unoptimized />
+            <Image src="/motif/dekor_header_bawah.webp" alt="" width={300} height={24} className={styles.ornamentImage} />
           </div>
           <p className={styles.subtitle}>
             Menelusuri rempah, aroma, dan warisan rasa yang membentuk kuliner Jawa Tengah.
@@ -141,7 +150,7 @@ export default function RasaPage() {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
             {searchQuery && (
-              <button className={styles.clearSearchStyled} onClick={() => setSearchQuery('')}>
+              <button className={styles.clearSearchStyled} onClick={() => { setSearchQuery(''); setDebouncedSearch(''); }}>
                 ×
               </button>
             )}
@@ -175,14 +184,12 @@ export default function RasaPage() {
           {filteredRempah.length > 0 ? (
             filteredRempah.map((r, visibleIndex) => (
               <motion.div 
-                layout
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.2 } }}
                 whileHover={{ y: -8 }}
                 transition={{ 
-                  duration: 0.3,
-                  layout: { type: "tween", ease: "easeInOut", duration: 0.35 }
+                  duration: 0.3
                 }}
                 key={r.id}
                 className={styles.card}
@@ -216,8 +223,8 @@ export default function RasaPage() {
                     src={r.asset} 
                     alt={r.nama} 
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className={styles.cardImage}
-                    unoptimized
                   />
                 </div>
                 
@@ -229,7 +236,6 @@ export default function RasaPage() {
           ) : (
             <motion.div 
               key="not-found"
-              layout="position"
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.2 } }}
@@ -239,7 +245,7 @@ export default function RasaPage() {
               <div className={styles.cardOverlay}></div>
               
               <div className={styles.notFoundContent}>
-                <Image src="/kuliner/mascot_not_found.webp" alt="Mascot Bingung" width={160} height={160} unoptimized />
+                <Image src="/kuliner/mascot_not_found.webp" alt="Mascot Bingung" width={160} height={160} />
                 <h3>Waduh, Rempahnya Mboten Wonten!</h3>
                 <p>Coba gunakan ejaan kata kunci yang lain atau pilih filter rasa yang berbeda untuk menemukan rempah yang kamu cari.</p>
               </div>
@@ -264,8 +270,8 @@ export default function RasaPage() {
                     src={selectedRempah.asset} 
                     alt={selectedRempah.nama} 
                     fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     style={{ objectFit: 'contain' }}
-                    unoptimized
                   />
                 </div>
               </div>
@@ -328,8 +334,8 @@ export default function RasaPage() {
                   src="/motif/decorative-modal-rasa.webp"
                   alt=""
                   fill
+                  sizes="(max-width: 768px) 200px, 300px"
                   className={styles.modalCornerImage}
-                  unoptimized
                 />
               </div>
             </>

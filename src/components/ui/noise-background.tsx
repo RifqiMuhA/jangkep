@@ -3,6 +3,7 @@
 import {
   motion,
   useAnimationFrame,
+  useInView,
   useMotionTemplate,
   useMotionValue,
   useSpring,
@@ -61,8 +62,14 @@ export const NoiseBackground = ({
   animating = true,
 }: NoiseBackgroundProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { margin: "100px" });
   const x = useMotionValue(0);
   const y = useMotionValue(0);
+
+  const boundsRef = useRef({ width: 0, height: 0 });
+  const lastTimeRef = useRef(0);
+  const velocityRef = useRef({ x: 0, y: 0 });
+  const lastDirectionChangeRef = useRef(0);
 
   // Use spring animation for smooth movement
   const springX = useSpring(x, { stiffness: 100, damping: 30 });
@@ -71,19 +78,25 @@ export const NoiseBackground = ({
   // Transform for top gradient strip
   const topGradientX = useTransform(springX, (val) => val * 0.1 - 50);
 
-  const velocityRef = useRef({ x: 0, y: 0 });
-  const lastDirectionChangeRef = useRef(0);
-
-  // Initialize position to center
+  // Initialize and observe container size without layout thrashing
   useEffect(() => {
     if (!containerRef.current) return;
-
     const container = containerRef.current;
-    const rect = container.getBoundingClientRect();
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    x.set(centerX);
-    y.set(centerY);
+
+    const updateBounds = () => {
+      const rect = container.getBoundingClientRect();
+      boundsRef.current = { width: rect.width, height: rect.height };
+      if (x.get() === 0 && y.get() === 0 && rect.width > 0 && rect.height > 0) {
+        x.set(rect.width / 2);
+        y.set(rect.height / 2);
+      }
+    };
+
+    updateBounds();
+
+    const resizeObserver = new ResizeObserver(updateBounds);
+    resizeObserver.observe(container);
+    return () => resizeObserver.disconnect();
   }, [x, y]);
 
   // Generate random velocity
@@ -109,13 +122,23 @@ export const NoiseBackground = ({
     velocityRef.current = generateRandomVelocityRef.current();
   }, [speed]);
 
-  // Animate using framer-motion's useAnimationFrame
-  useAnimationFrame((time) => {
-    if (!animating || !containerRef.current) return;
+  // Throttled frame loop (~30 FPS) with zero getBoundingClientRect calls
+  const THROTTLE_MS = 33;
 
-    const rect = containerRef.current.getBoundingClientRect();
-    const maxX = rect.width;
-    const maxY = rect.height;
+  useAnimationFrame((time) => {
+    if (!animating || !isInView || !containerRef.current) return;
+
+    if (lastTimeRef.current === 0) {
+      lastTimeRef.current = time;
+      return;
+    }
+
+    if (time - lastTimeRef.current < THROTTLE_MS) return;
+    const elapsed = Math.min(time - lastTimeRef.current, 100);
+    lastTimeRef.current = time;
+
+    const { width: maxX, height: maxY } = boundsRef.current;
+    if (maxX === 0 || maxY === 0) return;
 
     // Change direction randomly every 30-60 seconds (sangat stabil)
     if (time - lastDirectionChangeRef.current > 30000 + Math.random() * 30000) {
@@ -123,12 +146,11 @@ export const NoiseBackground = ({
       lastDirectionChangeRef.current = time;
     }
 
-    const deltaTime = 16;
     const currentX = x.get();
     const currentY = y.get();
 
-    let newX = currentX + velocityRef.current.x * deltaTime;
-    let newY = currentY + velocityRef.current.y * deltaTime;
+    let newX = currentX + velocityRef.current.x * elapsed;
+    let newY = currentY + velocityRef.current.y * elapsed;
 
     const padding = 20;
 

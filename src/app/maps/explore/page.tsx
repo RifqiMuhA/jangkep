@@ -13,6 +13,7 @@ import { MapControls } from '../components/MapControls';
 import { Search, Play, Pause, X } from 'lucide-react';
 import { foodsData, regions, regionCityMap } from '../data/foods';
 import type { Food } from '../data/foods';
+import { getCulturalQuote } from '../data/culturalQuotes';
 import LoadingScreen from '@/components/beranda/LoadingScreen';
 import '../maps.css';
 
@@ -25,6 +26,7 @@ export default function ExploreMapPage() {
   const markersRef = useRef<Map<string, mapboxgl.Marker>>(new Map());
   const podoMarkerRef = useRef<mapboxgl.Marker | null>(null);
   const flyIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const initialFlyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   const [selectedFood, setSelectedFood] = useState<Food | null>(null);
@@ -369,7 +371,7 @@ export default function ExploreMapPage() {
 
     map.on('load', () => {
       setIsMapLoaded(true);
-      setTimeout(() => {
+      initialFlyTimeoutRef.current = setTimeout(() => {
         map.flyTo({
           center: [110.4, -7.3],
           zoom: 8.5,
@@ -428,6 +430,20 @@ export default function ExploreMapPage() {
     toggleMarkers();
 
     return () => {
+      if (initialFlyTimeoutRef.current) {
+        clearTimeout(initialFlyTimeoutRef.current);
+        initialFlyTimeoutRef.current = null;
+      }
+      if (flyIntervalRef.current) {
+        clearInterval(flyIntervalRef.current);
+        flyIntervalRef.current = null;
+      }
+      if (autoTourTimerRef.current) {
+        clearTimeout(autoTourTimerRef.current);
+        autoTourTimerRef.current = null;
+      }
+      podoMarkerRef.current?.remove();
+      podoMarkerRef.current = null;
       map.remove();
       mapRef.current = null;
       document.body.classList.remove('map-is-indonesia');
@@ -663,6 +679,11 @@ export default function ExploreMapPage() {
         markersRef.current.set(food.id, marker);
       });
     });
+
+    return () => {
+      markersRef.current.forEach(m => m.remove());
+      markersRef.current.clear();
+    };
   }, [filteredFoods, selectedFood, currentAutoTourFood, isMapLoaded, handleMarkerClick]);
 
   const [tourFoods, setTourFoods] = useState<Food[]>([]);
@@ -724,13 +745,15 @@ export default function ExploreMapPage() {
 
   // Manage Podo Mascot Visibility
   useEffect(() => {
+    let t1: NodeJS.Timeout | null = null;
+    let t2: NodeJS.Timeout | null = null;
     if (mapContainerRef.current) {
       if (isAutoTourActive) {
         mapContainerRef.current.classList.add('is-auto-tour');
         if (podoMarkerRef.current) {
           const el = podoMarkerRef.current.getElement();
           el.style.display = 'flex';
-          setTimeout(() => {
+          t1 = setTimeout(() => {
             el.style.opacity = '1';
           }, 50);
         }
@@ -739,12 +762,16 @@ export default function ExploreMapPage() {
         if (podoMarkerRef.current) {
           const el = podoMarkerRef.current.getElement();
           el.style.opacity = '0';
-          setTimeout(() => {
+          t2 = setTimeout(() => {
             el.style.display = 'none';
           }, 500); // match transition
         }
       }
     }
+    return () => {
+      if (t1) clearTimeout(t1);
+      if (t2) clearTimeout(t2);
+    };
   }, [isAutoTourActive]);
 
   const handleAutoTourPauseToggle = useCallback(() => setIsAutoTourPaused(p => !p), []);
@@ -1087,8 +1114,10 @@ export default function ExploreMapPage() {
                   <SiPodo
                     message={
                       isAutoTourActive && currentAutoTourFood
-                        ? `${currentAutoTourFood.city} — ${currentAutoTourFood.name} enak tenan!`
-                        : undefined
+                        ? `${currentAutoTourFood.city} — ${getCulturalQuote(currentAutoTourFood)}`
+                        : selectedFood
+                          ? `${selectedFood.city} — ${getCulturalQuote(selectedFood)}`
+                          : undefined
                     }
                     isWalking={isAutoTourActive}
                     style={{ position: 'relative', bottom: 'auto', left: 'auto' }}
