@@ -26,18 +26,31 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
   const maskRef = useRef<HTMLDivElement>(null);
 
   const [progress, setProgress] = useState(0);
-  const [isMounted, setIsMounted] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
 
-  // Lock scroll on mount
+  // Check sessionStorage so loading screen only shows on first visit per session
   React.useEffect(() => {
+    try {
+      const alreadyLoaded = sessionStorage.getItem('jangkep_loaded');
+      if (alreadyLoaded) {
+        if (onComplete) onComplete();
+        return;
+      }
+      sessionStorage.setItem('jangkep_loaded', 'true');
+    } catch {
+      // In case private mode blocks sessionStorage
+    }
+
+    setIsMounted(true);
     document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = '';
     };
-  }, []);
+  }, [onComplete]);
 
   useGSAP(() => {
-    // 1. (Animasi melayang telah dihapus sesuai permintaan)
+    if (!isMounted) return;
+
     const tl = gsap.timeline({
       onComplete: () => {
         // Outro Transition
@@ -53,11 +66,11 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         outroTl.to([textRef.current, progressBarRef.current], {
           y: -20,
           opacity: 0,
-          duration: 0.6,
+          duration: 0.4,
           ease: 'power3.in'
         }, 0);
 
-        // Slide up the loading screen curtain
+        // Slide up the loading screen curtain (tetap 1.2s sesuai preferensi)
         outroTl.to(containerRef.current, {
           yPercent: -100,
           duration: 1.2,
@@ -65,31 +78,31 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
           onComplete: () => {
             document.body.style.overflow = '';
           }
-        }, 0.3);
+        }, 0.2);
       }
     });
 
     // Intro Fade-in
     tl.from([textRef.current, progressBarRef.current], {
       opacity: 0,
-      y: 20,
-      duration: 1,
+      y: 15,
+      duration: 0.4,
       ease: 'power3.out',
-      stagger: 0.2
+      stagger: 0.1
     }, 0);
 
-    // Simulate Loading Process
+    // Simulate Loading Process (dipercepat ke 1.2s agar responsif dan tidak lama menunggu)
     tl.to({}, {
-      duration: 3.5, // 3.5s loading time
+      duration: 1.2,
       ease: 'power1.inOut',
       onUpdate: function() {
         const prog = Math.round(this.progress() * 100);
         setProgress(prog);
         gsap.set(maskRef.current, { width: `${prog}%` });
       }
-    }, 0.5);
+    }, 0.2);
 
-  }, { scope: containerRef });
+  }, { scope: containerRef, dependencies: [isMounted] });
 
   if (!isMounted) return null;
 

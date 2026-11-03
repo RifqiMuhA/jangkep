@@ -14,7 +14,6 @@ import { Search, Play, Pause, X } from 'lucide-react';
 import { foodsData, regions, regionCityMap } from '../data/foods';
 import type { Food } from '../data/foods';
 import { getCulturalQuote } from '../data/culturalQuotes';
-import LoadingScreen from '@/components/beranda/LoadingScreen';
 import '../maps.css';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZ2l0cmF5YTE0MDAiLCJhIjoiY21wcGl1M2hkMGpmaDJwcXBraXdobGZkdCJ9.J5D7thClJjFmcmnYmTlm3g';
@@ -859,7 +858,6 @@ export default function ExploreMapPage() {
 
   return (
     <div id="explore-page-wrapper" style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
-      <LoadingScreen />
       <style dangerouslySetInnerHTML={{
         __html: `
         /* Hide global navigation bar when map is zoomed out */

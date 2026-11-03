@@ -22,7 +22,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { kulinerData } from '@/data/kulinerData';
 import { getCulturalQuote } from './data/culturalQuotes';
-import LoadingScreen from '@/components/beranda/LoadingScreen';
 import './maps.css';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -1516,10 +1515,6 @@ export default function StoryMapsClient() {
   // ═══════════ RENDER ═══════════
   return (
     <div className={`maps-page mode-${mode}`}>
-      <LoadingScreen />
-
-
-
       {/* ████ FULL-SCREEN MAP (Fixed in background) ████ */}
       <div className="map-fixed-layer">
         <div ref={mapContainerRef} style={{ width: '100%', height: '100%' }} />

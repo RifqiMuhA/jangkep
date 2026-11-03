@@ -3,11 +3,13 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import Map from 'react-map-gl/mapbox';
+import dynamic from 'next/dynamic';
 import { Map as MapIcon } from 'lucide-react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { kotaAktif, type KotaAktif } from '@/data/peta';
 import styles from './MiniPetaSection.module.css';
+
+const Map = dynamic(() => import('react-map-gl/mapbox'), { ssr: false });
 
 export default function MiniPetaSection() {
   const [selectedCity, setSelectedCity] = useState<KotaAktif | null>(null);
