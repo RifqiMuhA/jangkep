@@ -31,7 +31,11 @@ const pinyonScript = Pinyon_Script({
 });
 
 export const metadata: Metadata = {
-  title: "Jangkep. - Jangkep Rasane, Jangkep Critane",
+  metadataBase: new URL("https://jangkep.my.id"),
+  title: {
+    default: "Jangkep. - Jangkep Rasane, Jangkep Critane",
+    template: "%s | Jangkep.",
+  },
   description:
     "Dokumentasi dan penelusuran khazanah kuliner Jawa Tengah. Mengulik filosofi bumbu, riwayat racikan dapur leluhur, serta peta sebaran rasa dari pesisir hingga pedalaman tanah Jawa.",
   keywords: [
@@ -61,6 +65,7 @@ export const metadata: Metadata = {
     title: "Jangkep. - Jangkep Rasane, Jangkep Critane",
     description:
       "Dokumentasi dan penelusuran khazanah kuliner Jawa Tengah. Mengulik filosofi bumbu, riwayat racikan dapur leluhur, serta peta sebaran rasa dari pesisir hingga pedalaman tanah Jawa.",
+    url: "https://jangkep.my.id",
     siteName: "Jangkep",
     locale: "id_ID",
     type: "website",
