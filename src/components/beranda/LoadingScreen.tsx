@@ -26,31 +26,17 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
   const maskRef = useRef<HTMLDivElement>(null);
 
   const [progress, setProgress] = useState(0);
-  const [isMounted, setIsMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(true);
 
-  // Check sessionStorage so loading screen only shows on first visit per session
+  // Kunci scroll saat loading aktif agar pengguna tidak scroll sebelum tirai terbuka
   React.useEffect(() => {
-    try {
-      const alreadyLoaded = sessionStorage.getItem('jangkep_loaded');
-      if (alreadyLoaded) {
-        if (onComplete) onComplete();
-        return;
-      }
-      sessionStorage.setItem('jangkep_loaded', 'true');
-    } catch {
-      // In case private mode blocks sessionStorage
-    }
-
-    setIsMounted(true);
     document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = '';
     };
-  }, [onComplete]);
+  }, []);
 
   useGSAP(() => {
-    if (!isMounted) return;
-
     const tl = gsap.timeline({
       onComplete: () => {
         // Outro Transition
@@ -86,14 +72,14 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
     tl.from([textRef.current, progressBarRef.current], {
       opacity: 0,
       y: 15,
-      duration: 0.4,
+      duration: 0.5,
       ease: 'power3.out',
       stagger: 0.1
     }, 0);
 
-    // Simulate Loading Process (dipercepat ke 1.2s agar responsif dan tidak lama menunggu)
+    // Simulate Loading Process (durasi 1.8s: cukup untuk load aset & animasi rempah terlihat anggun)
     tl.to({}, {
-      duration: 1.2,
+      duration: 1.8,
       ease: 'power1.inOut',
       onUpdate: function() {
         const prog = Math.round(this.progress() * 100);
@@ -102,7 +88,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
       }
     }, 0.2);
 
-  }, { scope: containerRef, dependencies: [isMounted] });
+  }, { scope: containerRef });
 
   if (!isMounted) return null;
 
