@@ -223,7 +223,9 @@ export default function RasaPage() {
                     src={r.asset} 
                     alt={r.nama} 
                     fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    sizes="(max-width: 640px) 180px, 240px"
+                    priority={visibleIndex < 6}
+                    quality={75}
                     className={styles.cardImage}
                   />
                 </div>
