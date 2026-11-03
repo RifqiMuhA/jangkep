@@ -28,15 +28,26 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
   const [progress, setProgress] = useState(0);
   const [isMounted, setIsMounted] = useState(true);
 
-  // Kunci scroll saat loading aktif agar pengguna tidak scroll sebelum tirai terbuka
+  // Kunci scroll saat loading aktif dan beri pengaman fallback
   React.useEffect(() => {
     document.body.style.overflow = 'hidden';
+    
+    // Safety fallback: pastikan layar pasti terbuka maksimal dalam 3.5s jika ada kendala jaringan/script
+    const safetyTimer = setTimeout(() => {
+      document.body.style.overflow = '';
+      setIsMounted(false);
+      if (onComplete) onComplete();
+    }, 3500);
+
     return () => {
+      clearTimeout(safetyTimer);
       document.body.style.overflow = '';
     };
-  }, []);
+  }, [onComplete]);
 
   useGSAP(() => {
+    const progressTracker = { value: 0 };
+
     const tl = gsap.timeline({
       onComplete: () => {
         // Outro Transition
@@ -52,7 +63,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         outroTl.to([textRef.current, progressBarRef.current], {
           y: -20,
           opacity: 0,
-          duration: 0.4,
+          duration: 0.35,
           ease: 'power3.in'
         }, 0);
 
@@ -64,29 +75,32 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
           onComplete: () => {
             document.body.style.overflow = '';
           }
-        }, 0.2);
+        }, 0.15);
       }
     });
 
-    // Intro Fade-in
+    // Intro Fade-in cepat
     tl.from([textRef.current, progressBarRef.current], {
       opacity: 0,
       y: 15,
-      duration: 0.5,
+      duration: 0.35,
       ease: 'power3.out',
-      stagger: 0.1
+      stagger: 0.08
     }, 0);
 
-    // Simulate Loading Process (durasi 1.8s: cukup untuk load aset & animasi rempah terlihat anggun)
-    tl.to({}, {
-      duration: 1.8,
+    // Animasi Progress Bar 0 -> 100% (durasi 1.2s: cepat, lincah, dan anti-macet)
+    tl.to(progressTracker, {
+      value: 100,
+      duration: 1.2,
       ease: 'power1.inOut',
-      onUpdate: function() {
-        const prog = Math.round(this.progress() * 100);
+      onUpdate: () => {
+        const prog = Math.round(progressTracker.value);
         setProgress(prog);
-        gsap.set(maskRef.current, { width: `${prog}%` });
+        if (maskRef.current) {
+          gsap.set(maskRef.current, { width: `${prog}%` });
+        }
       }
-    }, 0.2);
+    }, 0.1);
 
   }, { scope: containerRef });
 
