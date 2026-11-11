@@ -18,6 +18,25 @@ export default function MiniPetaSection() {
   const [svgLoaded, setSvgLoaded] = useState(false);
 
   const mapWrapperRef = useRef<HTMLDivElement>(null);
+  // Peta Mapbox (sekitar 3 MB JavaScript) baru dimuat saat bagian ini hampir terlihat di layar.
+  const sectionRef = useRef<HTMLElement>(null);
+  const [showMap, setShowMap] = useState(false);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setShowMap(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '600px 0px' },
+    );
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
   const panelRef = useRef<HTMLDivElement>(null);
   const animKeyRef = useRef(0);
 
@@ -146,12 +165,12 @@ export default function MiniPetaSection() {
   }, []);
 
   return (
-    <section className={styles.petaSection} id="peta-kuliner">
+    <section ref={sectionRef} className={styles.petaSection} id="peta-kuliner">
       <div className={styles.mapScene}>
         
         {/* Layer 1: Base Mapbox */}
         <div className={styles.mapboxLayer}>
-          <Map
+          {showMap && <Map
             mapboxAccessToken="pk.eyJ1IjoiZ2l0cmF5YTE0MDAiLCJhIjoiY21wcGl6YXR2MDFvMDJyc2VrOTJydHR1NyJ9.C1AZIJYhZ5ILwA6BbWrnWw"
             initialViewState={{
               longitude: 110.15,
@@ -167,7 +186,7 @@ export default function MiniPetaSection() {
             doubleClickZoom={false}
             touchZoomRotate={false}
             keyboard={false}
-          />
+          />}
         </div>
 
         {/* Layer 2: Dark warm overlay */}

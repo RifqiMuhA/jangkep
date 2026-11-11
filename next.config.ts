@@ -2,7 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    formats: ['image/avif', 'image/webp'],
+    // Hanya WebP: AVIF memang sedikit lebih kecil, tetapi membuatnya sangat berat untuk CPU
+    // sehingga kunjungan pertama ke halaman bergambar banyak bisa sangat lambat.
+    formats: ['image/webp'],
     remotePatterns: [
       {
         protocol: 'https',

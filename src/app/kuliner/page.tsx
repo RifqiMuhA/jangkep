@@ -9,11 +9,11 @@ import RotatingTextStyles from '@/components/RotatingText.module.css';
 import styles from './kuliner.module.css';
 
 const kulinerExperts = [
-  { id: 1, name: "Mbah Joyo", designation: "Legenda Bakso", image: "/avatars/avatar_1.png" },
-  { id: 3, name: "Raden Bima", designation: "Master Sate", image: "/avatars/avatar_3.png" },
-  { id: 5, name: "Ki Darmo", designation: "Spesialis Gudeg", image: "/avatars/avatar_5.png" },
-  { id: 4, name: "Sekar Ayu", designation: "Ratu Dawet", image: "/avatars/avatar_4.png" },
-  { id: 2, name: "Nyi Roro", designation: "Pakar Lapis Legit", image: "/avatars/avatar_2.png" },
+  { id: 1, name: "Mbah Joyo", designation: "Legenda Bakso", image: "/avatars/avatar_1.webp" },
+  { id: 3, name: "Raden Bima", designation: "Master Sate", image: "/avatars/avatar_3.webp" },
+  { id: 5, name: "Ki Darmo", designation: "Spesialis Gudeg", image: "/avatars/avatar_5.webp" },
+  { id: 4, name: "Sekar Ayu", designation: "Ratu Dawet", image: "/avatars/avatar_4.webp" },
+  { id: 2, name: "Nyi Roro", designation: "Pakar Lapis Legit", image: "/avatars/avatar_2.webp" },
 ];
 
 const mascotData = [

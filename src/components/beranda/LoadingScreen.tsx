@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
+import Image from 'next/image';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import styles from './LoadingScreen.module.css';
@@ -130,7 +131,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
             <div className={styles.spicesRowBg}>
               {SPICES.map((src, idx) => (
                 <div key={`bg-${idx}`} className={styles.spiceItemBg}>
-                  <img src={src} alt="" />
+                  <Image src={src} alt="" fill sizes="40px" priority />
                 </div>
               ))}
             </div>
@@ -140,7 +141,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
               <div className={styles.spicesRowFg}>
                 {SPICES.map((src, idx) => (
                   <div key={`fg-${idx}`} className={styles.spiceItemFg}>
-                    <img src={src} alt="" />
+                    <Image src={src} alt="" fill sizes="40px" priority />
                   </div>
                 ))}
               </div>
