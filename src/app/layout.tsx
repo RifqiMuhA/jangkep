@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, DM_Sans, Noto_Sans_Javanese, Pinyon_Script } from "next/font/google";
 import Navbar from "@/components/Navbar";
+import BongkarFab from "@/components/bongkar/BongkarFab";
 import LenisProvider from "@/components/providers/LenisProvider";
 import "./globals.css";
 
@@ -93,6 +94,7 @@ export default function RootLayout({
         <LenisProvider>
           <Navbar />
           {children}
+          <BongkarFab />
         </LenisProvider>
       </body>
     </html>

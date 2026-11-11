@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useSyncExternalStore } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { rempahData, type Rempah } from '@/data/rempah';
 import styles from './RasaPage.module.css';
-import { X } from 'lucide-react';
+import { ArrowRight, Camera, X } from 'lucide-react';
 
 const FLAVOR_FILTERS = [
   { label: 'SEMUA', value: null },
@@ -18,6 +19,27 @@ const FLAVOR_FILTERS = [
   { label: 'BUMI', value: 'bumi' },
   { label: 'PAHIT', value: 'pahit' },
 ];
+
+// Jumlah kartu per halaman mengikuti jumlah kolom grid: 3 kolom (laptop), 2 kolom (tablet), 1 kolom (ponsel).
+const PER_PAGE_RULES = [
+  { query: '(max-width: 640px)', perPage: 6 },
+  { query: '(max-width: 1024px)', perPage: 8 },
+];
+const DEFAULT_PER_PAGE = 9;
+
+/** Angka Jawa untuk nomor halaman: 1 -> ꧑, 12 -> ꧑꧒. */
+const ANGKA_JAWA = ['꧐', '꧑', '꧒', '꧓', '꧔', '꧕', '꧖', '꧗', '꧘', '꧙'];
+const toAngkaJawa = (n: number) => String(n).split('').map(d => ANGKA_JAWA[Number(d)]).join('');
+
+function subscribePerPage(onChange: () => void) {
+  const lists = PER_PAGE_RULES.map((rule) => window.matchMedia(rule.query));
+  lists.forEach((list) => list.addEventListener('change', onChange));
+  return () => lists.forEach((list) => list.removeEventListener('change', onChange));
+}
+
+function getPerPage() {
+  return PER_PAGE_RULES.find((rule) => window.matchMedia(rule.query).matches)?.perPage ?? DEFAULT_PER_PAGE;
+}
 
 const getFlavorTags = (peran: string): string[] => {
   const tags: string[] = [];
@@ -65,7 +87,10 @@ const AKSARA_DICT: Record<string, string> = {
   'kapulaga': 'ꦏꦥꦸꦭꦒ',
   'cengkeh': 'ꦕꦼꦁꦏꦺꦃ',
   'kayu-manis': 'ꦏꦪꦸꦩꦤꦶꦱ꧀',
-  'kayu-secang': 'ꦱꦼꦕꦁ'
+  'kayu-secang': 'ꦱꦼꦕꦁ',
+  'bawang-putih': 'ꦧꦮꦁ',
+  'cabai': 'ꦭꦺꦴꦩ꧀ꦧꦺꦴꦏ꧀',
+  'merica': 'ꦩꦿꦶꦕ'
 };
 
 
@@ -93,20 +118,50 @@ export default function RasaPage() {
     }));
   }, []);
 
-  const filteredRempah = useMemo(() => {
-    return rempahWithTags.filter(r => {
-      const searchLower = debouncedSearch.toLowerCase();
-      const matchesSearch = r.nama.toLowerCase().includes(searchLower) ||
-                            r.makanan.toLowerCase().includes(searchLower) ||
-                            r.peran.toLowerCase().includes(searchLower);
-      
-      const matchesFilter = activeFilter 
-        ? r.lowerTags.includes(activeFilter.toLowerCase())
-        : true;
+  // Hasil pencarian saja (dipakai juga untuk jumlah di tiap filter).
+  const searchedRempah = useMemo(() => {
+    const searchLower = debouncedSearch.toLowerCase();
+    return rempahWithTags.filter(r =>
+      r.nama.toLowerCase().includes(searchLower) ||
+      r.makanan.toLowerCase().includes(searchLower) ||
+      r.peran.toLowerCase().includes(searchLower)
+    );
+  }, [debouncedSearch, rempahWithTags]);
 
-      return matchesSearch && matchesFilter;
-    });
-  }, [debouncedSearch, activeFilter, rempahWithTags]);
+  const filterCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const f of FLAVOR_FILTERS) {
+      const value = f.value;
+      counts[f.label] = value ? searchedRempah.filter(r => r.lowerTags.includes(value)).length : searchedRempah.length;
+    }
+    return counts;
+  }, [searchedRempah]);
+
+  const filteredRempah = useMemo(() => {
+    if (!activeFilter) return searchedRempah;
+    return searchedRempah.filter(r => r.lowerTags.includes(activeFilter.toLowerCase()));
+  }, [searchedRempah, activeFilter]);
+
+  // Pagination. Halaman kembali ke 1 setiap kali pencarian atau filter berubah.
+  const perPage = useSyncExternalStore(subscribePerPage, getPerPage, () => DEFAULT_PER_PAGE);
+  const listKey = `${debouncedSearch}|${activeFilter ?? ''}`;
+  const [pageState, setPageState] = useState({ key: listKey, page: 1 });
+  const totalPages = Math.max(1, Math.ceil(filteredRempah.length / perPage));
+  const currentPage = Math.min(pageState.key === listKey ? pageState.page : 1, totalPages);
+  const pageStart = (currentPage - 1) * perPage;
+  const pagedRempah = filteredRempah.slice(pageStart, pageStart + perPage);
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  const goToPage = (page: number) => {
+    if (page < 1 || page > totalPages || page === currentPage) return;
+    setPageState({ key: listKey, page });
+    const grid = gridRef.current;
+    if (grid) {
+      // Gulir ke awal grid, menyisakan ruang untuk navbar.
+      const top = grid.getBoundingClientRect().top + window.scrollY - 110;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     if (selectedRempah) {
@@ -163,10 +218,35 @@ export default function RasaPage() {
               key={f.label}
               className={`${styles.filterPill} ${activeFilter === f.value ? styles.active : ''}`}
               onClick={() => setActiveFilter(activeFilter === f.value ? null : f.value)}
+              disabled={f.value !== null && filterCounts[f.label] === 0}
+              aria-pressed={activeFilter === f.value}
             >
               {f.label}
+              <span className={styles.filterCount}>{filterCounts[f.label]}</span>
             </button>
           ))}
+        </div>
+
+        <div className={styles.bongkarCtaWrap}>
+          <Link href="/bongkar" className={styles.bongkarCta}>
+            {/* Polaroid masakan yang sedang "dipindai" */}
+            <span className={styles.ctaPolaroid} aria-hidden>
+              <span className={styles.ctaPhoto}>
+                <Image src="/kuliner/gallery/soto_1.webp" alt="" fill sizes="72px" />
+                <span className={styles.ctaScan} />
+              </span>
+            </span>
+            <span className={styles.ctaText}>
+              <span className={styles.ctaEyebrow}>
+                <Camera size={12} strokeWidth={2.5} /> Bongkar Rempah
+              </span>
+              <span className={styles.ctaTitle}>Punya foto masakan?</span>
+              <span className={styles.ctaSub}>Si Podo tebak rempah dan cara masaknya.</span>
+            </span>
+            <span className={styles.ctaGo}>
+              Bongkar <ArrowRight size={16} strokeWidth={2.5} />
+            </span>
+          </Link>
         </div>
       </section>
 
@@ -179,10 +259,12 @@ export default function RasaPage() {
         {/* Texture Overlay */}
         <div className={styles.textureOverlay} />
 
-        <div className={styles.grid}>
-          <AnimatePresence>
+        <div className={styles.grid} ref={gridRef}>
+          <AnimatePresence mode="popLayout">
           {filteredRempah.length > 0 ? (
-            filteredRempah.map((r, visibleIndex) => (
+            pagedRempah.map((r, pageIndex) => {
+              const visibleIndex = pageStart + pageIndex;
+              return (
               <motion.div 
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -234,7 +316,8 @@ export default function RasaPage() {
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </div>
               </motion.div>
-            ))
+              );
+            })
           ) : (
             <motion.div 
               key="not-found"
@@ -255,6 +338,44 @@ export default function RasaPage() {
           )}
           </AnimatePresence>
         </div>
+
+        {totalPages > 1 && (
+          <nav className={styles.pagination} aria-label="Halaman rempah">
+            {/* Panah memakai ornamen awan Jangkep (motif_button_kiri/kanan) */}
+            <button
+              type="button"
+              className={`${styles.pageArrow} ${styles.pageArrowPrev}`}
+              onClick={() => goToPage(currentPage - 1)}
+              disabled={currentPage === 1}
+              aria-label="Halaman sebelumnya"
+            />
+            <div className={styles.pageNumbers}>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                <button
+                  type="button"
+                  key={page}
+                  className={`${styles.pageNumber} ${page === currentPage ? styles.pageActive : ''}`}
+                  onClick={() => goToPage(page)}
+                  aria-label={`Halaman ${page}`}
+                  aria-current={page === currentPage ? 'page' : undefined}
+                >
+                  <span className={styles.pageDigit}>{page}</span>
+                  <span className={styles.pageAksara} aria-hidden>{toAngkaJawa(page)}</span>
+                </button>
+              ))}
+            </div>
+            <button
+              type="button"
+              className={`${styles.pageArrow} ${styles.pageArrowNext}`}
+              onClick={() => goToPage(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              aria-label="Halaman berikutnya"
+            />
+            <span className={styles.pageInfo}>
+              {pageStart + 1}–{Math.min(pageStart + perPage, filteredRempah.length)} dari {filteredRempah.length} rempah
+            </span>
+          </nav>
+        )}
       </section>
 
       {/* FULLSCREEN MODAL */}

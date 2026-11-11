@@ -30,4 +30,8 @@ export const rempahData: Rempah[] = [
   { id: 'cengkeh', nama: 'Cengkeh', namaJawa: 'Cengkeh', asset: '/rempah/rempah-11.webp', width: 300, height: 300, peran: 'Aroma sangat kuat, pedas manis. Sedikit saja sudah cukup memberi karakter masakan.', makanan: 'Semur Jawa, Rendang, Gulai' },
   { id: 'kayu-manis', nama: 'Kayu Manis', namaJawa: 'Kayu Manis', asset: '/rempah/rempah-10.webp', width: 380, height: 250, peran: 'Manis hangat aromatik. Dipakai batangan utuh di masakan berkuah dan kari Jawa.', makanan: 'Semur, Rendang, Kolak' },
   { id: 'kayu-secang', nama: 'Kayu Secang', namaJawa: 'Secang', asset: '/rempah/rempah-18.webp', width: 350, height: 280, peran: 'Pewarna merah & antioksidan kuat. Tulang punggung minuman tradisional Jawa.', makanan: 'Wedang Uwuh — identitas minuman Jawa' },
+  // Bumbu tambahan (gambar dari tim di public/bongkar/bumbu/). Teks masih draf, perlu diperiksa tim.
+  { id: 'bawang-putih', nama: 'Bawang Putih', namaJawa: 'Bawang', asset: '/bongkar/bumbu/bawang_putih.webp', width: 340, height: 340, peran: 'Aroma gurih yang tajam saat ditumis. Pasangan bawang merah dalam hampir semua bumbu dasar Jawa.', makanan: 'Opor Ayam, Soto, Sambal Bawang' },
+  { id: 'cabai', nama: 'Cabai', namaJawa: 'Lombok', asset: '/bongkar/bumbu/cabai.webp', width: 340, height: 340, peran: 'Rasa pedas hangat yang membangkitkan selera. Memberi warna merah menyala pada sambal dan masakan berkuah.', makanan: 'Sambal, Tongseng, Mangut Lele' },
+  { id: 'merica', nama: 'Merica', namaJawa: 'Mrica', asset: '/bongkar/bumbu/merica.webp', width: 340, height: 340, peran: 'Pedas hangat yang halus dan wangi. Penghangat kuah bening seperti soto dan sop.', makanan: 'Soto, Bakso, Sop Jawa' },
 ];

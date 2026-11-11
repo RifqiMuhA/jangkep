@@ -1,0 +1,97 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: rgba(26, 10, 2, 0.75);
+  backdrop-filter: blur(6px);
+}
+
+.card {
+  position: relative;
+  width: min(460px, 100%);
+  margin-top: 56px;
+  padding: 72px 28px 28px;
+  border-radius: 24px;
+  background-color: var(--color-krem-mori, #F2EAD3);
+  background-image: url('/games/game1/motif_bawah_kiri.webp'), url('/games/game1/motif_bawah_kanan.webp');
+  background-position: bottom left, bottom right;
+  background-repeat: no-repeat;
+  background-size: auto 70px, auto 70px;
+  color: var(--color-coklat-batik, #3B1F0C);
+  text-align: center;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+
+.mascot {
+  position: absolute;
+  left: 50%;
+  top: -64px;
+  width: 128px;
+  height: 128px;
+  transform: translateX(-50%);
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-emas-keris, #B8860B);
+}
+
+.title {
+  margin-top: 6px;
+  font-family: var(--font-playfair), serif;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.title em {
+  color: var(--color-emas-keris, #B8860B);
+}
+
+.text {
+  margin: 10px 0 22px;
+  font-size: 14px;
+  line-height: 1.6;
+  opacity: 0.8;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-bottom: 8px;
+}
+
+.primary,
+.ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: var(--radius-buttons, 24px);
+  font-family: var(--font-playfair), serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primary {
+  border: none;
+  background: var(--color-kuning-kepodang, #F5C400);
+  color: var(--color-coklat-batik, #3B1F0C);
+  box-shadow: var(--shadow-button-accent);
+}
+
+.ghost {
+  border: 1px solid rgba(59, 31, 12, 0.3);
+  background: transparent;
+  color: var(--color-coklat-batik, #3B1F0C);
+}

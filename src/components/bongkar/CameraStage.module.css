@@ -1,0 +1,442 @@
+/* === Layar kamera penuh === */
+
+.stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-hitam-arang, #1A0A02);
+  color: var(--color-krem-mori, #F2EAD3);
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.videoOn {
+  opacity: 1;
+}
+
+.mirrored {
+  transform: scaleX(-1);
+}
+
+.kitchenBackdrop {
+  position: absolute;
+  inset: -20px;
+  background: url('/kuliner/methods/background_methods.webp') center / cover no-repeat;
+  filter: blur(6px) brightness(0.45) saturate(1.1);
+}
+
+/* Gradasi atas-bawah supaya teks dan tombol tetap terbaca di atas video */
+.shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(26, 10, 2, 0.75) 0%, rgba(26, 10, 2, 0) 30%),
+    linear-gradient(to top, rgba(26, 10, 2, 0.85) 0%, rgba(26, 10, 2, 0) 32%);
+}
+
+.flash {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  background: #fff;
+  pointer-events: none;
+}
+
+.header {
+  position: absolute;
+  top: calc(var(--nav-h, 84px) + 12px);
+  left: 0;
+  right: 0;
+  z-index: 5;
+  text-align: center;
+  padding: 0 24px;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
+}
+
+.eyebrow {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: var(--radius-badges, 99px);
+  background: var(--color-kuning-kepodang, #F5C400);
+  color: var(--color-coklat-batik, #3B1F0C);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow: none;
+}
+
+.title {
+  margin-top: 10px;
+  font-family: var(--font-playfair), serif;
+  font-size: clamp(30px, 4.4vw, 52px);
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.hint {
+  margin: 6px 0 0;
+  font-size: 15px;
+  opacity: 0.85;
+}
+
+.status {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-family: var(--font-playfair), serif;
+  font-style: italic;
+  font-size: 20px;
+  opacity: 0.85;
+}
+
+/* Bingkai bidik */
+.viewfinder {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  top: 58%;
+  width: min(62vw, 60vh, 620px);
+  aspect-ratio: 4 / 3;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: breathe 2.6s ease-in-out infinite;
+}
+
+.viewfinder span {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-color: var(--color-kuning-kepodang, #F5C400);
+  border-style: solid;
+  border-width: 0;
+  filter: drop-shadow(0 0 8px rgba(245, 196, 0, 0.6));
+}
+
+.cornerTL { top: 0; left: 0; border-top-width: 4px !important; border-left-width: 4px !important; border-top-left-radius: 18px; }
+.cornerTR { top: 0; right: 0; border-top-width: 4px !important; border-right-width: 4px !important; border-top-right-radius: 18px; }
+.cornerBL { bottom: 0; left: 0; border-bottom-width: 4px !important; border-left-width: 4px !important; border-bottom-left-radius: 18px; }
+.cornerBR { bottom: 0; right: 0; border-bottom-width: 4px !important; border-right-width: 4px !important; border-bottom-right-radius: 18px; }
+
+@keyframes breathe {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.95; }
+  50% { transform: translate(-50%, -50%) scale(1.025); opacity: 0.7; }
+}
+
+/* Kartu cadangan saat kamera tidak tersedia */
+.fallbackCard {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  top: 54%;
+  transform: translate(-50%, -50%);
+  width: min(440px, calc(100% - 32px));
+  padding: 28px 28px 24px;
+  border-radius: 24px;
+  background: var(--color-krem-mori, #F2EAD3);
+  color: var(--color-coklat-batik, #3B1F0C);
+  text-align: center;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+  background-image: url('/games/game1/motif_bawah_kiri.webp'), url('/games/game1/motif_bawah_kanan.webp');
+  background-position: bottom left, bottom right;
+  background-repeat: no-repeat;
+  background-size: auto 70px, auto 70px;
+}
+
+.fallbackMascot {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: -84px auto 4px;
+}
+
+.fallbackCard h2 {
+  font-family: var(--font-playfair), serif;
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.fallbackCard p {
+  margin: 6px 0 18px;
+  font-size: 14px;
+  opacity: 0.75;
+}
+
+.fallbackUpload {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 26px;
+  border: none;
+  border-radius: var(--radius-buttons, 24px);
+  background: var(--color-kuning-kepodang, #F5C400);
+  color: var(--color-coklat-batik, #3B1F0C);
+  font-family: var(--font-playfair), serif;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-button-accent);
+}
+
+.fallbackHint {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.linkButton {
+  margin-top: 10px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-emas-keris, #B8860B);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Lapisan konfirmasi foto */
+.review {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--nav-h, 84px) + 150px) 24px 150px;
+}
+
+.reviewBlur {
+  position: absolute;
+  inset: -40px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(28px) brightness(0.45);
+}
+
+.reviewFrame {
+  position: relative;
+  max-width: min(720px, 100%);
+  max-height: 100%;
+  padding: 10px;
+  border-radius: 18px;
+  background: var(--color-krem-mori, #F2EAD3);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55), 0 0 0 2px rgba(184, 134, 11, 0.6);
+}
+
+.reviewFrame img {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100svh - var(--nav-h, 84px) - 330px);
+  border-radius: 10px;
+  object-fit: contain;
+}
+
+.error {
+  position: absolute;
+  z-index: 8;
+  left: 50%;
+  bottom: 150px;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 8px 16px;
+  border-radius: 99px;
+  background: var(--color-rasa-pedas, #C0392B);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Kontrol bawah */
+.controls {
+  position: absolute;
+  z-index: 7;
+  left: 50%;
+  bottom: max(28px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: 84px auto 84px;
+  align-items: center;
+  justify-items: center;
+  gap: 28px;
+}
+
+.sideButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-krem-mori, #F2EAD3);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.sideButton svg {
+  box-sizing: content-box;
+  padding: 14px;
+  border-radius: 50%;
+  background: rgba(242, 234, 211, 0.16);
+  border: 1px solid rgba(242, 234, 211, 0.35);
+  backdrop-filter: blur(6px);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.sideButton:hover svg {
+  background: rgba(245, 196, 0, 0.35);
+  transform: translateY(-2px);
+}
+
+.sideButton:disabled {
+  opacity: 0.5;
+  cursor: progress;
+}
+
+.sideSpacer {
+  width: 52px;
+}
+
+.shutter {
+  width: 84px;
+  height: 84px;
+  padding: 6px;
+  border-radius: 50%;
+  border: 4px solid var(--color-krem-mori, #F2EAD3);
+  background: transparent;
+  cursor: pointer;
+  box-shadow: 0 0 0 6px rgba(245, 196, 0, 0.25), 0 10px 30px rgba(0, 0, 0, 0.4);
+  transition: transform 0.15s ease;
+}
+
+.shutter:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.shutter:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.shutterInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--color-kuning-kepodang, #F5C400);
+  color: var(--color-coklat-batik, #3B1F0C);
+}
+
+.bongkarButton {
+  padding: 18px 48px;
+  border: none;
+  border-radius: 99px;
+  background: var(--color-kuning-kepodang, #F5C400);
+  color: var(--color-coklat-batik, #3B1F0C);
+  font-family: var(--font-playfair), serif;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 0 0 6px rgba(245, 196, 0, 0.25), 0 12px 32px rgba(245, 196, 0, 0.35);
+}
+
+/* Si Podo di pojok kiri bawah */
+.podo {
+  position: absolute;
+  z-index: 6;
+  left: 28px;
+  bottom: 24px;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.podoImage {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  order: -1;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45));
+}
+
+.podoBubble {
+  margin-bottom: 96px;
+  max-width: 190px;
+  padding: 10px 14px;
+  border-radius: 16px 16px 16px 4px;
+  background: var(--color-krem-mori, #F2EAD3);
+  color: var(--color-coklat-batik, #3B1F0C);
+  font-family: var(--font-playfair), serif;
+  font-size: 14px;
+  font-style: italic;
+  line-height: 1.35;
+  box-shadow: var(--shadow-card);
+}
+
+@media (max-width: 900px) {
+  .podo {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .controls {
+    gap: 20px;
+    grid-template-columns: 64px auto 64px;
+  }
+
+  .viewfinder {
+    width: 78vw;
+    aspect-ratio: 3 / 4;
+    top: 52%;
+  }
+
+  .bongkarButton {
+    padding: 16px 36px;
+    font-size: 21px;
+  }
+
+  .review {
+    padding-top: calc(var(--nav-h, 84px) + 160px);
+  }
+
+  .reviewFrame img {
+    max-height: calc(100svh - var(--nav-h, 84px) - 350px);
+  }
+
+  .error {
+    white-space: normal;
+    width: calc(100% - 32px);
+    text-align: center;
+    border-radius: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viewfinder {
+    animation: none;
+  }
+}

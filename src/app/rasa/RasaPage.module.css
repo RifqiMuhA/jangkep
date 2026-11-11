@@ -64,7 +64,7 @@
 .kawungPattern {
   position: absolute;
   inset: 0;
-  background-image: url('/batik/bg-rasa.png');
+  background-image: url('/batik/bg-rasa.webp');
   background-size: 300px; /* Diperkecil dari 'cover' agar motif lebih rapat dan tidak terlalu besar */
   background-position: center;
   /* background-attachment: fixed dihapus karena container .pageBg sudah fixed */
@@ -244,15 +244,20 @@
   position: relative;
   z-index: 10;
   display: flex;
-  gap: 12px;
+  gap: 8px;
   flex-wrap: wrap;
   justify-content: center;
-  margin-bottom: 24px; /* Dibuat lebih kecil lagi (sebelumnya 40px) */
+  max-width: 1100px;
+  margin: 0 auto 24px; /* Dibuat lebih kecil lagi (sebelumnya 40px) */
   padding: 0 24px;
 }
 
 .filterPill {
-  padding: 8px 24px;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px 7px 16px;
   border-radius: 20px;
   border: 1px solid rgba(59, 31, 12, 0.15);
   background: linear-gradient(to right, var(--color-kuning-kepodang) 50%, white 50%);
@@ -262,8 +267,9 @@
   color: var(--color-coklat-batik);
   font-family: var(--font-inter), sans-serif;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 1px;
+  white-space: nowrap;
   cursor: pointer;
   transition: background-position 0.3s ease-out, border-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -280,6 +286,407 @@
   box-shadow: 0 4px 12px rgba(245, 196, 0, 0.3);
 }
 
+.filterPill:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background-position: right bottom;
+}
+
+/* Jumlah rempah di tiap filter */
+.filterCount {
+  min-width: 22px;
+  padding: 2px 6px;
+  border-radius: 99px;
+  background: rgba(59, 31, 12, 0.08);
+  font-size: 11px;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.filterPill.active .filterCount {
+  background: var(--color-coklat-batik);
+  color: var(--color-kuning-kepodang);
+}
+
+/* Di layar sempit filter jadi satu baris yang bisa digeser, dengan tepi kanan memudar sebagai tanda */
+@media (max-width: 768px) {
+  .filterContainer {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 4px 24px 8px;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-mask: linear-gradient(90deg, #000 calc(100% - 40px), transparent 100%);
+    mask: linear-gradient(90deg, #000 calc(100% - 40px), transparent 100%);
+  }
+
+  .filterContainer::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filterPill {
+    scroll-snap-align: start;
+    font-size: 12px;
+    padding: 6px 8px 6px 14px;
+  }
+}
+
+/* Pagination grid rempah, bergaya ornamen Jawa */
+.pagination {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 8px 24px 120px;
+}
+
+.pageNumbers {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Nomor halaman berbentuk wajik (belah ketupat) berbingkai emas */
+.pageNumber {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-krem-mori);
+  cursor: pointer;
+  isolation: isolate;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.pageNumber::before {
+  content: '';
+  position: absolute;
+  inset: 9px;
+  border: 1.5px solid rgba(245, 196, 0, 0.55);
+  border-radius: 4px;
+  background: rgba(242, 234, 211, 0.05);
+  transform: rotate(45deg);
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+/* Titik kecil di keempat sudut wajik, seperti ragam hias */
+.pageNumber::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle, var(--color-kuning-kepodang) 1.6px, transparent 2px) 50% 0 / 6px 6px no-repeat,
+    radial-gradient(circle, var(--color-kuning-kepodang) 1.6px, transparent 2px) 50% 100% / 6px 6px no-repeat,
+    radial-gradient(circle, var(--color-kuning-kepodang) 1.6px, transparent 2px) 0 50% / 6px 6px no-repeat,
+    radial-gradient(circle, var(--color-kuning-kepodang) 1.6px, transparent 2px) 100% 50% / 6px 6px no-repeat;
+  opacity: 0.7;
+}
+
+.pageNumber:hover::before {
+  border-color: var(--color-kuning-kepodang);
+  background: rgba(245, 196, 0, 0.14);
+}
+
+.pageDigit {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-playfair), serif;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.pageAksara {
+  position: relative;
+  z-index: 1;
+  margin-top: 1px;
+  font-family: var(--font-noto-javanese), serif;
+  font-size: 10px;
+  line-height: 1;
+  color: var(--color-kuning-kepodang);
+  opacity: 0.85;
+}
+
+/* Halaman aktif: medalion bunga emas */
+.pageNumber.pageActive {
+  color: var(--color-coklat-batik);
+  transform: scale(1.12);
+}
+
+.pageNumber.pageActive::before {
+  inset: -6px;
+  border: none;
+  border-radius: 0;
+  background: url('/motif/motif_bunga_card.webp') center / contain no-repeat;
+  transform: none;
+  filter: drop-shadow(0 6px 12px rgba(245, 196, 0, 0.35));
+}
+
+/* Lingkaran kuning di tengah medalion supaya angkanya terbaca */
+.pageNumber.pageActive::after {
+  inset: 50% auto auto 50%;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--color-kuning-kepodang);
+  box-shadow: 0 0 0 2px var(--color-coklat-batik), 0 0 0 3.5px rgba(245, 196, 0, 0.8);
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+.pageNumber.pageActive .pageAksara {
+  color: var(--color-coklat-batik);
+}
+
+/* Panah dari ornamen awan, diwarnai emas lewat mask */
+.pageArrow {
+  width: 74px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  background: var(--color-kuning-kepodang);
+  -webkit-mask: url('/motif/motif_button_kiri.webp') center / contain no-repeat;
+  mask: url('/motif/motif_button_kiri.webp') center / contain no-repeat;
+  cursor: pointer;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.pageArrowNext {
+  -webkit-mask-image: url('/motif/motif_button_kanan.webp');
+  mask-image: url('/motif/motif_button_kanan.webp');
+}
+
+.pageArrowPrev:hover:not(:disabled) {
+  transform: translateX(-4px);
+}
+
+.pageArrowNext:hover:not(:disabled) {
+  transform: translateX(4px);
+}
+
+.pageArrow:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.pageInfo {
+  flex-basis: 100%;
+  margin-top: 6px;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(242, 234, 211, 0.6);
+}
+
+/* Tautan ke fitur Bongkar Rempah */
+.bongkarCtaWrap {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  margin: -8px 0 24px;
+  padding: 0 24px;
+}
+
+/* Kartu ajakan Bongkar Rempah berbentuk tiket: lekuk di kedua sisi dan garis putus-putus di dalam */
+.bongkarCta {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: min(100%, 580px);
+  padding: 16px 34px;
+  border-radius: 18px;
+  background:
+    radial-gradient(ellipse at 85% 50%, rgba(245, 196, 0, 0.22) 0%, transparent 55%),
+    repeating-linear-gradient(135deg, rgba(242, 234, 211, 0.04) 0 10px, transparent 10px 20px),
+    var(--color-coklat-batik);
+  color: var(--color-krem-mori);
+  -webkit-mask:
+    radial-gradient(circle at 0 50%, transparent 11px, #000 11.5px) left / 51% 100% no-repeat,
+    radial-gradient(circle at 100% 50%, transparent 11px, #000 11.5px) right / 51% 100% no-repeat;
+  mask:
+    radial-gradient(circle at 0 50%, transparent 11px, #000 11.5px) left / 51% 100% no-repeat,
+    radial-gradient(circle at 100% 50%, transparent 11px, #000 11.5px) right / 51% 100% no-repeat;
+  filter: drop-shadow(0 10px 20px rgba(59, 31, 12, 0.28));
+}
+
+.bongkarCta::before {
+  content: '';
+  position: absolute;
+  inset: 7px 20px;
+  border: 1.5px dashed rgba(245, 196, 0, 0.35);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.ctaPolaroid {
+  position: relative;
+  flex-shrink: 0;
+  padding: 5px 5px 12px;
+  background: var(--color-putih-santan, #FAF7F0);
+  transform: rotate(-7deg);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.bongkarCta:hover .ctaPolaroid {
+  transform: rotate(3deg) scale(1.06);
+}
+
+.ctaPhoto {
+  position: relative;
+  display: block;
+  width: 64px;
+  height: 56px;
+  overflow: hidden;
+}
+
+.ctaPhoto img {
+  object-fit: cover;
+}
+
+/* Garis pindai yang naik turun, seolah fotonya sedang dibongkar */
+.ctaScan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  background: var(--color-kuning-kepodang);
+  box-shadow: 0 0 10px 3px rgba(245, 196, 0, 0.8);
+  animation: ctaScan 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes ctaScan {
+  from { transform: translateY(0); }
+  to { transform: translateY(53px); }
+}
+
+.ctaText {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  text-align: left;
+}
+
+.ctaEyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-kuning-kepodang);
+}
+
+.ctaTitle {
+  margin-top: 2px;
+  font-family: var(--font-playfair), serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.ctaSub {
+  margin-top: 2px;
+  font-size: 13px;
+  opacity: 0.75;
+}
+
+.ctaGo {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: var(--radius-buttons, 24px);
+  background: var(--color-kuning-kepodang);
+  color: var(--color-coklat-batik);
+  font-family: var(--font-playfair), serif;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 0 0 0 rgba(245, 196, 0, 0.6);
+  animation: ctaGlow 2.4s ease-out infinite;
+}
+
+.ctaGo svg {
+  transition: transform 0.25s ease;
+}
+
+.bongkarCta:hover .ctaGo svg {
+  transform: translateX(4px);
+}
+
+@keyframes ctaGlow {
+  0% { box-shadow: 0 0 0 0 rgba(245, 196, 0, 0.55); }
+  100% { box-shadow: 0 0 0 12px rgba(245, 196, 0, 0); }
+}
+
+@media (max-width: 640px) {
+  .bongkarCtaWrap {
+    padding: 0 16px;
+  }
+
+  .bongkarCta {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 14px;
+    row-gap: 10px;
+    align-items: center;
+    padding: 16px 26px;
+  }
+
+  .ctaPolaroid {
+    grid-row: span 2;
+    padding: 4px 4px 9px;
+  }
+
+  .ctaPhoto {
+    width: 56px;
+    height: 50px;
+  }
+
+  @keyframes ctaScan {
+    from { transform: translateY(0); }
+    to { transform: translateY(47px); }
+  }
+
+  .ctaTitle {
+    font-size: 18px;
+  }
+
+  .ctaSub {
+    display: none;
+  }
+
+  .ctaGo {
+    justify-self: start;
+    padding: 7px 14px;
+    font-size: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ctaScan,
+  .ctaGo {
+    animation: none;
+  }
+}
+
 /* Editorial Grid */
 .grid {
   position: relative;
@@ -289,7 +696,7 @@
   gap: 18px;
   max-width: 1400px;
   margin: 20px auto 0; /* Mendorong card kembali ke bawah agar tidak ikut naik dengan transisi */
-  padding: 0 40px 120px;
+  padding: 0 40px 40px;
 }
 
 /* Card Base */
@@ -826,7 +1233,11 @@
 }
 
 @media (max-width: 640px) {
-  .grid { grid-template-columns: 1fr; padding: 0 24px 80px; }
+  .grid { grid-template-columns: 1fr; padding: 0 24px 32px; }
+  .pagination { gap: 10px; padding-bottom: 80px; }
+  .pageNumbers { gap: 8px; }
+  .pageNumber { width: 46px; height: 46px; }
+  .pageArrow { width: 54px; height: 28px; }
   .title { font-size: 48px; }
   .titleJawa { font-size: 48px; }
   .hero { padding: 120px 24px 40px; }

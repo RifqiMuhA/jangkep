@@ -1,0 +1,812 @@
+/* === Layar hasil: satu layar, tanpa scroll panjang === */
+
+.stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: var(--color-coklat-batik, #3B1F0C);
+  color: var(--color-krem-mori, #F2EAD3);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* --- Latar: tekstur parang, sorot cahaya, ornamen, debu emas --- */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.texture {
+  position: absolute;
+  inset: 0;
+  background: url('/batik/batik_parang.webp') repeat;
+  background-size: 360px;
+  opacity: 0.07;
+  pointer-events: none;
+}
+
+.spotlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 55% 45% at 64% 58%, rgba(245, 196, 0, 0.22) 0%, transparent 70%),
+    radial-gradient(ellipse at center, transparent 50%, rgba(26, 10, 2, 0.7) 100%);
+}
+
+.ornamentLeft,
+.ornamentRight {
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  opacity: 0.08;
+  pointer-events: none;
+  animation: spin 80s linear infinite;
+}
+
+.ornamentLeft { left: -140px; bottom: -140px; }
+.ornamentRight { right: -140px; top: 40px; animation-direction: reverse; }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.dust {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.dust span {
+  position: absolute;
+  bottom: -10px;
+  left: calc(var(--i) * 7.3% + 2%);
+  width: 4px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--color-kuning-kepodang, #F5C400);
+  box-shadow: 0 0 8px rgba(245, 196, 0, 0.9);
+  opacity: 0;
+  animation: drift calc(9s + var(--i) * 0.7s) linear infinite;
+  animation-delay: calc(var(--i) * -1.3s);
+}
+
+.dust span:nth-child(3n) { width: 6px; }
+.dust span:nth-child(4n) { width: 3px; }
+
+@keyframes drift {
+  0% { transform: translateY(0) translateX(0); opacity: 0; }
+  15% { opacity: 0.7; }
+  85% { opacity: 0.5; }
+  100% { transform: translateY(-105vh) translateX(40px); opacity: 0; }
+}
+
+/* --- Tata letak dua kolom --- */
+.layout {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 64px);
+  align-items: center;
+  max-width: 1360px;
+  min-height: 100%;
+  margin: 0 auto;
+  padding: calc(var(--nav-h, 84px) + 16px) clamp(20px, 4vw, 56px) 24px;
+}
+
+/* --- Panel kiri --- */
+.dishPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.photo {
+  position: relative;
+  align-self: center;
+  width: min(100%, 220px);
+  padding: 8px 8px 10px;
+  background: var(--color-putih-santan, #FAF7F0);
+  transform: rotate(-3deg);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45);
+}
+
+.photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.tape {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 80px;
+  height: 22px;
+  transform: translateX(-50%) rotate(-4deg);
+  background: rgba(245, 196, 0, 0.55);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.dishInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-kuning-kepodang, #F5C400);
+}
+
+.dishName {
+  font-family: var(--font-playfair), serif;
+  font-size: clamp(34px, 3.6vw, 50px);
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+.correctedNote {
+  margin: -4px 0 0;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.badge {
+  padding: 5px 14px;
+  border-radius: var(--radius-badges, 99px);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.badgeTinggi { background: var(--color-hijau-daun, #4A7C3F); }
+.badgeSedang { background: var(--color-emas-keris, #B8860B); }
+.badgeRendah { background: var(--color-rasa-pedas, #C0392B); }
+
+
+.notes {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  opacity: 0.82;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.correctButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: var(--radius-buttons, 24px);
+  border: 1px solid rgba(242, 234, 211, 0.35);
+  background: transparent;
+  color: var(--color-krem-mori, #F2EAD3);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.correctButton:hover {
+  background: rgba(245, 196, 0, 0.15);
+  border-color: var(--color-kuning-kepodang, #F5C400);
+}
+
+.correctForm {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.correctForm input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 16px;
+  border-radius: var(--radius-buttons, 24px);
+  border: 1px solid rgba(242, 234, 211, 0.4);
+  background: rgba(242, 234, 211, 0.95);
+  font: inherit;
+  font-size: 16px;
+  color: var(--color-coklat-batik, #3B1F0C);
+  outline: none;
+}
+
+.correctForm input:focus {
+  box-shadow: 0 0 0 3px rgba(245, 196, 0, 0.4);
+}
+
+.correctForm button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(242, 234, 211, 0.35);
+  background: transparent;
+  color: var(--color-krem-mori, #F2EAD3);
+  cursor: pointer;
+}
+
+.correctForm button[type='submit'] {
+  background: var(--color-kuning-kepodang, #F5C400);
+  border-color: var(--color-kuning-kepodang, #F5C400);
+  color: var(--color-coklat-batik, #3B1F0C);
+}
+
+.dishLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 6px 12px 6px 6px;
+  border-radius: var(--radius-cards, 12px);
+  background: var(--color-krem-mori, #F2EAD3);
+  color: var(--color-coklat-batik, #3B1F0C);
+  font-family: var(--font-playfair), serif;
+  font-size: 15px;
+  font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.dishLink:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+}
+
+.dishLinkThumb {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: var(--radius-images, 8px);
+}
+
+.dishLinkThumb img {
+  object-fit: cover;
+}
+
+.dishLinkText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.dishLinkText small {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-emas-keris, #B8860B);
+}
+
+.restartButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 2px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius-buttons, 24px);
+  background: var(--color-kuning-kepodang, #F5C400);
+  color: var(--color-coklat-batik, #3B1F0C);
+  font-family: var(--font-playfair), serif;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-button-accent);
+  transition: transform 0.2s ease;
+}
+
+.restartMobile {
+  display: none;
+}
+
+.restartButton:hover {
+  transform: translateY(-2px);
+}
+
+/* --- Panel kanan: tampah --- */
+.tampahPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+
+.heading {
+  text-align: center;
+}
+
+.heading h2 {
+  font-family: var(--font-playfair), serif;
+  font-size: clamp(30px, 3.4vw, 46px);
+  font-weight: 800;
+}
+
+.headingOrnament {
+  display: flex;
+  justify-content: center;
+  margin: 4px 0;
+  filter: brightness(0) invert(0.85) sepia(1) saturate(3) hue-rotate(5deg);
+}
+
+.headingOrnament img {
+  height: 20px;
+  width: auto;
+}
+
+.heading p {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.75;
+}
+
+.tampahStage {
+  position: relative;
+  width: 100%;
+  max-width: 880px;
+  aspect-ratio: 1481 / 520;
+  margin-top: clamp(12px, 3vh, 36px);
+}
+
+.tampahImage {
+  object-fit: contain;
+  filter: drop-shadow(0 34px 40px rgba(0, 0, 0, 0.55));
+}
+
+/* Tiap rempah: tombol ditempatkan di posisinya, isi bagian dalam yang diterbangkan */
+.tampahItem {
+  position: absolute;
+  z-index: 2;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.tampahItem:hover,
+.tampahItem:focus-visible {
+  z-index: 3;
+}
+
+.flyer {
+  position: absolute;
+  inset: 0;
+  display: block;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.float {
+  position: absolute;
+  inset: 0;
+  display: block;
+  animation: floaty 2.8s ease-in-out infinite alternate both;
+  animation-play-state: running;
+}
+
+@keyframes floaty {
+  from { transform: translateY(0) rotate(0deg); }
+  to { transform: translateY(-6px) rotate(-2deg); }
+}
+
+.itemImage {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.3s var(--ease-reveal, ease);
+}
+
+.itemImage img {
+  object-fit: contain;
+  filter: drop-shadow(0 12px 12px rgba(26, 10, 2, 0.5));
+}
+
+.tampahItem:hover .itemImage,
+.tampahItem:focus-visible .itemImage {
+  transform: scale(1.15) rotate(-4deg);
+}
+
+.tampahItem:hover .itemImage img,
+.tampahItem:focus-visible .itemImage img {
+  filter: drop-shadow(0 12px 12px rgba(26, 10, 2, 0.5)) drop-shadow(0 0 14px rgba(245, 196, 0, 0.8));
+}
+
+.itemLabel {
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  transform: translateX(-50%);
+  padding: 3px 10px;
+  border-radius: var(--radius-badges, 99px);
+  background: rgba(26, 10, 2, 0.85);
+  color: var(--color-krem-mori, #F2EAD3);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.itemLabel small {
+  display: block;
+  font-size: 10px;
+  font-weight: 500;
+  opacity: 0.75;
+  text-align: center;
+}
+
+/* Bumbu di luar koleksi: tidak bisa dibuka detailnya, ditandai titik kecil */
+.tampahItemExtra .itemImage::after {
+  content: '';
+  position: absolute;
+  top: 8%;
+  right: 12%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px dashed rgba(242, 234, 211, 0.85);
+}
+
+.tampahItem:hover .itemLabel,
+.tampahItem:focus-visible .itemLabel {
+  opacity: 1;
+}
+
+/* Kepulan saat rempah mendarat */
+.puff {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 8%;
+  height: 34%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255, 236, 190, 0.9) 0%, rgba(245, 196, 0, 0.35) 45%, transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Overlay saat rempah disusun ulang setelah koreksi */
+.recooking {
+  position: absolute;
+  inset: 4% 8%;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(26, 10, 2, 0.82) 0%, rgba(26, 10, 2, 0.6) 55%, transparent 75%);
+}
+
+.recookingPodo {
+  position: relative;
+  width: clamp(70px, 12vw, 130px);
+  aspect-ratio: 1077 / 1460;
+  animation: floaty 0.6s ease-in-out infinite alternate;
+}
+
+.recookingPodo img {
+  object-fit: contain;
+}
+
+.recooking p {
+  margin: 0;
+  padding: 6px 14px;
+  border-radius: 99px;
+  background: var(--color-krem-mori, #F2EAD3);
+  color: var(--color-coklat-batik, #3B1F0C);
+  font-family: var(--font-playfair), serif;
+  font-size: clamp(12px, 1.4vw, 15px);
+  font-style: italic;
+  font-weight: 600;
+  text-align: center;
+}
+
+.recorrectError {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffb3a7;
+}
+
+.emptyTampah {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 22%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+}
+
+.emptyMascot {
+  position: absolute;
+  inset: 0;
+}
+
+.emptyMascot img {
+  object-fit: contain;
+}
+
+/* Chip daftar rempah */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  max-width: 880px;
+  margin-top: clamp(12px, 2.5vh, 28px);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 14px 4px 4px;
+  border-radius: 99px;
+  border: 1px solid rgba(242, 234, 211, 0.2);
+  background: rgba(242, 234, 211, 0.1);
+  color: var(--color-krem-mori, #F2EAD3);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.chip:hover {
+  background: rgba(245, 196, 0, 0.2);
+  border-color: var(--color-kuning-kepodang, #F5C400);
+}
+
+.chipImage {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--color-krem-mori, #F2EAD3);
+  overflow: hidden;
+}
+
+.chipImage img {
+  object-fit: contain;
+  padding: 3px;
+}
+
+.chipMuted {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 14px 4px 4px;
+  border-radius: 99px;
+  border: 1px dashed rgba(242, 234, 211, 0.35);
+  background: transparent;
+  color: rgba(242, 234, 211, 0.7);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.chipMuted:hover,
+.chipMuted:focus-visible {
+  border-color: rgba(245, 196, 0, 0.7);
+  color: var(--color-krem-mori, #F2EAD3);
+}
+
+.emptyHint {
+  margin: 12px 0 0;
+  max-width: 460px;
+  text-align: center;
+  font-size: 14px;
+  opacity: 0.75;
+}
+
+.disclaimer {
+  margin: 14px 0 0;
+  font-size: 12px;
+  font-style: italic;
+  opacity: 0.5;
+}
+
+/* --- Responsif --- */
+/* --- Tab Rempah | Cara Masak --- */
+.tabs {
+  display: inline-flex;
+  gap: 4px;
+  margin-top: 4px;
+  padding: 4px;
+  border: 1px solid rgba(242, 234, 211, 0.2);
+  border-radius: 99px;
+  background: rgba(26, 10, 2, 0.45);
+  backdrop-filter: blur(4px);
+}
+
+.tab {
+  position: relative;
+  padding: 7px 18px;
+  border: none;
+  border-radius: 99px;
+  background: none;
+  color: rgba(242, 234, 211, 0.75);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.tab:hover {
+  color: var(--color-krem-mori, #F2EAD3);
+}
+
+.tabActive,
+.tabActive:hover {
+  color: var(--color-coklat-batik, #3B1F0C);
+}
+
+.tabPill {
+  position: absolute;
+  inset: 0;
+  border-radius: 99px;
+  background: var(--color-kuning-kepodang, #F5C400);
+  box-shadow: var(--shadow-button-accent);
+}
+
+.tabLabel {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.viewHidden {
+  display: none;
+}
+
+.cookingView {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: clamp(8px, 2vh, 20px);
+}
+
+/* Laptop dengan layar pendek: foto dan judul dikecilkan lagi supaya panel kiri muat tanpa scroll. */
+@media (min-width: 901px) and (max-height: 800px) {
+  .photo {
+    width: min(100%, 180px);
+  }
+
+  .dishName {
+    font-size: clamp(30px, 3vw, 40px);
+  }
+
+  .notes {
+    -webkit-line-clamp: 2;
+  }
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 20px;
+    padding-top: calc(var(--nav-h, 84px) + 8px);
+    padding-bottom: 32px;
+  }
+
+  .dishPanel {
+    display: grid;
+    grid-template-columns: 112px minmax(0, 1fr);
+    align-items: start;
+    gap: 16px;
+  }
+
+  .photo {
+    width: 112px;
+    padding: 6px;
+  }
+
+  .tape {
+    width: 48px;
+    height: 16px;
+    top: -8px;
+  }
+
+  .dishName {
+    font-size: 30px;
+  }
+
+  .notes {
+    -webkit-line-clamp: 2;
+  }
+
+  .restartDesktop {
+    display: none;
+  }
+
+  .restartMobile {
+    display: inline-flex;
+    margin-top: 18px;
+  }
+
+  .spotlight {
+    background:
+      radial-gradient(ellipse 80% 35% at 50% 62%, rgba(245, 196, 0, 0.22) 0%, transparent 70%),
+      radial-gradient(ellipse at center, transparent 50%, rgba(26, 10, 2, 0.7) 100%);
+  }
+
+  /* Tampah mengecil di layar sempit, jadi rempahnya diperbesar sedikit. */
+  .tampahStage {
+    --tampah-scale: 1.3;
+  }
+}
+
+@media (max-width: 480px) {
+  .dishPanel {
+    grid-template-columns: 92px minmax(0, 1fr);
+  }
+
+  .photo {
+    width: 92px;
+  }
+
+  .dishName {
+    font-size: 26px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ornamentLeft,
+  .ornamentRight,
+  .dust span,
+  .float {
+    animation: none;
+  }
+}

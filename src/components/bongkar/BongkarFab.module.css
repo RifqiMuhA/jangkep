@@ -1,0 +1,249 @@
+/* Tombol mengambang Bongkar Rempah. z-index di bawah navbar (50) dan modal, supaya selalu tertutup oleh keduanya. */
+.root {
+  position: fixed;
+  /* Cukup jauh dari tepi supaya medalion di belakang tombol tidak terpotong */
+  right: max(36px, env(safe-area-inset-right));
+  bottom: max(34px, env(safe-area-inset-bottom));
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+}
+
+.tucked {
+  transform: translateY(calc(100% + 40px));
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* --- Tombol bulat --- */
+.enter {
+  display: block;
+}
+
+.wiggle {
+  --size: 74px;
+  position: relative;
+  display: block;
+  width: var(--size);
+  height: var(--size);
+  animation: wiggle 7s ease-in-out 5s infinite;
+}
+
+/* Sesekali bergoyang kecil supaya tidak terlewat */
+@keyframes wiggle {
+  0%, 90%, 100% { transform: rotate(0deg); }
+  93% { transform: rotate(-7deg); }
+  96% { transform: rotate(5deg); }
+}
+
+/* Pendar emas lembut yang bernapas pelan */
+.glow {
+  position: absolute;
+  inset: calc(var(--size) * -0.35);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 196, 0, 0.35) 0%, rgba(245, 196, 0, 0) 65%);
+  animation: breathe 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.55; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+/* Medalion bunga (motif yang sama dengan kartu di halaman lain) mengintip di belakang tombol */
+.medallion {
+  position: absolute;
+  inset: calc(var(--size) * -0.26);
+  animation: spin 40s linear infinite;
+  pointer-events: none;
+}
+
+.medallion img {
+  object-fit: contain;
+  filter: drop-shadow(0 6px 10px rgba(26, 10, 2, 0.35));
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.fab {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 3px solid var(--color-kuning-kepodang, #F5C400);
+  border-radius: 50%;
+  outline: 2px solid rgba(59, 31, 12, 0.85);
+  outline-offset: 0;
+  /* Cokelat batik dengan tekstur kawung samar */
+  background:
+    linear-gradient(rgba(59, 31, 12, 0.86), rgba(59, 31, 12, 0.86)),
+    url('/batik/batik_kawung.webp') center / 70px;
+  color: var(--color-krem-mori, #F2EAD3);
+  box-shadow: 0 10px 24px rgba(26, 10, 2, 0.45), inset 0 0 0 2px rgba(59, 31, 12, 0.9);
+  cursor: pointer;
+}
+
+.fab {
+  display: block;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.fab:hover {
+  transform: scale(1.06);
+}
+
+.fab:focus-visible {
+  outline: 3px solid var(--color-krem-mori, #F2EAD3);
+  outline-offset: 3px;
+}
+
+/*
+ * Si Podo besar dan menyembul ke atas dari lingkaran: badan bagian atas bebas di atas tombol,
+ * bagian bawah (kaki) tersembunyi di dalam lingkaran.
+ */
+.podo {
+  position: absolute;
+  left: calc(var(--size) * -0.2);
+  right: calc(var(--size) * -0.2);
+  bottom: -3px;
+  height: calc(var(--size) * 1.65);
+  pointer-events: none;
+  -webkit-mask:
+    radial-gradient(circle at 50% calc(100% - var(--size) / 2), #000 calc(var(--size) / 2 - 3px), transparent calc(var(--size) / 2 - 2px)),
+    linear-gradient(#000, #000) top / 100% calc(100% - var(--size) / 2) no-repeat;
+  mask:
+    radial-gradient(circle at 50% calc(100% - var(--size) / 2), #000 calc(var(--size) / 2 - 3px), transparent calc(var(--size) / 2 - 2px)),
+    linear-gradient(#000, #000) top / 100% calc(100% - var(--size) / 2) no-repeat;
+}
+
+.podo img {
+  object-fit: cover;
+  object-position: 50% 0%;
+  filter: drop-shadow(0 4px 6px rgba(26, 10, 2, 0.45));
+}
+
+.cameraBadge {
+  position: absolute;
+  right: -4px;
+  bottom: -2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 2px solid var(--color-coklat-batik, #3B1F0C);
+  border-radius: 50%;
+  background: var(--color-kuning-kepodang, #F5C400);
+  color: var(--color-coklat-batik, #3B1F0C);
+}
+
+/* --- Balon sapaan bertema Jawa --- */
+.bubble {
+  position: absolute;
+  right: calc(100% + 22px);
+  bottom: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 262px;
+  padding: 14px 16px 10px;
+  border: 2px solid var(--color-emas-keris, #B8860B);
+  border-radius: 16px 16px 4px 16px;
+  /* Tekstur kertas manuskrip (bagian tengahnya saja, tanpa bingkai gambar) */
+  background:
+    linear-gradient(rgba(250, 243, 225, 0.55), rgba(250, 243, 225, 0.55)),
+    url('/motif/latar_manuskrip.webp') center / 340% auto;
+  color: var(--color-coklat-batik, #3B1F0C);
+  text-align: center;
+  box-shadow:
+    inset 0 0 0 3px rgba(250, 243, 225, 0.9),
+    inset 0 0 0 4px rgba(184, 134, 11, 0.55),
+    0 14px 30px rgba(26, 10, 2, 0.35);
+  pointer-events: none;
+  transform-origin: 100% 100%;
+}
+
+/* Titik ragam hias di keempat sudut bingkai dalam */
+.bubble::before {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  background:
+    radial-gradient(circle, var(--color-emas-keris, #B8860B) 2px, transparent 2.5px) 0 0 / 8px 8px no-repeat,
+    radial-gradient(circle, var(--color-emas-keris, #B8860B) 2px, transparent 2.5px) 100% 0 / 8px 8px no-repeat,
+    radial-gradient(circle, var(--color-emas-keris, #B8860B) 2px, transparent 2.5px) 0 100% / 8px 8px no-repeat,
+    radial-gradient(circle, var(--color-emas-keris, #B8860B) 2px, transparent 2.5px) 100% 100% / 8px 8px no-repeat;
+}
+
+/* Ekor balon berbentuk wajik kecil, mengarah ke tombol */
+.bubble::after {
+  content: '';
+  position: absolute;
+  right: -9px;
+  bottom: 18px;
+  width: 14px;
+  height: 14px;
+  border-top: 2px solid var(--color-emas-keris, #B8860B);
+  border-right: 2px solid var(--color-emas-keris, #B8860B);
+  background: #f3e6c4;
+  transform: rotate(45deg);
+}
+
+.bubbleAksara {
+  font-family: var(--font-noto-javanese), serif;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-emas-keris, #B8860B);
+}
+
+.bubbleTitle {
+  font-family: var(--font-playfair), serif;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.bubbleText {
+  margin-top: 4px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  opacity: 0.85;
+}
+
+.bubbleOrnament {
+  display: block;
+  margin-top: 6px;
+  line-height: 0;
+  opacity: 0.85;
+}
+
+@media (max-width: 768px) {
+  .root {
+    right: max(26px, env(safe-area-inset-right));
+    bottom: max(26px, env(safe-area-inset-bottom));
+  }
+
+  .wiggle {
+    --size: 62px;
+  }
+
+
+  .bubble {
+    width: 200px;
+    right: calc(100% + 16px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wiggle,
+  .glow,
+  .medallion {
+    animation: none;
+  }
+}

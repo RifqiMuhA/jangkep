@@ -1,0 +1,304 @@
+/* === Layar menunggu: Si Podo memasak di dapur Jawa === */
+
+.stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-hitam-arang, #1A0A02);
+  color: var(--color-krem-mori, #F2EAD3);
+}
+
+.backdrop {
+  position: absolute;
+  inset: -30px;
+  background: url('/kuliner/methods/background_methods.webp') center / cover no-repeat;
+  filter: brightness(0.55) saturate(1.15);
+  animation: slowZoom 18s ease-in-out infinite alternate;
+}
+
+@keyframes slowZoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 58%, rgba(245, 160, 40, 0.18) 0%, transparent 45%),
+    radial-gradient(ellipse at center, transparent 35%, rgba(26, 10, 2, 0.85) 100%);
+}
+
+/* Lampu gantung berayun */
+.lamp {
+  position: absolute;
+  top: calc(var(--nav-h, 84px) - 220px);
+  width: 64px;
+  height: 312px;
+  transform-origin: top center;
+  animation: swing 4.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 24px rgba(255, 190, 80, 0.6));
+}
+
+.lampLeft { left: 9%; }
+.lampRight { right: 9%; animation-delay: -2.2s; }
+
+@keyframes swing {
+  0%, 100% { transform: rotate(3deg); }
+  50% { transform: rotate(-3deg); }
+}
+
+/* Polaroid foto pengguna */
+.polaroid {
+  position: absolute;
+  z-index: 3;
+  left: max(24px, 6vw);
+  top: calc(var(--nav-h, 84px) + 120px);
+  width: clamp(130px, 15vw, 210px);
+  margin: 0;
+  padding: 10px 10px 34px;
+  background: var(--color-putih-santan, #FAF7F0);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.polaroid img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.polaroid figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  text-align: center;
+  font-family: var(--font-script), cursive;
+  font-size: 20px;
+  color: var(--color-coklat-batik, #3B1F0C);
+}
+
+.tape {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 70px;
+  height: 22px;
+  transform: translateX(-50%) rotate(4deg);
+  background: rgba(245, 196, 0, 0.55);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Tengah: gelembung, maskot, tahapan */
+.center {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--nav-h, 84px) + 16px) 24px 28px;
+}
+
+.bubble {
+  position: relative;
+  margin: 0 0 12px;
+  padding: 12px 22px;
+  border-radius: 16px;
+  background: var(--color-krem-mori, #F2EAD3);
+  color: var(--color-coklat-batik, #3B1F0C);
+  font-family: var(--font-playfair), serif;
+  font-size: clamp(16px, 1.8vw, 21px);
+  font-style: italic;
+  font-weight: 600;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+.bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  transform: translateX(-50%);
+  border: 10px solid transparent;
+  border-bottom: 0;
+  border-top-color: var(--color-krem-mori, #F2EAD3);
+}
+
+.mascotWrap {
+  position: relative;
+  width: min(420px, 70vw);
+  height: min(46vh, 440px);
+}
+
+.glow {
+  position: absolute;
+  left: 50%;
+  bottom: 4%;
+  width: 90%;
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 196, 0, 0.45) 0%, rgba(245, 120, 0, 0.12) 40%, transparent 68%);
+  animation: pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.8; transform: translateX(-50%) scale(1); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.06); }
+}
+
+.mascot {
+  position: absolute;
+  inset: 0;
+}
+
+.mascotBob {
+  position: absolute;
+  inset: 0;
+  animation: bob 1.1s ease-in-out infinite alternate;
+}
+
+.mascotBob img {
+  object-fit: contain;
+  filter: drop-shadow(0 24px 30px rgba(0, 0, 0, 0.5));
+}
+
+@keyframes bob {
+  from { transform: translateY(0) rotate(-1.5deg); }
+  to { transform: translateY(-10px) rotate(1.5deg); }
+}
+
+/* Uap mengepul */
+.steam {
+  position: absolute;
+  left: 50%;
+  bottom: 38%;
+  width: 120px;
+  height: 160px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.steam span {
+  position: absolute;
+  bottom: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  filter: blur(10px);
+  animation: rise 3s ease-in infinite;
+}
+
+.steam span:nth-child(1) { left: 20%; animation-delay: 0s; }
+.steam span:nth-child(2) { left: 48%; animation-delay: 1s; }
+.steam span:nth-child(3) { left: 72%; animation-delay: 2s; }
+
+@keyframes rise {
+  0% { transform: translateY(0) scale(0.6); opacity: 0; }
+  20% { opacity: 0.8; }
+  100% { transform: translateY(-150px) translateX(14px) scale(2.2); opacity: 0; }
+}
+
+/* Tahapan */
+.steps {
+  display: flex;
+  gap: clamp(16px, 4vw, 48px);
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.45;
+  transition: opacity 0.4s ease;
+}
+
+.stepDone,
+.stepActive {
+  opacity: 1;
+}
+
+.stepDot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--color-kuning-kepodang, #F5C400);
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.stepDone .stepDot {
+  background: var(--color-kuning-kepodang, #F5C400);
+}
+
+.stepActive .stepDot {
+  background: var(--color-kuning-kepodang, #F5C400);
+  box-shadow: 0 0 0 6px rgba(245, 196, 0, 0.25), 0 0 18px rgba(245, 196, 0, 0.8);
+  animation: dotPulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes dotPulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.2); }
+}
+
+.stepLabel {
+  font-family: var(--font-playfair), serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.timer {
+  margin: 12px 0 0;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .lamp {
+    display: none;
+  }
+
+  .polaroid {
+    left: auto;
+    right: 16px;
+    top: calc(var(--nav-h, 84px) + 8px);
+    width: 104px;
+    padding: 6px 6px 22px;
+  }
+
+  .polaroid figcaption {
+    font-size: 14px;
+    bottom: 4px;
+  }
+
+  .mascotWrap {
+    height: min(42vh, 360px);
+  }
+
+  .center {
+    padding-top: calc(var(--nav-h, 84px) + 90px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop,
+  .lamp,
+  .glow,
+  .mascotBob,
+  .steam span,
+  .stepActive .stepDot {
+    animation: none;
+  }
+}

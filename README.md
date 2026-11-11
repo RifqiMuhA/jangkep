@@ -67,6 +67,24 @@ Berikut adalah contoh tampilan antarmuka website **Jangkep** di berbagai ukuran 
 
 ---
 
+## Fitur Bongkar Rempah (AI)
+
+Halaman `/bongkar`: pengguna mengunggah foto masakan, AI (Gemini) menebak hidangannya dan rempah utamanya,
+lalu rempah itu dicocokkan dengan data rempah Jangkep (`src/data/rempah.ts`) dan ditampilkan di atas tampah.
+
+1. Salin `.env.example` menjadi `.env.local`, lalu isi `GEMINI_API_KEY` (dari Google AI Studio).
+2. Jalankan `npm run dev` dan buka `http://localhost:3000/bongkar`.
+
+Kode fitur ini ada di `src/lib/bongkar/`, `src/app/api/bongkar/route.ts`, `src/app/bongkar/`, dan
+`src/components/bongkar/`. Nama lain rempah (misalnya "turmeric" atau "laos") diatur di
+`src/lib/bongkar/aliases.ts`.
+
+**Evaluasi:** jalankan server, lalu `npm run eval` (21 foto uji di `eval/images/`, atribusi di
+`eval/images/ATRIBUSI.md`). Hasil disimpan ke `eval/results.json`.
+
+Hasil AI bersifat perkiraan dan edukatif. Di free tier Gemini, kuota sekitar 20 permintaan per hari per model
+per project, dan waktu respons 5-20 detik.
+
 ## Teknologi yang Digunakan
 - **Framework Utama**: [Next.js](https://nextjs.org/) (React) dengan TypeScript
 - **Styling**: Vanilla CSS & CSS Modules (Desain Kustom dengan tema khas Jawa/Batik)

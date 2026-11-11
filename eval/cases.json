@@ -1,0 +1,23 @@
+[
+  {"file":"gudeg-1.jpg","expectedDish":"Gudeg","acceptedNames":["gudeg"],"expectedSpices":["Bawang Merah","Kemiri","Ketumbar","Lengkuas","Daun Salam","Gula Merah"],"kondisi":"piring sudah dimakan sebagian"},
+  {"file":"gudeg-2-banyak-piring.jpg","expectedDish":"Gudeg","acceptedNames":["gudeg"],"expectedSpices":["Bawang Merah","Kemiri","Ketumbar","Lengkuas","Daun Salam","Gula Merah"],"kondisi":"beberapa lauk dalam satu piring"},
+  {"file":"gudeg-1-gelap-buram.jpg","expectedDish":"Gudeg","acceptedNames":["gudeg"],"expectedSpices":["Bawang Merah","Kemiri","Ketumbar","Lengkuas","Daun Salam","Gula Merah"],"kondisi":"gelap dan buram (turunan gudeg-1)"},
+  {"file":"rawon-1.jpg","expectedDish":"Rawon","acceptedNames":["rawon"],"expectedSpices":["Kluwek","Bawang Merah","Kemiri","Ketumbar","Kunyit","Jahe","Lengkuas","Serai","Daun Jeruk"],"kondisi":"jelas"},
+  {"file":"rawon-2.jpg","expectedDish":"Rawon","acceptedNames":["rawon"],"expectedSpices":["Kluwek","Bawang Merah","Kemiri","Ketumbar","Kunyit","Jahe","Lengkuas","Serai","Daun Jeruk"],"kondisi":"dua wadah, kuah terpisah dari nasi"},
+  {"file":"rawon-1-gelap.jpg","expectedDish":"Rawon","acceptedNames":["rawon"],"expectedSpices":["Kluwek","Bawang Merah","Kemiri","Ketumbar","Kunyit","Jahe","Lengkuas","Serai","Daun Jeruk"],"kondisi":"gelap (turunan rawon-1)"},
+  {"file":"soto-ayam-1.jpg","expectedDish":"Soto Ayam","acceptedNames":["soto"],"expectedSpices":["Kunyit","Jahe","Lengkuas","Serai","Daun Jeruk","Daun Salam","Bawang Merah","Kemiri","Ketumbar"],"kondisi":"jelas"},
+  {"file":"soto-ayam-2.jpg","expectedDish":"Soto Ayam","acceptedNames":["soto"],"expectedSpices":["Kunyit","Jahe","Lengkuas","Serai","Daun Jeruk","Daun Salam","Bawang Merah","Kemiri","Ketumbar"],"kondisi":"kuah keruh, ada piring lain di latar"},
+  {"file":"soto-ayam-1-buram.jpg","expectedDish":"Soto Ayam","acceptedNames":["soto"],"expectedSpices":["Kunyit","Jahe","Lengkuas","Serai","Daun Jeruk","Daun Salam","Bawang Merah","Kemiri","Ketumbar"],"kondisi":"buram (turunan soto-ayam-1)"},
+  {"file":"pecel-1.jpg","expectedDish":"Pecel","acceptedNames":["pecel"],"expectedSpices":["Kencur","Daun Jeruk","Asam Jawa"],"kondisi":"jelas, sambal terpisah"},
+  {"file":"pecel-2.jpg","expectedDish":"Pecel","acceptedNames":["pecel"],"expectedSpices":["Kencur","Daun Jeruk","Asam Jawa"],"kondisi":"tertutup kerupuk"},
+  {"file":"nasi-liwet-1.jpg","expectedDish":"Nasi Liwet","acceptedNames":["liwet"],"expectedSpices":["Serai","Daun Salam","Bawang Merah"],"kondisi":"jelas"},
+  {"file":"tengkleng-1.jpg","expectedDish":"Tengkleng","acceptedNames":["tengkleng"],"expectedSpices":["Kunyit","Jahe","Lengkuas","Serai","Daun Salam","Daun Jeruk","Bawang Merah","Kemiri","Ketumbar"],"kondisi":"agak gelap, dua piring"},
+  {"file":"sate-ayam-1.jpg","expectedDish":"Sate Ayam","acceptedNames":["sate","satai"],"expectedSpices":["Bawang Merah","Kemiri"],"kondisi":"jelas"},
+  {"file":"opor-ayam-1.jpg","expectedDish":"Opor Ayam","acceptedNames":["opor"],"expectedSpices":["Ketumbar","Kemiri","Bawang Merah","Lengkuas","Serai","Daun Salam","Daun Jeruk","Jahe"],"kondisi":"opor pedas berkuah merah (sulit, mirip gulai)"},
+  {"file":"tongseng-1.jpg","expectedDish":"Tongseng","acceptedNames":["tongseng"],"expectedSpices":["Bawang Merah","Ketumbar","Kemiri","Kunyit","Jahe","Lengkuas","Serai","Daun Salam","Daun Jeruk"],"kondisi":"foto dekat"},
+  {"file":"sayur-lodeh-1.jpg","expectedDish":"Sayur Lodeh","acceptedNames":["lodeh"],"expectedSpices":["Bawang Merah","Kemiri","Ketumbar","Lengkuas","Daun Salam"],"kondisi":"mangkuk kecil, foto dari samping"},
+  {"file":"jebakan-pizza.jpg","trap":true,"expectedDish":null,"expectedSpices":[],"kondisi":"jebakan: makanan non-Indonesia (pizza)"},
+  {"file":"jebakan-sushi.jpg","trap":true,"expectedDish":null,"expectedSpices":[],"kondisi":"jebakan: makanan non-Indonesia (sushi)"},
+  {"file":"jebakan-ramen.jpg","trap":true,"expectedDish":null,"expectedSpices":[],"kondisi":"jebakan: makanan non-Indonesia (ramen)"},
+  {"file":"jebakan-borobudur.jpg","trap":true,"expectedDish":null,"expectedSpices":[],"kondisi":"jebakan: bukan makanan"}
+]

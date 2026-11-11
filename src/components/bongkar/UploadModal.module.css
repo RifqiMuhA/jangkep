@@ -1,0 +1,153 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: rgba(26, 10, 2, 0.75);
+  backdrop-filter: blur(6px);
+}
+
+.card {
+  position: relative;
+  width: min(520px, 100%);
+  margin-top: 56px;
+  padding: 72px 28px 28px;
+  border-radius: 24px;
+  background-color: var(--color-krem-mori, #F2EAD3);
+  background-image: url('/games/game1/motif_bawah_kiri.webp'), url('/games/game1/motif_bawah_kanan.webp');
+  background-position: bottom left, bottom right;
+  background-repeat: no-repeat;
+  background-size: auto 80px, auto 80px;
+  color: var(--color-coklat-batik, #3B1F0C);
+  text-align: center;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+
+.close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  padding: 4px;
+  border: none;
+  background: none;
+  color: var(--color-coklat-batik, #3B1F0C);
+  cursor: pointer;
+}
+
+.mascot {
+  position: absolute;
+  left: 50%;
+  top: -64px;
+  width: 128px;
+  height: 128px;
+  transform: translateX(-50%);
+}
+
+.title {
+  font-family: var(--font-playfair), serif;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.subtitle {
+  margin: 6px 0 20px;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 28px 20px;
+  border: 2px dashed rgba(184, 134, 11, 0.6);
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.8) 0%, transparent 60%),
+    var(--color-putih-santan, #FAF7F0);
+  color: var(--color-coklat-batik, #3B1F0C);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Anak-anak area tidak menangkap event seret, jadi sorotan tidak berkedip. */
+.dropzone > * {
+  pointer-events: none;
+}
+
+.dropzone:hover,
+.dropzone:focus-visible {
+  border-color: var(--color-kuning-kepodang, #F5C400);
+}
+
+.dragging {
+  border-style: solid;
+  border-color: var(--color-kuning-kepodang, #F5C400);
+  background: rgba(245, 196, 0, 0.14);
+  box-shadow: 0 0 0 6px rgba(245, 196, 0, 0.2);
+  transform: scale(1.02);
+}
+
+.dropzone:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+.iconCircle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 6px;
+  border-radius: 50%;
+  background: var(--color-kuning-kepodang, #F5C400);
+  box-shadow: var(--shadow-button-accent);
+}
+
+.dropzone strong {
+  font-family: var(--font-playfair), serif;
+  font-size: 20px;
+}
+
+.or {
+  font-size: 12px;
+  opacity: 0.55;
+}
+
+.pickButton {
+  padding: 8px 20px;
+  border-radius: var(--radius-buttons, 24px);
+  background: var(--color-coklat-batik, #3B1F0C);
+  color: var(--color-kuning-kepodang, #F5C400);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.formats {
+  margin-top: 6px;
+  font-size: 12px;
+  opacity: 0.55;
+}
+
+.hiddenInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.error {
+  margin: 14px 0 0;
+  color: var(--color-rasa-pedas, #C0392B);
+  font-size: 14px;
+  font-weight: 600;
+}
