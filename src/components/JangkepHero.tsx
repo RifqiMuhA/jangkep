@@ -184,7 +184,7 @@ export default function JangkepHero() {
 
           {/* Mascot Center (Exactly at 960, 330) */}
           <div className="mascot-area">
-            <img src={`/kuliner/podo_masak_${frame}.png`} alt="Si Podo Chef" className="podo-sprite" />
+            <img src={`/kuliner/podo_masak_${frame}.webp`} alt="Si Podo Chef" className="podo-sprite" />
             {/* Steam effect only triggers on frame 2 */}
             <div className={`steam-container ${frame === 2 ? 'active' : ''}`}>
               <span className="steam-particle"></span>
