@@ -8,6 +8,7 @@ import { Clock, CheckCircle, XCircle } from 'lucide-react';
 import { ingredients, Recipe, Ingredient } from './data';
 import { kulinerData } from '@/data/kulinerData';
 import ScoreSubmit from '@/components/leaderboard/ScoreSubmit';
+import VictoryCelebration from '@/components/games/VictoryCelebration';
 import { scoreRacikMasakan } from '@/lib/leaderboard/scoring';
 import styles from './game1.module.css';
 
@@ -279,6 +280,7 @@ export default function Game1Page() {
 
   return (
     <main className={styles.pageBackground}>
+      {gameState === 'result' && <VictoryCelebration />}
       {showConfetti && <ConfettiEffect />}
       {gameState === 'playing' && currentRecipe && (
         <div className={styles.gameContainer}>

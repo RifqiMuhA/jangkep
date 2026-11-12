@@ -9,6 +9,7 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { kulinerData, KulinerItem } from '@/data/kulinerData';
 import ScoreSubmit from '@/components/leaderboard/ScoreSubmit';
+import VictoryCelebration from '@/components/games/VictoryCelebration';
 import { scoreDariKotaMana } from '@/lib/leaderboard/scoring';
 import styles from './game2.module.css';
 
@@ -587,6 +588,7 @@ export default function Game2Page() {
 
   return (
     <main className={styles.pageBackground}>
+      {gameState === 'result' && <VictoryCelebration />}
       {showConfetti && <ConfettiEffect />}
       
       {/* HEADER */}

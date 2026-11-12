@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { foodData, FoodQuestion } from './data';
 import ScoreSubmit from '@/components/leaderboard/ScoreSubmit';
+import VictoryCelebration from '@/components/games/VictoryCelebration';
 import { scoreKenaliMasakan } from '@/lib/leaderboard/scoring';
 import styles from './game3.module.css';
 
@@ -105,6 +106,7 @@ export default function Game3Page() {
 
   return (
     <main className={styles.pageBackground}>
+      {gameState === 'result' && <VictoryCelebration />}
       {gameState !== 'intro' && currentQuestion && (
         <div className={`${styles.gameContainer} ${gameState !== 'playing' ? styles.feedbackMode : ''}`}>
           <div className={styles.header}>

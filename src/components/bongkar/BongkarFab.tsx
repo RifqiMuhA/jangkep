@@ -8,8 +8,12 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Camera } from 'lucide-react';
 import styles from './BongkarFab.module.css';
 
-/** Halaman tempat tombol tidak ditampilkan: halaman Bongkar sendiri, serta Dolan dan Peta Rasa yang punya kontrol layar penuh. */
-const HIDDEN_ON = ['/bongkar', '/games', '/maps'];
+/**
+ * Halaman tempat tombol tidak ditampilkan: halaman Bongkar sendiri, Peta Rasa (kontrol layar penuh),
+ * dan halaman tiap game. Lobi /games tetap menampilkan tombol.
+ */
+const HIDDEN_ON = ['/bongkar', '/maps'];
+const HIDDEN_CHILDREN_OF = ['/games'];
 /** Sapaan otomatis hanya sekali per kunjungan (sesi browser). */
 const GREETED_KEY = 'jangkep-bongkar-disapa';
 const GREET_DELAY_MS = 2500;
@@ -37,7 +41,9 @@ function markGreeted() {
  */
 export default function BongkarFab() {
   const pathname = usePathname();
-  const hidden = HIDDEN_ON.some((path) => pathname === path || pathname.startsWith(`${path}/`));
+  const hidden =
+    HIDDEN_ON.some((path) => pathname === path || pathname.startsWith(`${path}/`)) ||
+    HIDDEN_CHILDREN_OF.some((path) => pathname.startsWith(`${path}/`));
 
   const [hovered, setHovered] = useState(false);
   const [greeting, setGreeting] = useState(false);

@@ -1,0 +1,27 @@
+/* Lapisan konfeti di atas modal hasil, tidak menghalangi klik. */
+.layer {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.piece {
+  position: absolute;
+  bottom: -20px;
+  border-radius: 2px;
+  will-change: transform, opacity;
+}
+
+.fromLeft {
+  left: 2vw;
+}
+
+.fromRight {
+  right: 2vw;
+}
+
+.circle {
+  border-radius: 50%;
+}

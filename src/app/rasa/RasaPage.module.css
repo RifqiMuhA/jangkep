@@ -1244,3 +1244,42 @@
   .modalRight { padding: 24px; }
   .modalTitle { font-size: 40px; }
 }
+
+/* HP: kartu terlalu pendek untuk rasio 1.7 sehingga judul dan deskripsi bisa bertumpuk; beri tinggi minimal. */
+@media (max-width: 640px) {
+  .card {
+    aspect-ratio: auto;
+    min-height: 236px;
+  }
+
+  .cardTopLeft {
+    top: 20px;
+    left: 20px;
+    right: 20px;
+  }
+
+  .cardTitle {
+    font-size: 22px;
+  }
+
+  .cardBottomLeft {
+    bottom: 20px;
+    left: 20px;
+    z-index: 3;
+    width: 50%;
+  }
+
+  /* Gambar menempati paruh kanan saja supaya tidak menutupi teks di kiri */
+  .cardImageBlock {
+    width: 52%;
+    height: 80%;
+  }
+
+  .cardDesc {
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
