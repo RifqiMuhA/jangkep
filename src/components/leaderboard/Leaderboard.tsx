@@ -15,6 +15,10 @@ type LoadState =
 
 const SKELETON_ROWS = 5;
 
+/** Angka Jawa untuk nomor peringkat: 1 -> ꧑, 10 -> ꧑꧐. */
+const ANGKA_JAWA = ['꧐', '꧑', '꧒', '꧓', '꧔', '꧕', '꧖', '꧗', '꧘', '꧙'];
+const toAngkaJawa = (n: number) => String(n).split('').map((d) => ANGKA_JAWA[Number(d)]).join('');
+
 /** Game awal dari alamat (?papan=...), misalnya saat datang dari layar hasil game. */
 function readGameFromUrl(): LeaderboardGameId | null {
   const value = new URLSearchParams(window.location.search).get('papan');
@@ -169,7 +173,11 @@ export default function Leaderboard() {
                   transition={{ delay: i * 0.04 }}
                 >
                   <span className={styles.rank} aria-label={`Peringkat ${entry.rank}`}>
-                    {entry.rank === 1 ? <Crown size={18} strokeWidth={2.5} aria-hidden /> : entry.rank}
+                    {entry.rank === 1 && <Crown size={14} strokeWidth={2.5} className={styles.crown} aria-hidden />}
+                    <span className={styles.rankDigit}>{entry.rank}</span>
+                    <span className={styles.rankAksara} aria-hidden>
+                      {toAngkaJawa(entry.rank)}
+                    </span>
                   </span>
                   <span className={styles.name}>
                     {entry.nickname}
