@@ -95,6 +95,11 @@ export default function ExploreMapPage() {
       touchZoomRotate: true,
     });
 
+    // Selama intro (tulisan PETA RASA lalu terbang ke Jawa Tengah) peta dikunci,
+    // karena scroll atau geser di tengah animasi membatalkan flyTo dan peta tertahan di tampilan Indonesia.
+    const introHandlers = [map.scrollZoom, map.boxZoom, map.dragRotate, map.dragPan, map.keyboard, map.doubleClickZoom, map.touchZoomRotate];
+    introHandlers.forEach((handler) => handler.disable());
+
     map.on('style.load', () => {
       map.addSource('mapbox-dem', {
         type: 'raster-dem',
@@ -371,6 +376,7 @@ export default function ExploreMapPage() {
     map.on('load', () => {
       setIsMapLoaded(true);
       initialFlyTimeoutRef.current = setTimeout(() => {
+        map.once('moveend', () => introHandlers.forEach((handler) => handler.enable()));
         map.flyTo({
           center: [110.4, -7.3],
           zoom: 8.5,
@@ -1027,7 +1033,15 @@ export default function ExploreMapPage() {
               maxWidth: '650px',
               margin: '0 auto',
               color: '#F8F5E9',
-              textShadow: '0 4px 15px rgba(0, 0, 0, 0.9)'
+              textShadow: '0 4px 15px rgba(0, 0, 0, 0.9)',
+              // Panel gelap supaya tulisan tidak menyaru dengan warna peta di belakangnya.
+              padding: '32px clamp(20px, 5vw, 44px)',
+              background: 'rgba(59, 31, 12, 0.78)',
+              border: '1px solid rgba(184, 134, 11, 0.55)',
+              borderRadius: '20px',
+              boxShadow: '0 24px 60px rgba(0, 0, 0, 0.45)',
+              backdropFilter: 'blur(6px)',
+              WebkitBackdropFilter: 'blur(6px)'
             }}
           >
             {/* Elegant batik decorative line at the top */}
@@ -1045,7 +1059,7 @@ export default function ExploreMapPage() {
               </span>
               <h1 id="explore-welcome-title" style={{
                 fontFamily: 'var(--font-playfair)',
-                fontSize: '52px',
+                fontSize: 'clamp(34px, 9vw, 52px)',
                 fontWeight: 800,
                 color: '#F5C400',
                 margin: '8px 0 0 0',
