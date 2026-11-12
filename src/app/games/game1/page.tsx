@@ -428,12 +428,6 @@ export default function Game1Page() {
           <h2 className={styles.feedbackTitle}>
             {currentRecipeIndex >= gameRecipes.length ? 'Masakan Selesai!' : 'Waktune Habis!'}
           </h2>
-          <div className={styles.subText} style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '8px' }}>
-            {currentRecipeIndex >= gameRecipes.length
-              ? 'Luar biasa! Kamu berhasil meracik semua masakan.'
-              : 'Oalah, waktunya keburu habis nih!'}
-          </div>
-
           <p className={styles.subText}>
             {currentRecipeIndex >= gameRecipes.length
               ? 'Kemampuan meracik bumbumu sudah tidak diragukan lagi. Kamu adalah Chef sejati!'

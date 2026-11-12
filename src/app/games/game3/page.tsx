@@ -232,13 +232,6 @@ export default function Game3Page() {
           <h2 className={styles.feedbackTitle}>Permainan Selesai!</h2>
           <div className={styles.resultScore}>Kamu menebak benar {score} dari 10 soal.</div>
           
-          <p className={styles.subText}>
-            {score === 100 ? 'Sempurna! Semua tebakanmu tepat sasaran!' :
-             score >= 70 ? 'Hebat! Pengetahuan kulinermu sudah sangat luas.' :
-             score >= 40 ? 'Lumayan! Masih banyak masakan yang bisa kamu pelajari.' :
-             'Jangan menyerah! Ayo coba lagi dan kenali lebih banyak masakan Nusantara.'}
-          </p>
-
           {gameState === 'result' && (
             <ScoreSubmit game="kenali-masakan" score={scoreKenaliMasakan({ correct: score, speedBonus })} />
           )}

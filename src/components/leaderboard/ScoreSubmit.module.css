@@ -1,8 +1,8 @@
 /* Kartu skor di layar hasil game (di atas bingkai krem). */
 .card {
   width: 100%;
-  margin: 4px 0 16px;
-  padding: 14px 16px;
+  margin: 0 0 12px;
+  padding: 10px 12px;
   border: 1.5px dashed rgba(184, 134, 11, 0.55);
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.5);
@@ -27,7 +27,7 @@
 
 .scoreValue {
   font-family: var(--font-playfair), serif;
-  font-size: 30px;
+  font-size: 26px;
   font-weight: 800;
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -50,7 +50,7 @@
 }
 
 .form {
-  margin-top: 12px;
+  margin-top: 8px;
 }
 
 .label {
@@ -68,7 +68,7 @@
 .input {
   flex: 1;
   min-width: 0;
-  padding: 10px 14px;
+  padding: 8px 12px;
   border: 1.5px solid rgba(59, 31, 12, 0.25);
   border-radius: 12px;
   background: #fff;
@@ -123,7 +123,7 @@
 
 .hint,
 .note {
-  margin: 8px 0 0;
+  margin: 6px 0 0;
   font-size: 12.5px;
   line-height: 1.45;
   opacity: 0.75;

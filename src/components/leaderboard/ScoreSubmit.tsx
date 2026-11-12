@@ -132,9 +132,6 @@ export default function ScoreSubmit({ game, score: liveScore }: ScoreSubmitProps
         </div>
       ) : (
         <form className={styles.form} onSubmit={submit} noValidate>
-          <label className={styles.label} htmlFor={`nama-${game}`}>
-            Nama panggilan untuk Papan Juara
-          </label>
           <div className={styles.inputRow}>
             <input
               id={`nama-${game}`}
@@ -144,7 +141,8 @@ export default function ScoreSubmit({ game, score: liveScore }: ScoreSubmitProps
                 setNickname(e.target.value);
                 if (status.kind === 'rejected') setStatus({ kind: 'idle' });
               }}
-              placeholder="Misal: Podo Lover"
+              placeholder="Nama panggilan"
+              aria-label="Nama panggilan untuk Papan Juara"
               maxLength={NICKNAME_MAX}
               autoComplete="nickname"
               aria-invalid={status.kind === 'rejected'}
@@ -174,7 +172,7 @@ export default function ScoreSubmit({ game, score: liveScore }: ScoreSubmitProps
             </p>
           ) : (
             <p id={`nama-${game}-hint`} className={styles.hint}>
-              2–{NICKNAME_MAX} karakter. Nama tampil untuk umum, jadi jangan pakai nama lengkap atau data pribadi.
+              Tampil untuk umum, jangan pakai data pribadi.
             </p>
           )}
         </form>

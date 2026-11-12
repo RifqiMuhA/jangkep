@@ -727,12 +727,6 @@ export default function Game2Page() {
               : `Kamu berhasil menemukan ${foundItems.length} dari ${gameItems.length} masakan.`}
           </div>
 
-          <p className={styles.subText}>
-            {foundItems.length === gameItems.length
-              ? 'Terus pertahankan wawasanmu tentang kekayaan kuliner nusantara.'
-              : 'Ayo coba lagi, tingkatkan wawasanmu tentang kuliner Jawa Tengah!'}
-          </p>
-
           {gameState === 'result' && (
             <ScoreSubmit
               game="dari-kota-mana"
