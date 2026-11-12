@@ -721,7 +721,7 @@ export default function Game2Page() {
           <h2 className={styles.feedbackTitle}>
             {foundItems.length === gameItems.length ? 'Peta Menyala!' : 'Waktune Habis!'}
           </h2>
-          <div className={styles.subText} style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '8px' }}>
+          <div className={styles.subText}>
             {foundItems.length === gameItems.length
               ? 'Luar biasa! Kamu hafal peta kuliner Jawa Tengah.'
               : `Kamu berhasil menemukan ${foundItems.length} dari ${gameItems.length} masakan.`}

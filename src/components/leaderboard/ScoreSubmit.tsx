@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Loader2, RotateCcw, Sparkles, Trophy } from 'lucide-react';
 import { findLeaderboardGame, type LeaderboardGameId } from '@/lib/leaderboard/games';
 import { NICKNAME_MAX } from '@/lib/leaderboard/constants';
 import { submitResponseSchema } from '@/lib/leaderboard/schema';
@@ -104,9 +103,7 @@ export default function ScoreSubmit({ game, score: liveScore }: ScoreSubmitProps
         <span className={styles.scoreLabel}>Skor kamu</span>
         <span className={styles.scoreValue}>{score.toLocaleString('id-ID')}</span>
         {isNewRecord && previousBest > 0 ? (
-          <span className={styles.recordBadge}>
-            <Sparkles size={12} strokeWidth={2.5} /> Rekor baru!
-          </span>
+          <span className={styles.recordBadge}>Rekor anyar!</span>
         ) : previousBest > 0 ? (
           <span className={styles.bestText}>Rekor pribadimu: {previousBest.toLocaleString('id-ID')}</span>
         ) : null}
@@ -117,13 +114,7 @@ export default function ScoreSubmit({ game, score: liveScore }: ScoreSubmitProps
       ) : status.kind === 'sent' ? (
         <div className={styles.sent} role="status">
           <p className={styles.sentTitle}>
-            {status.rank ? (
-              <>
-                <Trophy size={18} strokeWidth={2.5} /> Kamu peringkat #{status.rank} di Papan Juara!
-              </>
-            ) : (
-              'Skormu sudah tersimpan.'
-            )}
+            {status.rank ? `Kamu peringkat ${status.rank} di Papan Juara!` : 'Skormu sudah tersimpan.'}
           </p>
           {!status.rank && <p className={styles.note}>Belum masuk 10 besar {gameInfo?.title}. Terus berlatih, ya!</p>}
           <Link href={`/games?papan=${game}#papan-juara`} className={styles.boardLink}>
@@ -151,19 +142,7 @@ export default function ScoreSubmit({ game, score: liveScore }: ScoreSubmitProps
               readOnly={status.kind === 'sending'}
             />
             <button type="submit" className={styles.submit} disabled={status.kind === 'sending' || nickname.trim().length < 2}>
-              {status.kind === 'sending' ? (
-                <>
-                  <Loader2 size={16} strokeWidth={2.5} className={styles.spin} /> Mengirim
-                </>
-              ) : status.kind === 'failed' ? (
-                <>
-                  <RotateCcw size={16} strokeWidth={2.5} /> Kirim lagi
-                </>
-              ) : (
-                <>
-                  <Trophy size={16} strokeWidth={2.5} /> Kirim
-                </>
-              )}
+              {status.kind === 'sending' ? 'Mengirim…' : status.kind === 'failed' ? 'Kirim lagi' : 'Kirim'}
             </button>
           </div>
           {status.kind === 'rejected' || status.kind === 'failed' ? (
