@@ -1,0 +1,334 @@
+/* Papan Juara: kartu krem berbingkai emas di atas latar cokelat halaman Dolan. */
+.board {
+  position: relative;
+  z-index: 10;
+  width: min(100% - 32px, 760px);
+  margin: var(--spacing-48, 48px) auto 0;
+  padding: 36px clamp(18px, 4vw, 44px) 32px;
+  border: 2px solid var(--color-emas-keris, #B8860B);
+  border-radius: 24px;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(245, 196, 0, 0.18) 0%, transparent 60%),
+    var(--color-krem-mori, #F2EAD3);
+  color: var(--color-coklat-batik, #3B1F0C);
+  box-shadow:
+    inset 0 0 0 5px var(--color-krem-mori, #F2EAD3),
+    inset 0 0 0 6px rgba(184, 134, 11, 0.45),
+    0 24px 60px rgba(0, 0, 0, 0.35);
+  scroll-margin-top: 110px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-emas-keris, #B8860B);
+}
+
+.title {
+  margin: 6px 0 0;
+  font-family: var(--font-playfair), serif;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.ornament {
+  display: block;
+  margin-top: 4px;
+  line-height: 0;
+}
+
+.subtitle {
+  margin: 10px 0 0;
+  font-size: 14px;
+  opacity: 0.75;
+}
+
+/* --- Tab permainan --- */
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin: 22px auto 18px;
+  padding: 4px;
+  max-width: 100%;
+  overflow-x: auto;
+  border-radius: 99px;
+  background: rgba(59, 31, 12, 0.08);
+  scrollbar-width: none;
+  /* Dasar untuk offsetLeft tab saat baris digeser otomatis */
+  position: relative;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  position: relative;
+  flex: 1 0 auto;
+  padding: 9px 16px;
+  border: none;
+  border-radius: 99px;
+  background: none;
+  color: rgba(59, 31, 12, 0.7);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.tab:hover {
+  color: var(--color-coklat-batik, #3B1F0C);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--color-emas-keris, #B8860B);
+  outline-offset: 2px;
+}
+
+.tabActive {
+  color: var(--color-coklat-batik, #3B1F0C);
+}
+
+.tabPill {
+  position: absolute;
+  inset: 0;
+  border-radius: 99px;
+  background: var(--color-kuning-kepodang, #F5C400);
+  box-shadow: 0 4px 12px rgba(245, 196, 0, 0.35);
+}
+
+.tabLabel {
+  position: relative;
+}
+
+/* --- Daftar skor --- */
+.panel {
+  min-height: 300px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 16px 10px 10px;
+  border: 1px solid rgba(59, 31, 12, 0.1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.rank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(59, 31, 12, 0.08);
+  font-family: var(--font-playfair), serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.score {
+  font-family: var(--font-playfair), serif;
+  font-size: 20px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.sampleTag {
+  flex-shrink: 0;
+  padding: 1px 8px;
+  border: 1px dashed rgba(59, 31, 12, 0.35);
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+
+/* Tiga besar: emas, perak, perunggu */
+.podium1 {
+  border-color: rgba(184, 134, 11, 0.6);
+  background: linear-gradient(90deg, rgba(245, 196, 0, 0.32), rgba(255, 255, 255, 0.6));
+}
+
+.podium1 .rank {
+  background: var(--color-kuning-kepodang, #F5C400);
+  color: var(--color-coklat-batik, #3B1F0C);
+  box-shadow: 0 0 0 2px var(--color-emas-keris, #B8860B);
+}
+
+.podium2 .rank {
+  background: #d9d4c7;
+  box-shadow: 0 0 0 2px #a8a294;
+}
+
+.podium3 .rank {
+  background: #e3b48a;
+  box-shadow: 0 0 0 2px #b07a4c;
+}
+
+/* --- Kerangka saat memuat --- */
+.skeletonRow {
+  border-color: transparent;
+}
+
+.skeleton {
+  display: block;
+  height: 14px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, rgba(59, 31, 12, 0.08) 25%, rgba(59, 31, 12, 0.16) 50%, rgba(59, 31, 12, 0.08) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.skeletonRank {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+
+.skeletonScore {
+  width: 56px;
+  height: 18px;
+}
+
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+/* --- Pesan kosong / gagal --- */
+.message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 12px 8px;
+  text-align: center;
+}
+
+.messageMascot {
+  position: relative;
+  width: 110px;
+  height: 110px;
+}
+
+.messageMascot img {
+  object-fit: contain;
+}
+
+.messageTitle {
+  margin: 10px 0 4px;
+  font-family: var(--font-playfair), serif;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.messageText {
+  max-width: 420px;
+  margin: 0 0 18px;
+  font-size: 14px;
+  line-height: 1.55;
+  opacity: 0.8;
+}
+
+.retryButton,
+.playButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border: none;
+  border-radius: var(--radius-buttons, 24px);
+  background: var(--color-kuning-kepodang, #F5C400);
+  color: var(--color-coklat-batik, #3B1F0C);
+  font-family: var(--font-playfair), serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-button-accent);
+  transition: transform 0.2s ease;
+}
+
+.retryButton:hover,
+.playButton:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 640px) {
+  .board {
+    padding-top: 28px;
+  }
+
+  .tabs {
+    justify-content: flex-start;
+  }
+
+  .tab {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  .row {
+    grid-template-columns: 34px minmax(0, 1fr) auto;
+    gap: 10px;
+  }
+
+  .rank {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .name {
+    font-size: 15px;
+  }
+
+  .score {
+    font-size: 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}

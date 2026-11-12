@@ -7,11 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "eval": "node eval/run.mjs"
+    "eval": "node eval/run.mjs",
+    "leaderboard:seed": "node --env-file=.env.local scripts/leaderboard-samples.mjs seed",
+    "leaderboard:clear-samples": "node --env-file=.env.local scripts/leaderboard-samples.mjs clear"
   },
   "dependencies": {
     "@google/genai": "^3.1.0",
     "@gsap/react": "^2.1.2",
+    "@supabase/supabase-js": "^2.119.0",
     "@types/mapbox-gl": "^3.4.1",
     "framer-motion": "^12.40.0",
     "gsap": "^3.15.0",
@@ -26,6 +29,7 @@
     "react-dom": "19.2.4",
     "react-map-gl": "^8.1.1",
     "react-pageflip": "^2.0.3",
+    "server-only": "^0.0.1",
     "zod": "^4.6.7"
   },
   "devDependencies": {

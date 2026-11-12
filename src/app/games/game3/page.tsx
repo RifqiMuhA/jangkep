@@ -4,6 +4,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { foodData, FoodQuestion } from './data';
+import ScoreSubmit from '@/components/leaderboard/ScoreSubmit';
+import { scoreKenaliMasakan } from '@/lib/leaderboard/scoring';
 import styles from './game3.module.css';
 
 type GameState = 'intro' | 'playing' | 'feedback' | 'result';
@@ -13,6 +15,8 @@ export default function Game3Page() {
   const [questions, setQuestions] = useState<FoodQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
+  /** Total sisa detik saat menjawab benar; dipakai untuk skor Papan Juara supaya yang lebih cepat unggul. */
+  const [speedBonus, setSpeedBonus] = useState(0);
   const [timeLeft, setTimeLeft] = useState(10);
   const [options, setOptions] = useState<FoodQuestion[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
@@ -32,6 +36,7 @@ export default function Game3Page() {
     setQuestions(selected);
     setCurrentIndex(0);
     setScore(0);
+    setSpeedBonus(0);
     generateOptions(selected[0]);
     setGameState('playing');
     setTimeLeft(15);
@@ -74,6 +79,7 @@ export default function Game3Page() {
     setSelectedAnswer(answerId);
     if (answerId === currentQuestion.id) {
       setScore((prev) => prev + 1);
+      setSpeedBonus((prev) => prev + Math.max(0, timeLeft));
     }
     setGameState('feedback');
   };
@@ -232,6 +238,10 @@ export default function Game3Page() {
              score >= 40 ? 'Lumayan! Masih banyak masakan yang bisa kamu pelajari.' :
              'Jangan menyerah! Ayo coba lagi dan kenali lebih banyak masakan Nusantara.'}
           </p>
+
+          {gameState === 'result' && (
+            <ScoreSubmit game="kenali-masakan" score={scoreKenaliMasakan({ correct: score, speedBonus })} />
+          )}
 
           <div className={styles.actionRow}>
             <Link href="/games" className={styles.finishButton}>

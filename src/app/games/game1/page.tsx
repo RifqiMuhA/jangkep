@@ -7,6 +7,8 @@ import { motion, PanInfo, AnimatePresence, useMotionValue, useSpring, useTransfo
 import { Clock, CheckCircle, XCircle } from 'lucide-react';
 import { ingredients, Recipe, Ingredient } from './data';
 import { kulinerData } from '@/data/kulinerData';
+import ScoreSubmit from '@/components/leaderboard/ScoreSubmit';
+import { scoreRacikMasakan } from '@/lib/leaderboard/scoring';
 import styles from './game1.module.css';
 
 type GameState = 'intro' | 'playing' | 'result';
@@ -437,6 +439,18 @@ export default function Game1Page() {
               ? 'Kemampuan meracik bumbumu sudah tidak diragukan lagi. Kamu adalah Chef sejati!'
               : 'Ojo nyerah! Ayo coba lagi dan racik bumbunya sing luwih cepet.'}
           </p>
+
+          {gameState === 'result' && (
+            <ScoreSubmit
+              game="racik-masakan"
+              score={scoreRacikMasakan({
+                recipeIngredientCounts: gameRecipes.map((recipe) => recipe.correctIngredients.length),
+                completedRecipes: currentRecipeIndex,
+                ingredientsInCurrentRecipe: foundIngredients.length,
+                timeLeft,
+              })}
+            />
+          )}
 
           <div className={styles.actionRow}>
             <Link href="/games" className={styles.finishButton}>

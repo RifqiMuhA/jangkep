@@ -1,0 +1,167 @@
+/* Kartu skor di layar hasil game (di atas bingkai krem). */
+.card {
+  width: 100%;
+  margin: 4px 0 16px;
+  padding: 14px 16px;
+  border: 1.5px dashed rgba(184, 134, 11, 0.55);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--color-coklat-batik, #3B1F0C);
+  text-align: left;
+}
+
+.scoreRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+}
+
+.scoreLabel {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-emas-keris, #B8860B);
+}
+
+.scoreValue {
+  font-family: var(--font-playfair), serif;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.recordBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  background: var(--color-kuning-kepodang, #F5C400);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.bestText {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.form {
+  margin-top: 12px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.inputRow {
+  display: flex;
+  gap: 8px;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 14px;
+  border: 1.5px solid rgba(59, 31, 12, 0.25);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--color-coklat-batik, #3B1F0C);
+  font: inherit;
+  font-size: 15px;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-emas-keris, #B8860B);
+  box-shadow: 0 0 0 3px rgba(245, 196, 0, 0.3);
+}
+
+.inputError {
+  border-color: #b3261e;
+}
+
+.submit {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 12px;
+  background: var(--color-coklat-batik, #3B1F0C);
+  color: var(--color-kuning-kepodang, #F5C400);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spin {
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.hint,
+.note {
+  margin: 8px 0 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  opacity: 0.75;
+}
+
+.error {
+  margin: 8px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: #b3261e;
+}
+
+.sent {
+  margin-top: 10px;
+}
+
+.sentTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--font-playfair), serif;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.boardLink {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-emas-keris, #B8860B);
+  border-bottom: 1px solid currentColor;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spin {
+    animation: none;
+  }
+}

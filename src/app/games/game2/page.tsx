@@ -8,6 +8,8 @@ import { Clock, CheckCircle, XCircle, MapPin } from 'lucide-react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { kulinerData, KulinerItem } from '@/data/kulinerData';
+import ScoreSubmit from '@/components/leaderboard/ScoreSubmit';
+import { scoreDariKotaMana } from '@/lib/leaderboard/scoring';
 import styles from './game2.module.css';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZ2l0cmF5YTE0MDAiLCJhIjoiY21wcGl1M2hkMGpmaDJwcXBraXdobGZkdCJ9.J5D7thClJjFmcmnYmTlm3g';
@@ -730,6 +732,13 @@ export default function Game2Page() {
               ? 'Terus pertahankan wawasanmu tentang kekayaan kuliner nusantara.'
               : 'Ayo coba lagi, tingkatkan wawasanmu tentang kuliner Jawa Tengah!'}
           </p>
+
+          {gameState === 'result' && (
+            <ScoreSubmit
+              game="dari-kota-mana"
+              score={scoreDariKotaMana({ found: foundItems.length, total: gameItems.length, timeLeft })}
+            />
+          )}
 
           <div className={styles.actionRow}>
             <Link href="/games" className={styles.finishButton}>

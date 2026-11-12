@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import Leaderboard from '@/components/leaderboard/Leaderboard';
 import styles from './games.module.css';
 import { Clock, Camera, MapPin, Star, MousePointer2, Move, RefreshCcw, Eye, X } from 'lucide-react';
 
@@ -123,6 +124,9 @@ export default function GamesPage() {
             </div>
           ))}
         </section>
+
+        {/* Papan Juara: skor bersama dari ketiga permainan */}
+        <Leaderboard />
       </section>
 
       {/* Modal */}
