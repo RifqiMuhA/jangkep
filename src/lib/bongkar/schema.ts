@@ -27,6 +27,8 @@ export const aiOutputSchema = z.object({
   /** Garis besar cara memasak. Dipakai hanya kalau masakannya tidak ada di Ensiklopedia Jangkep. */
   steps: z.array(cookingStepSchema),
   confidence: confidenceSchema,
+  /** true kalau hidangan ini masakan Jawa; dipakai untuk label "Masakan Jawa" / "Bukan masakan Jawa". */
+  masakanJawa: z.boolean(),
   notes: z.string().optional(),
 });
 export type AiOutput = z.infer<typeof aiOutputSchema>;
@@ -97,6 +99,8 @@ export const bongkarResponseSchema = z.discriminatedUnion("ok", [
     result: z.object({
       dish: z.string(),
       confidence: confidenceSchema,
+      /** Kosong kalau foto tidak dikenali, supaya label asal tidak ditampilkan. */
+      masakanJawa: z.boolean().optional(),
       notes: z.string().optional(),
       matched: z.array(matchedSpiceSchema),
       unmatched: z.array(extraSpiceSchema),

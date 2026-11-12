@@ -200,6 +200,11 @@ export default function ResultStage({ data, photoUrl, correctedFrom, onRecorrect
 
             <div className={styles.metaRow}>
               <span className={`${styles.badge} ${CONFIDENCE[result.confidence].className}`}>{CONFIDENCE[result.confidence].label}</span>
+              {result.masakanJawa !== undefined && (
+                <span className={`${styles.originBadge} ${result.masakanJawa ? styles.originJawa : ''}`}>
+                  {result.masakanJawa ? 'Masakan Jawa' : 'Bukan masakan Jawa'}
+                </span>
+              )}
               {/* Sebaris dengan label keyakinan supaya panel kiri tidak terlalu tinggi */}
               {!correcting && (
                 <button

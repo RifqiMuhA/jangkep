@@ -191,6 +191,23 @@
 .badgeSedang { background: var(--color-emas-keris, #B8860B); }
 .badgeRendah { background: var(--color-rasa-pedas, #C0392B); }
 
+/* Label asal masakan: berlatar penuh supaya jelas, warnanya beda dari label keyakinan. */
+.originBadge {
+  padding: 5px 14px;
+  border-radius: var(--radius-badges, 99px);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-krem-mori, #F2EAD3);
+  background: var(--color-coklat-batik, #3B1F0C);
+}
+
+.originJawa {
+  color: var(--color-coklat-batik, #3B1F0C);
+  background: var(--color-kuning-kepodang, #F5C400);
+}
+
 
 .notes {
   margin: 0;

@@ -92,6 +92,8 @@ export async function POST(request: Request) {
       result: {
         dish,
         confidence: output.confidence,
+        // Masakan di Ensiklopedia Jangkep pasti masakan Jawa; foto yang tidak dikenali tidak diberi label.
+        masakanJawa: kuliner ? true : output.dish === "Tidak dikenali" && !correctedDish ? undefined : output.masakanJawa,
         notes: output.notes,
         matched,
         unmatched,
