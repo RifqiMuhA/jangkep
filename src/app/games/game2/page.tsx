@@ -166,6 +166,7 @@ export default function Game2Page() {
   const mapRef = useRef<mapboxgl.Map | null>(null);
 
   const [gameState, setGameState] = useState<'playing' | 'result'>('playing');
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [timeLeft, setTimeLeft] = useState(60);
   const [gameItems, setGameItems] = useState<KulinerItem[]>([]);
   const [foundItems, setFoundItems] = useState<string[]>([]);
@@ -616,7 +617,7 @@ export default function Game2Page() {
             </AnimatePresence>
           </div>
           
-          <button className={styles.btnSelesaiWrapper} onClick={handleEndGame}>
+          <button className={styles.btnSelesaiWrapper} onClick={() => setShowConfirmModal(true)}>
             <Image 
               src="/games/game1/button_selesai.webp" 
               alt="Selesaikan Game" 
@@ -742,6 +743,29 @@ export default function Game2Page() {
             </Link>
             <button className={styles.nextButton} onClick={startGame}>
               Main Lagi
+            </button>
+          </div>
+        </div>
+      </div>
+      {/* CONFIRM MODAL (sama seperti game 3) */}
+      <div className={`${styles.resultOverlay} ${showConfirmModal ? styles.active : ''}`}>
+        <div className={styles.resultCard}>
+          <Image src="/games/mascot_kuliner_1.webp" alt="Si Podo" width={100} height={100} className={styles.mascotReaction} unoptimized />
+          <h2 className={styles.feedbackTitle}>Yakin Ingin Selesai?</h2>
+          <p className={styles.subText}>Kamu belum menemukan semua masakan lho.</p>
+          <div className={styles.actionRow}>
+            <button className={styles.finishButton} style={{ minWidth: '120px' }} onClick={() => setShowConfirmModal(false)}>
+              Batal
+            </button>
+            <button
+              className={styles.nextButton}
+              style={{ minWidth: '120px' }}
+              onClick={() => {
+                setShowConfirmModal(false);
+                handleEndGame();
+              }}
+            >
+              Ya, Selesai
             </button>
           </div>
         </div>
