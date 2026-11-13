@@ -90,6 +90,27 @@
   opacity: 0.85;
 }
 
+.dapurButton {
+  margin-top: 10px;
+  padding: 7px 16px;
+  border: 1px solid rgba(245, 196, 0, 0.7);
+  border-radius: 999px;
+  background: rgba(59, 31, 12, 0.55);
+  color: var(--color-kuning-kepodang, #F5C400);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  text-shadow: none;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background-color 0.2s ease;
+}
+
+.dapurButton:hover,
+.dapurButton:focus-visible {
+  background: rgba(59, 31, 12, 0.8);
+}
+
 .status {
   position: absolute;
   inset: 0;

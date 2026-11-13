@@ -379,37 +379,107 @@
 }
 
 @media (max-width: 768px) {
+  /* Di HP elemen disusun berurutan (judul, peta, panel, tombol), tidak lagi saling tumpuk. */
+  .petaSection {
+    min-height: auto;
+  }
+
   .mapScene {
     flex-direction: column;
+    justify-content: flex-start;
+    gap: 28px;
     height: auto;
-    min-height: 100vh;
+    min-height: auto;
+    padding: 88px 20px 56px;
   }
-  .svgLayer {
-    width: 100%;
-    /* Let absolute positioning handle it */
-  }
+
   .uiLayer {
+    display: contents;
+  }
+
+  .uiHeader {
+    order: 1;
+    z-index: 5;
+    align-self: stretch;
+  }
+
+  .headerAksara {
+    top: -14px;
+    left: -6px;
+    font-size: 56px;
+  }
+
+  .uiLabel {
+    font-size: 12px;
+  }
+
+  .uiTitle {
+    font-size: clamp(32px, 9vw, 40px);
+  }
+
+  .uiTitleUnderline {
+    bottom: -10px;
+    width: 200px;
+  }
+
+  .svgLayer {
+    order: 2;
     position: relative;
-    padding: 24px;
+    inset: auto;
     height: auto;
+    transform: none;
   }
-  .uiHeader { margin-bottom: 40px; }
-  
+
+  .svgContainer {
+    width: 100%;
+  }
+
+  .petaPinImg {
+    width: 30px;
+    height: 30px;
+    border-width: 2px;
+  }
+
+  .petaPin::after {
+    width: 4px;
+    height: 4px;
+    margin-top: 2px;
+  }
+
   .uiBottom {
+    order: 3;
+    position: relative;
+    z-index: 5;
     flex-direction: column-reverse;
-    align-items: center;
-    gap: 32px;
+    align-items: stretch;
+    gap: 20px;
   }
-  
+
   .uiBottomLeft {
     margin-bottom: 0;
+    text-align: center;
   }
-  
+
   .uiPanel {
     width: 100%;
-    align-self: center;
+    padding: 22px 20px;
+    border-radius: 20px;
   }
-  .svgContainer {
-    width: 95%; /* Make map wider on mobile */
+
+  .panelEmpty {
+    min-height: 110px;
+  }
+
+  .panelMakanan {
+    font-size: 24px;
+  }
+
+  .panelDesc {
+    font-size: 14px;
+  }
+
+  .btnPrimaryPill {
+    padding: 14px 30px;
+    font-size: 14px;
   }
 }

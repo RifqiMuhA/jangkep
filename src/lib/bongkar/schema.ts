@@ -92,21 +92,27 @@ export const errorCodeSchema = z.enum([
 ]);
 export type ErrorCode = z.infer<typeof errorCodeSchema>;
 
+/** Hasil bongkar yang ditampilkan di tampah. */
+export const bongkarResultSchema = z.object({
+  dish: z.string(),
+  /** "dapur": dipilih dari galeri dapur Jangkep (tanpa AI). Kosong berarti hasil tebakan AI. */
+  source: z.enum(["ai", "dapur"]).optional(),
+  confidence: confidenceSchema,
+  /** Kosong kalau foto tidak dikenali, supaya label asal tidak ditampilkan. */
+  masakanJawa: z.boolean().optional(),
+  notes: z.string().optional(),
+  matched: z.array(matchedSpiceSchema),
+  unmatched: z.array(extraSpiceSchema),
+  dishLink: dishLinkSchema.optional(),
+  cooking: cookingSchema.optional(),
+});
+export type BongkarResult = z.infer<typeof bongkarResultSchema>;
+
 /** Respons /api/bongkar. */
 export const bongkarResponseSchema = z.discriminatedUnion("ok", [
   z.object({
     ok: z.literal(true),
-    result: z.object({
-      dish: z.string(),
-      confidence: confidenceSchema,
-      /** Kosong kalau foto tidak dikenali, supaya label asal tidak ditampilkan. */
-      masakanJawa: z.boolean().optional(),
-      notes: z.string().optional(),
-      matched: z.array(matchedSpiceSchema),
-      unmatched: z.array(extraSpiceSchema),
-      dishLink: dishLinkSchema.optional(),
-      cooking: cookingSchema.optional(),
-    }),
+    result: bongkarResultSchema,
     meta: metaSchema,
   }),
   z.object({

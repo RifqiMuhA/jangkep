@@ -263,7 +263,7 @@ export default function MiniPetaSection() {
                         <MapIcon size={36} color="#5B3A29" />
                     </div>
                     <div className={styles.panelHintText}>
-                      Hover atau klik kabupaten untuk melihat kuliner khasnya
+                      Sentuh atau arahkan kursor ke pin untuk melihat kuliner khasnya
                     </div>
                   </div>
               )}

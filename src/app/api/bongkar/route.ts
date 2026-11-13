@@ -7,6 +7,9 @@ import { DISH_FIELD, IMAGE_FIELD, MAX_IMAGE_BYTES, sniffImageType } from "@/lib/
 
 export const maxDuration = 60;
 
+/** Pesan umum saat AI tidak bisa dipakai. Penyebab teknisnya hanya dicatat di log server. */
+const UNAVAILABLE_MESSAGE = "Si Podo lagi istirahat sebentar. Coba lagi nanti, atau pilih masakan dari dapur Jangkep.";
+
 function fail(status: number, code: ErrorCode, message: string, meta?: { latencyMs?: number; attempts?: number }, headers?: HeadersInit) {
   const body: BongkarResponse = { ok: false, error: { code, message }, meta: { model: GEMINI_MODEL, ...meta } };
   return Response.json(body, { status, headers });
@@ -45,7 +48,7 @@ export async function POST(request: Request) {
     const dishField = form.get(DISH_FIELD);
     if (typeof dishField === "string") correctedDish = sanitizeDishName(dishField);
   } catch {
-    return fail(400, "BAD_REQUEST", "Permintaan tidak bisa dibaca. Kirim foto sebagai multipart/form-data.");
+    return fail(400, "BAD_REQUEST", "Fotonya tidak bisa dibaca. Coba pilih ulang fotonya, ya.");
   }
   if (!(file instanceof File) || file.size === 0) {
     return fail(400, "BAD_REQUEST", "Fotonya belum dipilih.");
@@ -111,19 +114,19 @@ export async function POST(request: Request) {
     if (err instanceof GeminiError) {
       switch (err.kind) {
         case "QUOTA":
-          return fail(429, "QUOTA_EXCEEDED", "Kuota AI hari ini sedang habis. Coba lagi beberapa saat lagi.", meta);
+          return fail(429, "QUOTA_EXCEEDED", "Si Podo sudah kebanyakan membongkar hari ini dan perlu istirahat. Coba lagi nanti, atau pilih masakan dari dapur Jangkep.", meta);
         case "BUSY":
-          return fail(503, "SERVER_ERROR", "AI sedang ramai dipakai. Coba lagi dalam beberapa saat.", meta);
+          return fail(503, "SERVER_ERROR", "Si Podo lagi ramai pesanan. Coba lagi sebentar, atau pilih masakan dari dapur Jangkep.", meta);
         case "TIMEOUT":
-          return fail(504, "TIMEOUT", "AI terlalu lama merespons (server AI sedang lambat). Coba lagi sebentar lagi.", meta);
+          return fail(504, "TIMEOUT", "Si Podo kelamaan mikir. Coba lagi sebentar, atau pilih masakan dari dapur Jangkep.", meta);
         case "INVALID_OUTPUT":
-          return fail(502, "INVALID_AI_OUTPUT", "Jawaban AI tidak bisa dibaca. Coba lagi dengan foto yang lebih jelas.", meta);
+          return fail(502, "INVALID_AI_OUTPUT", "Si Podo belum bisa membaca fotonya. Coba lagi dengan foto yang lebih jelas dan terang.", meta);
         case "AUTH":
-          return fail(500, "SERVER_ERROR", "API key Gemini ditolak Google. Periksa key di .env.local, lalu restart server.", meta);
+          return fail(500, "SERVER_ERROR", UNAVAILABLE_MESSAGE, meta);
         case "CONFIG":
-          return fail(500, "SERVER_ERROR", "Server belum dikonfigurasi (API key belum diisi).", meta);
+          return fail(500, "SERVER_ERROR", UNAVAILABLE_MESSAGE, meta);
       }
     }
-    return fail(502, "SERVER_ERROR", "Terjadi gangguan saat menghubungi AI. Coba lagi sebentar lagi.", meta);
+    return fail(502, "SERVER_ERROR", UNAVAILABLE_MESSAGE, meta);
   }
 }

@@ -71,6 +71,7 @@ interface ResultStageProps {
 
 export default function ResultStage({ data, photoUrl, correctedFrom, onRecorrect, onRestart }: ResultStageProps) {
   const { result } = data;
+  const fromDapur = result.source === 'dapur';
   const [correcting, setCorrecting] = useState(false);
   const [draftDish, setDraftDish] = useState('');
   const [confirmDish, setConfirmDish] = useState<string | null>(null);
@@ -194,19 +195,22 @@ export default function ResultStage({ data, photoUrl, correctedFrom, onRecorrect
           </div>
 
           <div className={styles.dishInfo}>
-            <span className={styles.label}>Tebakan Si Podo</span>
+            <span className={styles.label}>{fromDapur ? 'Saka dapur Jangkep' : 'Tebakan Si Podo'}</span>
             <h1 className={styles.dishName}>{shownDish}</h1>
             {correctedFrom && <p className={styles.correctedNote}>Dikoreksi · tebakan awal AI: {correctedFrom}</p>}
 
             <div className={styles.metaRow}>
-              <span className={`${styles.badge} ${CONFIDENCE[result.confidence].className}`}>{CONFIDENCE[result.confidence].label}</span>
+              {/* Masakan dari dapur Jangkep tidak ditebak, jadi tanpa label keyakinan dan tanpa tombol koreksi. */}
+              {!fromDapur && (
+                <span className={`${styles.badge} ${CONFIDENCE[result.confidence].className}`}>{CONFIDENCE[result.confidence].label}</span>
+              )}
               {result.masakanJawa !== undefined && (
                 <span className={`${styles.originBadge} ${result.masakanJawa ? styles.originJawa : ''}`}>
                   {result.masakanJawa ? 'Masakan Jawa' : 'Bukan masakan Jawa'}
                 </span>
               )}
               {/* Sebaris dengan label keyakinan supaya panel kiri tidak terlalu tinggi */}
-              {!correcting && (
+              {!correcting && !fromDapur && (
                 <button
                   type="button"
                   className={styles.correctButton}
@@ -436,7 +440,7 @@ export default function ResultStage({ data, photoUrl, correctedFrom, onRecorrect
           <button type="button" className={`${styles.restartButton} ${styles.restartMobile}`} onClick={onRestart}>
             <Camera size={18} strokeWidth={2.25} /> Bongkar masakan lain
           </button>
-          <p className={styles.disclaimer}>Hasil bersifat perkiraan AI dan edukatif.</p>
+          {!fromDapur && <p className={styles.disclaimer}>Hasil bersifat perkiraan AI dan edukatif.</p>}
         </section>
       </div>
 

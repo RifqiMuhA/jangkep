@@ -3,10 +3,12 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Camera, RotateCcw } from 'lucide-react';
+import { Camera, RotateCcw, Soup } from 'lucide-react';
 import CameraStage from '@/components/bongkar/CameraStage';
 import CookingStage from '@/components/bongkar/CookingStage';
+import DapurPicker from '@/components/bongkar/DapurPicker';
 import ResultStage from '@/components/bongkar/ResultStage';
+import type { DapurDish } from '@/lib/bongkar/dapur';
 import type { ReadyImage } from '@/lib/bongkar/image';
 import { bongkarResponseSchema, type BongkarResponse } from '@/lib/bongkar/schema';
 import { DISH_FIELD, IMAGE_FIELD } from '@/lib/bongkar/upload';
@@ -18,8 +20,14 @@ type Stage = 'camera' | 'cooking' | 'result' | 'error';
 /** Layar memasak minimal tampil selama ini, supaya animasinya tidak sekadar berkedip. */
 const MIN_COOKING_MS = 2200;
 
-export default function BongkarClient() {
+const DAPUR_SUBTITLE = 'Ora duwe foto? Pilih masakan, Si Podo langsung mbongkar rempahe saka resep tim Jangkep.';
+const DAPUR_SUBTITLE_ERROR = 'Si Podo lagi kesel. Pilih masakane dhewe, rempahe tak bongkar saka resep tim Jangkep.';
+
+export default function BongkarClient({ dapur }: { dapur: DapurDish[] }) {
   const [stage, setStage] = useState<Stage>('camera');
+  const [dapurOpen, setDapurOpen] = useState(false);
+  /** Foto masakan dari galeri dapur Jangkep, dipakai kalau pengguna belum punya foto sendiri. */
+  const [dapurPhotoUrl, setDapurPhotoUrl] = useState<string | null>(null);
   const [photo, setPhoto] = useState<ReadyImage | null>(null);
   const [data, setData] = useState<SuccessResponse | null>(null);
   const [error, setError] = useState('');
@@ -46,7 +54,7 @@ export default function BongkarClient() {
       if (dish) form.append(DISH_FIELD, dish);
       const response = await fetch('/api/bongkar', { method: 'POST', body: form });
       const parsed = bongkarResponseSchema.safeParse(await response.json().catch(() => null));
-      if (!parsed.success) return { error: 'Server memberi jawaban yang tidak dikenali. Coba lagi.' };
+      if (!parsed.success) return { error: 'Si Podo lagi istirahat sebentar. Coba lagi nanti, atau pilih masakan dari dapur Jangkep.' };
       if (!parsed.data.ok) return { error: parsed.data.error.message };
       return { data: parsed.data };
     } catch {
@@ -86,13 +94,28 @@ export default function BongkarClient() {
     setStage(nextStage);
   }
 
+  /** Bongkar dari galeri dapur Jangkep: hasilnya sudah jadi, jadi tidak memanggil AI. Foto sendiri (kalau ada) tetap dipakai. */
+  async function pickDapur(dish: DapurDish) {
+    setDapurOpen(false);
+    setDapurPhotoUrl(photoRef.current ? null : dish.image);
+    setStage('cooking');
+    setError('');
+    await new Promise((resolve) => setTimeout(resolve, MIN_COOKING_MS));
+    setData({ ok: true, result: dish.result, meta: { latencyMs: 0, model: 'dapur-jangkep', attempts: 0 } });
+    setCorrectedFrom(null);
+    setStage('result');
+  }
+
   function restart() {
     replacePhoto(null);
+    setDapurPhotoUrl(null);
     setData(null);
     setCorrectedFrom(null);
     setError('');
     setStage('camera');
   }
+
+  const shownPhotoUrl = photo?.previewUrl ?? dapurPhotoUrl;
 
   return (
     <main className={styles.page}>
@@ -106,12 +129,14 @@ export default function BongkarClient() {
           transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
         >
           {stage === 'camera' && (
-            <CameraStage photo={photo} onPhoto={replacePhoto} onRetake={() => replacePhoto(null)} onSubmit={submit} />
+            <CameraStage photo={photo} onPhoto={replacePhoto} onRetake={() => replacePhoto(null)} onSubmit={submit} onOpenDapur={() => setDapurOpen(true)} />
           )}
 
-          {stage === 'cooking' && photo && <CookingStage photoUrl={photo.previewUrl} />}
+          {stage === 'cooking' && shownPhotoUrl && <CookingStage photoUrl={shownPhotoUrl} />}
 
-          {stage === 'result' && data && photo && <ResultStage data={data} photoUrl={photo.previewUrl} correctedFrom={correctedFrom} onRecorrect={recorrect} onRestart={restart} />}
+          {stage === 'result' && data && shownPhotoUrl && (
+            <ResultStage data={data} photoUrl={shownPhotoUrl} correctedFrom={correctedFrom} onRecorrect={recorrect} onRestart={restart} />
+          )}
 
           {stage === 'error' && (
             <div className={styles.errorStage} role="alert">
@@ -125,6 +150,9 @@ export default function BongkarClient() {
                   <button type="button" className={styles.primaryButton} onClick={submit} disabled={!photo}>
                     <RotateCcw size={18} strokeWidth={2.25} /> Coba lagi
                   </button>
+                  <button type="button" className={styles.ghostButton} onClick={() => setDapurOpen(true)}>
+                    <Soup size={18} strokeWidth={2.25} /> Pilih dari dapur Jangkep
+                  </button>
                   <button type="button" className={styles.ghostButton} onClick={restart}>
                     <Camera size={18} strokeWidth={2.25} /> Foto ulang
                   </button>
@@ -134,6 +162,14 @@ export default function BongkarClient() {
           )}
         </motion.div>
       </AnimatePresence>
+
+      <DapurPicker
+        open={dapurOpen}
+        dishes={dapur}
+        subtitle={stage === 'error' ? DAPUR_SUBTITLE_ERROR : DAPUR_SUBTITLE}
+        onClose={() => setDapurOpen(false)}
+        onPick={pickDapur}
+      />
 
       {/* Sapuan kain batik setiap kali layar berganti */}
       <AnimatePresence>

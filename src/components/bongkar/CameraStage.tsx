@@ -17,6 +17,8 @@ interface CameraStageProps {
   onPhoto: (photo: ReadyImage) => void;
   onRetake: () => void;
   onSubmit: () => void;
+  /** Buka galeri dapur Jangkep (bongkar tanpa foto dan tanpa AI). */
+  onOpenDapur: () => void;
 }
 
 function cameraErrorMessage(err: unknown): string {
@@ -27,7 +29,7 @@ function cameraErrorMessage(err: unknown): string {
   return 'Kamera belum bisa dibuka.';
 }
 
-export default function CameraStage({ photo, onPhoto, onRetake, onSubmit }: CameraStageProps) {
+export default function CameraStage({ photo, onPhoto, onRetake, onSubmit, onOpenDapur }: CameraStageProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [camera, setCamera] = useState<CameraState>('starting');
   const [cameraError, setCameraError] = useState('');
@@ -156,6 +158,11 @@ export default function CameraStage({ photo, onPhoto, onRetake, onSubmit }: Came
                 ? 'Izinkan akses kamera di browser, atau unggah foto dari galeri.'
                 : 'Unggah foto masakan Jawa dari galerimu.'}
         </p>
+        {!photo && (
+          <button type="button" className={styles.dapurButton} onClick={onOpenDapur}>
+            Ora duwe foto? Pilih saka dapur Jangkep
+          </button>
+        )}
       </header>
 
       {/* Bingkai bidik ala ornamen emas */}
@@ -170,8 +177,9 @@ export default function CameraStage({ photo, onPhoto, onRetake, onSubmit }: Came
 
       {!photo && camera === 'starting' && <p className={styles.status}>Menyalakan kamera…</p>}
 
+      {/* x/y diatur lewat framer supaya tidak menimpa posisi tengah (translate -50%) dari CSS. */}
       {!photo && camera === 'unavailable' && (
-        <motion.div className={styles.fallbackCard} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+        <motion.div className={styles.fallbackCard} initial={{ opacity: 0, x: '-50%', y: 'calc(-50% + 20px)' }} animate={{ opacity: 1, x: '-50%', y: '-50%' }}>
           <div className={styles.fallbackMascot}>
             <Image src="/kuliner/mascot_ngintip_1.webp" alt="" fill sizes="140px" />
           </div>
