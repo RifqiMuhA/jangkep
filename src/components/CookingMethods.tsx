@@ -96,6 +96,7 @@ export default function CookingMethods({ instructions }: CookingMethodsProps) {
               fill
               sizes="100vw"
               className={styles.mascotImage}
+              loading="eager"
               unoptimized
             />
           </motion.div>
@@ -146,6 +147,7 @@ export default function CookingMethods({ instructions }: CookingMethodsProps) {
                 fill
                 sizes="160px"
                 className={styles.actionIcon}
+                loading="eager"
                 unoptimized
               />
             </div>

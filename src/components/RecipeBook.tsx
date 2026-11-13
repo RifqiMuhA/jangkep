@@ -121,6 +121,7 @@ export default function RecipeBook({ ingredients }: RecipeBookProps) {
                 alt={ingredient.name.replace(/-/g, ' ')}
                 fill
                 className={styles.ingredientImage}
+                loading="eager"
                 unoptimized
               />
             </div>

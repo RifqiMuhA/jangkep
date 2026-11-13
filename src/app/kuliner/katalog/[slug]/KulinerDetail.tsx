@@ -56,6 +56,24 @@ export default function KulinerDetail({ slug }: { slug: string }) {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [slug]);
 
+  // Unduh gambar bahan (buku resep) dan maskot cara memasak sejak halaman dibuka, supaya saat halaman buku
+  // dibalik atau langkah berikutnya ditekan, gambarnya sudah ada di cache browser dan langsung tampil.
+  useEffect(() => {
+    if (!item) return;
+    const urls = new Set<string>();
+    item.ingredients.forEach((ing) => urls.add(`/kuliner/ingredients/${ing.name}.webp`));
+    item.instructions.forEach((step) => {
+      const action = step.action.toLowerCase();
+      urls.add(`/kuliner/methods/${action}_mascot.webp`);
+      urls.add(`/kuliner/methods/${action}.webp`);
+    });
+    urls.forEach((url) => {
+      const img = new window.Image();
+      img.decoding = 'async';
+      img.src = url;
+    });
+  }, [item]);
+
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
